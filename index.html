@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Take7 Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --black: #0F172A;
+    --blue: #2563EB;
+    --blue-light: #3B82F6;
+    --blue-dark: #1D4ED8;
+    --white: #FFFFFF;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-300: #CBD5E1;
+    --gray-400: #94A3B8;
+    --gray-500: #64748B;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1E293B;
+    --gray-900: #0F172A;
+    --green: #10B981;
+    --red: #EF4444;
+    --yellow: #F59E0B;
+    --sidebar-w: 260px;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.18);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--gray-100);
+    color: var(--black);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ── SIDEBAR ─────────────────────────────────── */
+  #sidebar {
+    width: var(--sidebar-w);
+    background: var(--black);
+    height: 100vh;
+    position: fixed;
+    left: 0; top: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    overflow-y: auto;
+    border-right: 1px solid var(--gray-800);
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--gray-800);
+  }
+  .sidebar-logo h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+  .sidebar-logo span {
+    color: var(--blue);
+  }
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  .nav-section {
+    padding: 16px 12px;
+    flex: 1;
+  }
+  .nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 0 12px;
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+  .nav-label:first-child { margin-top: 0; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--gray-400);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    user-select: none;
+  }
+  .nav-item:hover { background: var(--gray-800); color: var(--white); }
+  .nav-item.active { background: var(--blue); color: var(--white); }
+  .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+  /* ── MAIN ─────────────────────────────────────── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .topbar-title { font-size: 20px; font-weight: 700; color: var(--black); }
+  .topbar-sub { font-size: 13px; color: var(--gray-500); margin-top: 1px; }
+
+  .page-content {
+    padding: 28px 32px;
+    flex: 1;
+  }
+
+  /* ── PAGE SECTIONS ────────────────────────────── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── DASHBOARD STATS ─────────────────────────── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--blue);
+    border-radius: 4px 0 0 4px;
+  }
+  .stat-card.green::before { background: var(--green); }
+  .stat-card.yellow::before { background: var(--yellow); }
+  .stat-card.red::before { background: var(--red); }
+  .stat-label { font-size: 12px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.8px; }
+  .stat-value { font-size: 32px; font-weight: 800; color: var(--black); margin-top: 8px; line-height: 1; }
+  .stat-icon {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 40px; height: 40px;
+    background: var(--gray-100);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--blue);
+  }
+  .stat-icon svg { width: 20px; height: 20px; }
+
+  /* ── SECTION HEADER ──────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .section-header h2 { font-size: 18px; font-weight: 700; color: var(--black); }
+
+  .header-actions { display: flex; gap: 10px; align-items: center; }
+
+  /* ── SEARCH ───────────────────────────────────── */
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 9px;
+    padding: 0 14px;
+    gap: 8px;
+    height: 40px;
+    min-width: 220px;
+  }
+  .search-box svg { color: var(--gray-400); width: 16px; height: 16px; flex-shrink: 0; }
+  .search-box input {
+    border: none; outline: none; background: transparent;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px; color: var(--black);
+    width: 100%;
+  }
+
+  /* ── BUTTONS ──────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 18px;
+    border-radius: 9px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn svg { width: 15px; height: 15px; }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-dark); }
+  .btn-outline { background: transparent; color: var(--gray-600); border: 1.5px solid var(--gray-200); }
+  .btn-outline:hover { background: var(--gray-100); border-color: var(--gray-300); }
+  .btn-danger { background: #FEE2E2; color: var(--red); }
+  .btn-danger:hover { background: #FECACA; }
+  .btn-success { background: #D1FAE5; color: var(--green); }
+  .btn-success:hover { background: #A7F3D0; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 7px; }
+  .btn-icon { padding: 7px; border-radius: 8px; }
+
+  /* ── TABLE ────────────────────────────────────── */
+  .table-wrap {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--gray-50); }
+  th {
+    padding: 13px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  td {
+    padding: 13px 16px;
+    font-size: 13px;
+    color: var(--gray-700);
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--gray-50); }
+
+  .empty-state {
+    text-align: center;
+    padding: 56px 20px;
+    color: var(--gray-400);
+  }
+  .empty-state svg { width: 48px; height: 48px; margin: 0 auto 12px; display: block; opacity: 0.5; }
+  .empty-state p { font-size: 14px; font-weight: 500; }
+
+  /* ── BADGES ───────────────────────────────────── */
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-blue { background: #DBEAFE; color: #1D4ED8; }
+  .badge-green { background: #D1FAE5; color: #065F46; }
+  .badge-yellow { background: #FEF3C7; color: #92400E; }
+  .badge-red { background: #FEE2E2; color: #991B1B; }
+  .badge-gray { background: var(--gray-100); color: var(--gray-600); }
+  .badge-purple { background: #EDE9FE; color: #5B21B6; }
+
+  /* ── MODAL ────────────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(3px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+    animation: modalIn 0.25s ease;
+  }
+  .modal-lg { max-width: 720px; }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+  .modal-header {
+    padding: 24px 28px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-header h3 { font-size: 18px; font-weight: 700; color: var(--black); }
+  .modal-close {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: var(--gray-100);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray-500);
+    transition: all 0.15s;
+  }
+  .modal-close:hover { background: var(--gray-200); color: var(--black); }
+  .modal-close svg { width: 16px; height: 16px; }
+  .modal-body { padding: 20px 28px 28px; }
+
+  /* ── FORM ─────────────────────────────────────── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid.cols-1 { grid-template-columns: 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.span-2 { grid-column: span 2; }
+  label { font-size: 12px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px; }
+  input, select, textarea {
+    background: var(--gray-50);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    color: var(--black);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    background: var(--white);
+  }
+  textarea { resize: vertical; min-height: 80px; }
+
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-100);
+  }
+
+  /* ── TOAST ────────────────────────────────────── */
+  #toast-container {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+  }
+  .toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--black);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    animation: toastIn 0.3s ease;
+    min-width: 260px;
+    max-width: 360px;
+    pointer-events: auto;
+  }
+  .toast.success { border-left: 4px solid var(--green); }
+  .toast.error { border-left: 4px solid var(--red); }
+  .toast.info { border-left: 4px solid var(--blue); }
+  .toast svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .toast.success svg { color: var(--green); }
+  .toast.error svg { color: var(--red); }
+  .toast.info svg { color: var(--blue-light); }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ── FINANCIAL SUMMARY ───────────────────────── */
+  .fin-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .fin-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+  }
+  .fin-card label { font-size: 11px; color: var(--gray-500); }
+  .fin-card .amount { font-size: 28px; font-weight: 800; margin-top: 4px; }
+  .fin-card.received .amount { color: var(--green); }
+  .fin-card.pending .amount { color: var(--yellow); }
+
+  /* ── SETTINGS ─────────────────────────────────── */
+  .settings-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    max-width: 600px;
+  }
+  .settings-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--black); }
+  .logo-preview {
+    width: 80px; height: 80px;
+    border: 2px dashed var(--gray-300);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--gray-50);
+    margin-bottom: 12px;
+    transition: border-color 0.15s;
+  }
+  .logo-preview:hover { border-color: var(--blue); }
+  .logo-preview img { width: 100%; height: 100%; object-fit: contain; }
+  .logo-preview svg { color: var(--gray-400); width: 28px; height: 28px; }
+
+  /* ── LOADING ──────────────────────────────────── */
+  .loading {
+    display: flex; align-items: center; justify-content: center;
+    padding: 48px;
+    color: var(--gray-400);
+    gap: 12px;
+  }
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2px solid var(--gray-200);
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── SUPABASE SETUP ───────────────────────────── */
+  #setup-overlay {
+    position: fixed; inset: 0;
+    background: var(--black);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .setup-box {
+    background: var(--gray-900);
+    border: 1px solid var(--gray-700);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.5);
+  }
+  .setup-box .logo { font-size: 28px; font-weight: 800; color: var(--white); margin-bottom: 6px; }
+  .setup-box .logo span { color: var(--blue); }
+  .setup-box p { font-size: 14px; color: var(--gray-400); margin-bottom: 28px; }
+  .setup-box input {
+    background: var(--gray-800);
+    border: 1.5px solid var(--gray-700);
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .setup-box input::placeholder { color: var(--gray-600); }
+  .setup-box input:focus { border-color: var(--blue); background: var(--gray-800); }
+  .setup-hint { font-size: 11px; color: var(--gray-600); margin-top: 12px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<!-- SETUP OVERLAY -->
+<div id="setup-overlay">
+  <div class="setup-box">
+    <div class="logo">Take<span>7</span></div>
+    <p>Conecte ao Supabase para começar</p>
+    <input type="text" id="sb-url" placeholder="Supabase URL (https://xxx.supabase.co)" />
+    <input type="text" id="sb-key" placeholder="Supabase Anon Key" />
+    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px" onclick="initSupabase()">
+      Conectar
+    </button>
+    <p class="setup-hint">Suas credenciais são salvas localmente no navegador.</p>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <h1>Take<span>7</span></h1>
+    <p>Painel Administrativo</p>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Principal</div>
+    <div class="nav-item active" onclick="navigate('dashboard')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke-width="2"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-label">Cadastros</div>
+    <div class="nav-item" onclick="navigate('clientes')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4" stroke-width="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke-width="2" stroke-linecap="round"/><path d="M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.87" stroke-width="2" stroke-linecap="round"/></svg>
+      Clientes
+    </div>
+    <div class="nav-item" onclick="navigate('orcamentos')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/><line x1="16" y1="13" x2="8" y2="13" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke-width="2" stroke-linecap="round"/><polyline points="10 9 9 9 8 9" stroke-width="2"/></svg>
+      Orçamentos
+    </div>
+    <div class="nav-item" onclick="navigate('contratos')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke-width="2" stroke-linecap="round"/><path d="M15 7h2a5 5 0 0 1 0 10h-2" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke-width="2" stroke-linecap="round"/></svg>
+      Contratos
+    </div>
+    <div class="nav-item" onclick="navigate('ordens')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke-width="2"/></svg>
+      Ordens de Serviço
+    </div>
+    <div class="nav-label">Gestão</div>
+    <div class="nav-item" onclick="navigate('financeiro')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke-width="2" stroke-linecap="round"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-width="2" stroke-linecap="round"/></svg>
+      Financeiro
+    </div>
+    <div class="nav-label">Sistema</div>
+    <div class="nav-item" onclick="navigate('configuracoes')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke-width="2"/></svg>
+      Configurações
+    </div>
+  </nav>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-sub" id="topbar-sub">Visão geral do sistema</div>
+    </div>
+  </div>
+
+  <div class="page-content">
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page active">
+      <div class="stats-grid" id="dash-stats">
+        <div class="loading"><div class="spinner"></div> Carregando...</div>
+      </div>
+    </div>
+
+    <!-- CLIENTES -->
+    <div id="page-clientes" class="page">
+      <div class="section-header">
+        <h2>Clientes</h2>
+        <div class="header-actions">
+          <div class="search-box">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Pesquisar cliente..." id="search-clientes" oninput="renderClientes()">
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-cliente')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke-width="2" stroke-linecap="round"/></svg>
+            Novo Cliente
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Nome</th><th>Empresa</th><th>Telefone</th><th>E-mail</th><th>WhatsApp</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="tbody-clientes"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ORÇAMENTOS -->
+    <div id="page-orcamentos" class="page">
+      <div class="section-header">
+        <h2>Orçamentos</h2>
+        <div class="header-actions">
+          <div class="search-box">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Pesquisar orçamento..." id="search-orcamentos" oninput="renderOrcamentos()">
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-orcamento')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke-width="2" stroke-linecap="round"/></svg>
+            Novo Orçamento
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Data</th><th>Status</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="tbody-orcamentos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONTRATOS -->
+    <div id="page-contratos" class="page">
+      <div class="section-header">
+        <h2>Contratos</h2>
+        <div class="header-actions">
+          <div class="search-box">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Pesquisar contrato..." id="search-contratos" oninput="renderContratos()">
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-contrato')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke-width="2" stroke-linecap="round"/></svg>
+            Novo Contrato
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Início</th><th>Fim</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="tbody-contratos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ORDENS DE SERVIÇO -->
+    <div id="page-ordens" class="page">
+      <div class="section-header">
+        <h2>Ordens de Serviço</h2>
+        <div class="header-actions">
+          <div class="search-box">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Pesquisar OS..." id="search-ordens" oninput="renderOrdens()">
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-ordem')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke-width="2" stroke-linecap="round"/></svg>
+            Nova OS
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Cliente</th><th>Serviço</th><th>Prazo</th><th>Status</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="tbody-ordens"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FINANCEIRO -->
+    <div id="page-financeiro" class="page">
+      <div class="fin-summary">
+        <div class="fin-card received">
+          <label>Total Recebido</label>
+          <div class="amount" id="fin-recebido">R$ 0,00</div>
+        </div>
+        <div class="fin-card pending">
+          <label>Total Pendente</label>
+          <div class="amount" id="fin-pendente">R$ 0,00</div>
+        </div>
+      </div>
+      <div class="section-header">
+        <h2>Lançamentos</h2>
+        <div class="header-actions">
+          <div class="search-box">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Pesquisar..." id="search-financeiro" oninput="renderFinanceiro()">
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-financeiro')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke-width="2" stroke-linecap="round"/></svg>
+            Novo Lançamento
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Cliente</th><th>Descrição</th><th>Valor</th><th>Vencimento</th><th>Status</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="tbody-financeiro"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONFIGURAÇÕES -->
+    <div id="page-configuracoes" class="page">
+      <div class="settings-card">
+        <h3>Dados da Empresa</h3>
+        <div class="logo-preview" onclick="document.getElementById('logo-input').click()" id="logo-preview-wrap">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21" stroke-width="2"/></svg>
+        </div>
+        <input type="file" id="logo-input" accept="image/*" style="display:none" onchange="handleLogo(this)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nome da Empresa</label>
+            <input type="text" id="cfg-empresa" placeholder="Take7 Agência">
+          </div>
+          <div class="form-group">
+            <label>WhatsApp</label>
+            <input type="text" id="cfg-whatsapp" placeholder="(85) 99999-9999">
+          </div>
+          <div class="form-group span-2">
+            <label>E-mail</label>
+            <input type="email" id="cfg-email" placeholder="contato@take7.com.br">
+          </div>
+          <div class="form-group span-2">
+            <label>Endereço</label>
+            <input type="text" id="cfg-endereco" placeholder="Rua Exemplo, 123 - Fortaleza, CE">
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top:20px;padding-top:16px">
+          <button class="btn btn-primary" onclick="saveConfig()">Salvar Configurações</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-content -->
+</main>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- ══ MODALS ══════════════════════════════════════════ -->
+
+<!-- MODAL CLIENTE -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-cliente-title">Novo Cliente</h3>
+      <button class="modal-close" onclick="closeModal('modal-cliente')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cliente-id">
+      <div class="form-grid">
+        <div class="form-group"><label>Nome *</label><input type="text" id="cliente-nome" placeholder="Nome completo"></div>
+        <div class="form-group"><label>Empresa</label><input type="text" id="cliente-empresa" placeholder="Nome da empresa"></div>
+        <div class="form-group"><label>Telefone</label><input type="text" id="cliente-telefone" placeholder="(85) 3333-3333"></div>
+        <div class="form-group"><label>WhatsApp</label><input type="text" id="cliente-whatsapp" placeholder="(85) 99999-9999"></div>
+        <div class="form-group span-2"><label>E-mail</label><input type="email" id="cliente-email" placeholder="email@exemplo.com"></div>
+        <div class="form-group span-2"><label>Instagram</label><input type="text" id="cliente-instagram" placeholder="@usuario"></div>
+        <div class="form-group span-2"><label>Observações</label><textarea id="cliente-obs" placeholder="Observações..."></textarea></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="closeModal('modal-cliente')">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveCliente()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ORÇAMENTO -->
+<div class="modal-overlay" id="modal-orcamento">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 id="modal-orcamento-title">Novo Orçamento</h3>
+      <button class="modal-close" onclick="closeModal('modal-orcamento')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="orcamento-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Cliente *</label>
+          <select id="orcamento-cliente"><option value="">Selecione...</option></select>
+        </div>
+        <div class="form-group">
+          <label>Serviço *</label>
+          <input type="text" id="orcamento-servico" placeholder="Ex: Criação de site">
+        </div>
+        <div class="form-group span-2">
+          <label>Descrição</label>
+          <textarea id="orcamento-descricao" placeholder="Descrição detalhada do serviço..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Valor (R$) *</label>
+          <input type="number" id="orcamento-valor" placeholder="0.00" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Data *</label>
+          <input type="date" id="orcamento-data">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="orcamento-status">
+            <option value="Pendente">Pendente</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Recusado">Recusado</option>
+            <option value="Em negociação">Em negociação</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Validade</label>
+          <input type="date" id="orcamento-validade">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="closeModal('modal-orcamento')">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveOrcamento()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONTRATO -->
+<div class="modal-overlay" id="modal-contrato">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 id="modal-contrato-title">Novo Contrato</h3>
+      <button class="modal-close" onclick="closeModal('modal-contrato')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="contrato-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Cliente *</label>
+          <select id="contrato-cliente"><option value="">Selecione...</option></select>
+        </div>
+        <div class="form-group">
+          <label>Serviço *</label>
+          <input type="text" id="contrato-servico" placeholder="Descrição do serviço">
+        </div>
+        <div class="form-group">
+          <label>Valor (R$) *</label>
+          <input type="number" id="contrato-valor" placeholder="0.00" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Pagamento</label>
+          <select id="contrato-pagamento">
+            <option>À vista</option>
+            <option>Mensal</option>
+            <option>Parcelado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Data Inicial *</label>
+          <input type="date" id="contrato-inicio">
+        </div>
+        <div class="form-group">
+          <label>Data Final *</label>
+          <input type="date" id="contrato-fim">
+        </div>
+        <div class="form-group span-2">
+          <label>Cláusulas / Observações</label>
+          <textarea id="contrato-obs" placeholder="Cláusulas do contrato..." style="min-height:100px"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="closeModal('modal-contrato')">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveContrato()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ORDEM DE SERVIÇO -->
+<div class="modal-overlay" id="modal-ordem">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-ordem-title">Nova Ordem de Serviço</h3>
+      <button class="modal-close" onclick="closeModal('modal-ordem')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ordem-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Cliente *</label>
+          <select id="ordem-cliente"><option value="">Selecione...</option></select>
+        </div>
+        <div class="form-group">
+          <label>Serviço *</label>
+          <input type="text" id="ordem-servico" placeholder="Descrição do serviço">
+        </div>
+        <div class="form-group">
+          <label>Prazo *</label>
+          <input type="date" id="ordem-prazo">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="ordem-status">
+            <option value="Aberta">Aberta</option>
+            <option value="Em andamento">Em andamento</option>
+            <option value="Concluída">Concluída</option>
+            <option value="Cancelada">Cancelada</option>
+          </select>
+        </div>
+        <div class="form-group span-2">
+          <label>Descrição</label>
+          <textarea id="ordem-descricao" placeholder="Detalhes da ordem..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="closeModal('modal-ordem')">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveOrdem()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FINANCEIRO -->
+<div class="modal-overlay" id="modal-financeiro">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-financeiro-title">Novo Lançamento</h3>
+      <button class="modal-close" onclick="closeModal('modal-financeiro')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="fin-id">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Cliente</label>
+          <select id="fin-cliente"><option value="">Selecione...</option></select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="fin-status">
+            <option value="Pendente">Pendente</option>
+            <option value="Pago">Pago</option>
+          </select>
+        </div>
+        <div class="form-group span-2">
+          <label>Descrição *</label>
+          <input type="text" id="fin-descricao" placeholder="Ex: Mensalidade de gestão">
+        </div>
+        <div class="form-group">
+          <label>Valor (R$) *</label>
+          <input type="number" id="fin-valor" placeholder="0.00" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Vencimento *</label>
+          <input type="date" id="fin-vencimento">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="closeModal('modal-financeiro')">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveFinanceiro()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  SUPABASE INIT
+// ══════════════════════════════════════════════════
+let sb = null;
+
+async function initSupabase() {
+  const url = document.getElementById('sb-url').value.trim();
+  const key = document.getElementById('sb-key').value.trim();
+  if (!url || !key) { toast('Preencha URL e Key do Supabase', 'error'); return; }
+  try {
+    sb = supabase.createClient(url, key);
+    // test connection
+    await sb.from('clientes').select('id').limit(1);
+    localStorage.setItem('sb_url', url);
+    localStorage.setItem('sb_key', key);
+    document.getElementById('setup-overlay').style.display = 'none';
+    await createTables();
+    loadConfig();
+    navigate('dashboard');
+    toast('Conectado ao Supabase!', 'success');
+  } catch(e) {
+    toast('Erro ao conectar: ' + e.message, 'error');
+  }
+}
+
+async function createTables() {
+  // Tables are assumed to exist in Supabase. If not, create via SQL in Supabase dashboard.
+  // SQL to create tables is shown in toast info
+}
+
+// Auto-connect on load
+(function autoConnect() {
+  const url = localStorage.getItem('sb_url');
+  const key = localStorage.getItem('sb_key');
+  if (url && key) {
+    document.getElementById('sb-url').value = url;
+    document.getElementById('sb-key').value = key;
+    initSupabase();
+  }
+})();
+
+// ══════════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════════
+const pages = { dashboard: 'Dashboard', clientes: 'Clientes', orcamentos: 'Orçamentos', contratos: 'Contratos', ordens: 'Ordens de Serviço', financeiro: 'Financeiro', configuracoes: 'Configurações' };
+const subs = { dashboard: 'Visão geral do sistema', clientes: 'Gerencie seus clientes', orcamentos: 'Gerencie seus orçamentos', contratos: 'Gerencie seus contratos', ordens: 'Gerencie ordens de serviço', financeiro: 'Controle financeiro', configuracoes: 'Configurações da empresa' };
+
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => { if (n.getAttribute('onclick')?.includes(page)) n.classList.add('active'); });
+  document.getElementById('topbar-title').textContent = pages[page];
+  document.getElementById('topbar-sub').textContent = subs[page];
+  if (page === 'dashboard') loadDashboard();
+  else if (page === 'clientes') { loadClientes(); }
+  else if (page === 'orcamentos') { loadOrcamentos(); }
+  else if (page === 'contratos') { loadContratos(); }
+  else if (page === 'ordens') { loadOrdens(); }
+  else if (page === 'financeiro') { loadFinanceiro(); }
+  else if (page === 'configuracoes') { loadConfig(); }
+}
+
+// ══════════════════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════════════════
+function openModal(id, clearForm = true) {
+  if (clearForm) clearModalForm(id);
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function clearModalForm(id) {
+  document.querySelectorAll(`#${id} input:not([type=hidden]), #${id} textarea, #${id} select`).forEach(el => {
+    if (el.tagName === 'SELECT') el.selectedIndex = 0;
+    else el.value = '';
+  });
+  const hiddenId = document.querySelector(`#${id} input[type=hidden]`);
+  if (hiddenId) hiddenId.value = '';
+}
+
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+});
+
+// ══════════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════════
+function toast(msg, type = 'success') {
+  const icons = {
+    success: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    error: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><line x1="15" y1="9" x2="9" y2="15" stroke-width="2" stroke-linecap="round"/><line x1="9" y1="9" x2="15" y2="15" stroke-width="2" stroke-linecap="round"/></svg>',
+    info: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="12" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2" stroke-linecap="round"/></svg>'
+  };
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = icons[type] + `<span>${msg}</span>`;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ══════════════════════════════════════════════════
+//  FORMAT
+// ══════════════════════════════════════════════════
+function fmtMoney(v) {
+  return 'R$ ' + parseFloat(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+}
+function fmtDate(d) {
+  if (!d) return '—';
+  const parts = d.split('-');
+  return parts[2] + '/' + parts[1] + '/' + parts[0];
+}
+function statusBadge(s) {
+  const map = {
+    'Aprovado': 'badge-green', 'Pago': 'badge-green', 'Concluída': 'badge-green',
+    'Pendente': 'badge-yellow', 'Aberta': 'badge-yellow', 'Em andamento': 'badge-blue',
+    'Em negociação': 'badge-blue', 'Recusado': 'badge-red', 'Cancelada': 'badge-red'
+  };
+  return `<span class="badge ${map[s] || 'badge-gray'}">${s}</span>`;
+}
+
+// ══════════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════════
+async function loadDashboard() {
+  if (!sb) return;
+  const el = document.getElementById('dash-stats');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div> Carregando...</div>';
+  try {
+    const [c, o, ct, os, fin] = await Promise.all([
+      sb.from('clientes').select('id', { count: 'exact', head: true }),
+      sb.from('orcamentos').select('id', { count: 'exact', head: true }),
+      sb.from('contratos').select('id', { count: 'exact', head: true }),
+      sb.from('ordens').select('id', { count: 'exact', head: true }),
+      sb.from('financeiro').select('valor, status')
+    ]);
+    const totalReceber = (fin.data || []).filter(f => f.status === 'Pendente').reduce((a, b) => a + parseFloat(b.valor || 0), 0);
+    el.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-label">Clientes</div>
+        <div class="stat-value">${c.count || 0}</div>
+        <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4" stroke-width="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke-width="2"/></svg></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Orçamentos</div>
+        <div class="stat-value">${o.count || 0}</div>
+        <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Contratos</div>
+        <div class="stat-value">${ct.count || 0}</div>
+        <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke-width="2"/><path d="M15 7h2a5 5 0 0 1 0 10h-2" stroke-width="2"/><line x1="8" y1="12" x2="16" y2="12" stroke-width="2"/></svg></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ordens de Serviço</div>
+        <div class="stat-value">${os.count || 0}</div>
+        <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke-width="2"/></svg></div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">A Receber</div>
+        <div class="stat-value" style="font-size:22px">${fmtMoney(totalReceber)}</div>
+        <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke-width="2"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-width="2"/></svg></div>
+      </div>
+    `;
+  } catch(e) { el.innerHTML = '<div class="empty-state"><p>Erro ao carregar dados</p></div>'; }
+}
+
+// ══════════════════════════════════════════════════
+//  CLIENTES
+// ══════════════════════════════════════════════════
+let clientesData = [];
+async function loadClientes() {
+  if (!sb) return;
+  const { data, error } = await sb.from('clientes').select('*').order('nome');
+  if (error) { toast('Erro ao carregar clientes', 'error'); return; }
+  clientesData = data || [];
+  renderClientes();
+}
+function renderClientes() {
+  const q = (document.getElementById('search-clientes')?.value || '').toLowerCase();
+  const filtered = clientesData.filter(c => !q || c.nome?.toLowerCase().includes(q) || c.empresa?.toLowerCase().includes(q) || c.email?.toLowerCase().includes(q));
+  const tbody = document.getElementById('tbody-clientes');
+  if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4" stroke-width="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke-width="2"/></svg><p>Nenhum cliente encontrado</p></div></td></tr>`; return; }
+  tbody.innerHTML = filtered.map(c => `
+    <tr>
+      <td><strong>${c.nome}</strong></td>
+      <td>${c.empresa || '—'}</td>
+      <td>${c.telefone || '—'}</td>
+      <td>${c.email || '—'}</td>
+      <td>${c.whatsapp || '—'}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm btn-icon" onclick="editCliente('${c.id}')" title="Editar">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
+          </button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteCliente('${c.id}')" title="Excluir">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/><path d="M10 11v6M14 11v6" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+function editCliente(id) {
+  const c = clientesData.find(x => x.id == id);
+  if (!c) return;
+  document.getElementById('modal-cliente-title').textContent = 'Editar Cliente';
+  document.getElementById('cliente-id').value = c.id;
+  document.getElementById('cliente-nome').value = c.nome || '';
+  document.getElementById('cliente-empresa').value = c.empresa || '';
+  document.getElementById('cliente-telefone').value = c.telefone || '';
+  document.getElementById('cliente-whatsapp').value = c.whatsapp || '';
+  document.getElementById('cliente-email').value = c.email || '';
+  document.getElementById('cliente-instagram').value = c.instagram || '';
+  document.getElementById('cliente-obs').value = c.observacoes || '';
+  openModal('modal-cliente', false);
+}
+async function saveCliente() {
+  const id = document.getElementById('cliente-id').value;
+  const nome = document.getElementById('cliente-nome').value.trim();
+  if (!nome) { toast('Nome é obrigatório', 'error'); return; }
+  const data = {
+    nome, empresa: document.getElementById('cliente-empresa').value,
+    telefone: document.getElementById('cliente-telefone').value,
+    whatsapp: document.getElementById('cliente-whatsapp').value,
+    email: document.getElementById('cliente-email').value,
+    instagram: document.getElementById('cliente-instagram').value,
+    observacoes: document.getElementById('cliente-obs').value
+  };
+  let err;
+  if (id) { const r = await sb.from('clientes').update(data).eq('id', id); err = r.error; }
+  else { const r = await sb.from('clientes').insert(data); err = r.error; }
+  if (err) { toast('Erro ao salvar: ' + err.message, 'error'); return; }
+  toast(id ? 'Cliente atualizado!' : 'Cliente cadastrado!', 'success');
+  closeModal('modal-cliente');
+  loadClientes();
+}
+async function deleteCliente(id) {
+  if (!confirm('Excluir este cliente?')) return;
+  const { error } = await sb.from('clientes').delete().eq('id', id);
+  if (error) { toast('Erro ao excluir', 'error'); return; }
+  toast('Cliente excluído!', 'success');
+  loadClientes();
+}
+
+// ══════════════════════════════════════════════════
+//  ORÇAMENTOS
+// ══════════════════════════════════════════════════
+let orcamentosData = [];
+async function loadOrcamentos() {
+  if (!sb) return;
+  populateClienteSelect('orcamento-cliente');
+  const { data } = await sb.from('orcamentos').select('*, clientes(nome)').order('created_at', { ascending: false });
+  orcamentosData = data || [];
+  renderOrcamentos();
+}
+function renderOrcamentos() {
+  const q = (document.getElementById('search-orcamentos')?.value || '').toLowerCase();
+  const filtered = orcamentosData.filter(o => !q || o.clientes?.nome?.toLowerCase().includes(q) || o.servico?.toLowerCase().includes(q));
+  const tbody = document.getElementById('tbody-orcamentos');
+  if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><p>Nenhum orçamento encontrado</p></div></td></tr>`; return; }
+  tbody.innerHTML = filtered.map(o => `
+    <tr>
+      <td><span class="badge badge-gray">#${o.numero || o.id?.slice(-4)}</span></td>
+      <td>${o.clientes?.nome || '—'}</td>
+      <td>${o.servico || '—'}</td>
+      <td><strong>${fmtMoney(o.valor)}</strong></td>
+      <td>${fmtDate(o.data)}</td>
+      <td>${statusBadge(o.status || 'Pendente')}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm btn-icon" onclick="editOrcamento('${o.id}')" title="Editar">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
+          </button>
+          <button class="btn btn-success btn-sm btn-icon" onclick="pdfOrcamento('${o.id}')" title="PDF">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg>
+          </button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteOrcamento('${o.id}')" title="Excluir">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+function editOrcamento(id) {
+  const o = orcamentosData.find(x => x.id == id);
+  if (!o) return;
+  document.getElementById('modal-orcamento-title').textContent = 'Editar Orçamento';
+  document.getElementById('orcamento-id').value = o.id;
+  document.getElementById('orcamento-cliente').value = o.cliente_id || '';
+  document.getElementById('orcamento-servico').value = o.servico || '';
+  document.getElementById('orcamento-descricao').value = o.descricao || '';
+  document.getElementById('orcamento-valor').value = o.valor || '';
+  document.getElementById('orcamento-data').value = o.data || '';
+  document.getElementById('orcamento-status').value = o.status || 'Pendente';
+  document.getElementById('orcamento-validade').value = o.validade || '';
+  openModal('modal-orcamento', false);
+}
+async function saveOrcamento() {
+  const id = document.getElementById('orcamento-id').value;
+  const cliente_id = document.getElementById('orcamento-cliente').value;
+  const servico = document.getElementById('orcamento-servico').value.trim();
+  const valor = document.getElementById('orcamento-valor').value;
+  const data_val = document.getElementById('orcamento-data').value;
+  if (!cliente_id || !servico || !valor || !data_val) { toast('Preencha os campos obrigatórios', 'error'); return; }
+  const payload = {
+    cliente_id, servico,
+    descricao: document.getElementById('orcamento-descricao').value,
+    valor: parseFloat(valor), data: data_val,
+    status: document.getElementById('orcamento-status').value,
+    validade: document.getElementById('orcamento-validade').value || null
+  };
+  let err;
+  if (id) {
+    const r = await sb.from('orcamentos').update(payload).eq('id', id); err = r.error;
+  } else {
+    // auto numero
+    const { count } = await sb.from('orcamentos').select('id', { count: 'exact', head: true });
+    payload.numero = String((count || 0) + 1).padStart(4, '0');
+    const r = await sb.from('orcamentos').insert(payload); err = r.error;
+  }
+  if (err) { toast('Erro: ' + err.message, 'error'); return; }
+  toast('Orçamento salvo!', 'success');
+  closeModal('modal-orcamento');
+  loadOrcamentos();
+}
+async function deleteOrcamento(id) {
+  if (!confirm('Excluir orçamento?')) return;
+  const { error } = await sb.from('orcamentos').delete().eq('id', id);
+  if (error) { toast('Erro ao excluir', 'error'); return; }
+  toast('Excluído!', 'success');
+  loadOrcamentos();
+}
+
+// ══════════════════════════════════════════════════
+//  CONTRATOS
+// ══════════════════════════════════════════════════
+let contratosData = [];
+async function loadContratos() {
+  if (!sb) return;
+  populateClienteSelect('contrato-cliente');
+  const { data } = await sb.from('contratos').select('*, clientes(nome)').order('created_at', { ascending: false });
+  contratosData = data || [];
+  renderContratos();
+}
+function renderContratos() {
+  const q = (document.getElementById('search-contratos')?.value || '').toLowerCase();
+  const filtered = contratosData.filter(c => !q || c.clientes?.nome?.toLowerCase().includes(q) || c.servico?.toLowerCase().includes(q));
+  const tbody = document.getElementById('tbody-contratos');
+  if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>Nenhum contrato encontrado</p></div></td></tr>`; return; }
+  tbody.innerHTML = filtered.map(c => `
+    <tr>
+      <td><strong>${c.clientes?.nome || '—'}</strong></td>
+      <td>${c.servico || '—'}</td>
+      <td>${fmtMoney(c.valor)}</td>
+      <td>${fmtDate(c.data_inicio)}</td>
+      <td>${fmtDate(c.data_fim)}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm btn-icon" onclick="editContrato('${c.id}')" title="Editar">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
+          </button>
+          <button class="btn btn-success btn-sm btn-icon" onclick="pdfContrato('${c.id}')" title="PDF">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg>
+          </button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteContrato('${c.id}')" title="Excluir">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+function editContrato(id) {
+  const c = contratosData.find(x => x.id == id);
+  if (!c) return;
+  document.getElementById('modal-contrato-title').textContent = 'Editar Contrato';
+  document.getElementById('contrato-id').value = c.id;
+  document.getElementById('contrato-cliente').value = c.cliente_id || '';
+  document.getElementById('contrato-servico').value = c.servico || '';
+  document.getElementById('contrato-valor').value = c.valor || '';
+  document.getElementById('contrato-pagamento').value = c.pagamento || 'À vista';
+  document.getElementById('contrato-inicio').value = c.data_inicio || '';
+  document.getElementById('contrato-fim').value = c.data_fim || '';
+  document.getElementById('contrato-obs').value = c.observacoes || '';
+  openModal('modal-contrato', false);
+}
+async function saveContrato() {
+  const id = document.getElementById('contrato-id').value;
+  const cliente_id = document.getElementById('contrato-cliente').value;
+  const servico = document.getElementById('contrato-servico').value.trim();
+  const valor = document.getElementById('contrato-valor').value;
+  const inicio = document.getElementById('contrato-inicio').value;
+  const fim = document.getElementById('contrato-fim').value;
+  if (!cliente_id || !servico || !valor || !inicio || !fim) { toast('Preencha os campos obrigatórios', 'error'); return; }
+  const payload = {
+    cliente_id, servico, valor: parseFloat(valor),
+    pagamento: document.getElementById('contrato-pagamento').value,
+    data_inicio: inicio, data_fim: fim,
+    observacoes: document.getElementById('contrato-obs').value
+  };
+  let err;
+  if (id) { const r = await sb.from('contratos').update(payload).eq('id', id); err = r.error; }
+  else { const r = await sb.from('contratos').insert(payload); err = r.error; }
+  if (err) { toast('Erro: ' + err.message, 'error'); return; }
+  toast('Contrato salvo!', 'success');
+  closeModal('modal-contrato');
+  loadContratos();
+}
+async function deleteContrato(id) {
+  if (!confirm('Excluir contrato?')) return;
+  const { error } = await sb.from('contratos').delete().eq('id', id);
+  if (error) { toast('Erro', 'error'); return; }
+  toast('Excluído!', 'success');
+  loadContratos();
+}
+
+// ══════════════════════════════════════════════════
+//  ORDENS
+// ══════════════════════════════════════════════════
+let ordensData = [];
+async function loadOrdens() {
+  if (!sb) return;
+  populateClienteSelect('ordem-cliente');
+  const { data } = await sb.from('ordens').select('*, clientes(nome)').order('created_at', { ascending: false });
+  ordensData = data || [];
+  renderOrdens();
+}
+function renderOrdens() {
+  const q = (document.getElementById('search-ordens')?.value || '').toLowerCase();
+  const filtered = ordensData.filter(o => !q || o.clientes?.nome?.toLowerCase().includes(q) || o.servico?.toLowerCase().includes(q));
+  const tbody = document.getElementById('tbody-ordens');
+  if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><p>Nenhuma OS encontrada</p></div></td></tr>`; return; }
+  tbody.innerHTML = filtered.map(o => `
+    <tr>
+      <td><strong>${o.clientes?.nome || '—'}</strong></td>
+      <td>${o.servico || '—'}</td>
+      <td>${fmtDate(o.prazo)}</td>
+      <td>${statusBadge(o.status || 'Aberta')}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm btn-icon" onclick="editOrdem('${o.id}')" title="Editar">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
+          </button>
+          ${o.status !== 'Concluída' ? `<button class="btn btn-success btn-sm btn-icon" onclick="concluirOrdem('${o.id}')" title="Concluir">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>` : ''}
+          <button class="btn btn-success btn-sm btn-icon" onclick="pdfOrdem('${o.id}')" title="PDF">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg>
+          </button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteOrdem('${o.id}')" title="Excluir">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+function editOrdem(id) {
+  const o = ordensData.find(x => x.id == id);
+  if (!o) return;
+  document.getElementById('modal-ordem-title').textContent = 'Editar OS';
+  document.getElementById('ordem-id').value = o.id;
+  document.getElementById('ordem-cliente').value = o.cliente_id || '';
+  document.getElementById('ordem-servico').value = o.servico || '';
+  document.getElementById('ordem-prazo').value = o.prazo || '';
+  document.getElementById('ordem-status').value = o.status || 'Aberta';
+  document.getElementById('ordem-descricao').value = o.descricao || '';
+  openModal('modal-ordem', false);
+}
+async function saveOrdem() {
+  const id = document.getElementById('ordem-id').value;
+  const cliente_id = document.getElementById('ordem-cliente').value;
+  const servico = document.getElementById('ordem-servico').value.trim();
+  const prazo = document.getElementById('ordem-prazo').value;
+  if (!cliente_id || !servico || !prazo) { toast('Preencha os campos obrigatórios', 'error'); return; }
+  const payload = {
+    cliente_id, servico, prazo,
+    status: document.getElementById('ordem-status').value,
+    descricao: document.getElementById('ordem-descricao').value
+  };
+  let err;
+  if (id) { const r = await sb.from('ordens').update(payload).eq('id', id); err = r.error; }
+  else { const r = await sb.from('ordens').insert(payload); err = r.error; }
+  if (err) { toast('Erro: ' + err.message, 'error'); return; }
+  toast('OS salva!', 'success');
+  closeModal('modal-ordem');
+  loadOrdens();
+}
+async function concluirOrdem(id) {
+  const { error } = await sb.from('ordens').update({ status: 'Concluída' }).eq('id', id);
+  if (error) { toast('Erro', 'error'); return; }
+  toast('OS concluída!', 'success');
+  loadOrdens();
+}
+async function deleteOrdem(id) {
+  if (!confirm('Excluir OS?')) return;
+  const { error } = await sb.from('ordens').delete().eq('id', id);
+  if (error) { toast('Erro', 'error'); return; }
+  toast('Excluído!', 'success');
+  loadOrdens();
+}
+
+// ══════════════════════════════════════════════════
+//  FINANCEIRO
+// ══════════════════════════════════════════════════
+let finData = [];
+async function loadFinanceiro() {
+  if (!sb) return;
+  populateClienteSelect('fin-cliente');
+  const { data } = await sb.from('financeiro').select('*, clientes(nome)').order('vencimento');
+  finData = data || [];
+  updateFinSummary();
+  renderFinanceiro();
+}
+function updateFinSummary() {
+  const recebido = finData.filter(f => f.status === 'Pago').reduce((a, b) => a + parseFloat(b.valor || 0), 0);
+  const pendente = finData.filter(f => f.status === 'Pendente').reduce((a, b) => a + parseFloat(b.valor || 0), 0);
+  document.getElementById('fin-recebido').textContent = fmtMoney(recebido);
+  document.getElementById('fin-pendente').textContent = fmtMoney(pendente);
+}
+function renderFinanceiro() {
+  const q = (document.getElementById('search-financeiro')?.value || '').toLowerCase();
+  const filtered = finData.filter(f => !q || f.clientes?.nome?.toLowerCase().includes(q) || f.descricao?.toLowerCase().includes(q));
+  const tbody = document.getElementById('tbody-financeiro');
+  if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>Nenhum lançamento encontrado</p></div></td></tr>`; return; }
+  tbody.innerHTML = filtered.map(f => `
+    <tr>
+      <td>${f.clientes?.nome || '—'}</td>
+      <td>${f.descricao || '—'}</td>
+      <td><strong>${fmtMoney(f.valor)}</strong></td>
+      <td>${fmtDate(f.vencimento)}</td>
+      <td>${statusBadge(f.status || 'Pendente')}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          ${f.status === 'Pendente' ? `<button class="btn btn-success btn-sm btn-icon" onclick="marcarPago('${f.id}')" title="Marcar como Pago">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>` : ''}
+          <button class="btn btn-outline btn-sm btn-icon" onclick="editFinanceiro('${f.id}')" title="Editar">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
+          </button>
+          <button class="btn btn-success btn-sm btn-icon" onclick="pdfRecibo('${f.id}')" title="Recibo PDF">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg>
+          </button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteFinanceiro('${f.id}')" title="Excluir">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+function editFinanceiro(id) {
+  const f = finData.find(x => x.id == id);
+  if (!f) return;
+  document.getElementById('modal-financeiro-title').textContent = 'Editar Lançamento';
+  document.getElementById('fin-id').value = f.id;
+  document.getElementById('fin-cliente').value = f.cliente_id || '';
+  document.getElementById('fin-descricao').value = f.descricao || '';
+  document.getElementById('fin-valor').value = f.valor || '';
+  document.getElementById('fin-vencimento').value = f.vencimento || '';
+  document.getElementById('fin-status').value = f.status || 'Pendente';
+  openModal('modal-financeiro', false);
+}
+async function saveFinanceiro() {
+  const id = document.getElementById('fin-id').value;
+  const descricao = document.getElementById('fin-descricao').value.trim();
+  const valor = document.getElementById('fin-valor').value;
+  const vencimento = document.getElementById('fin-vencimento').value;
+  if (!descricao || !valor || !vencimento) { toast('Preencha os campos obrigatórios', 'error'); return; }
+  const payload = {
+    cliente_id: document.getElementById('fin-cliente').value || null,
+    descricao, valor: parseFloat(valor), vencimento,
+    status: document.getElementById('fin-status').value
+  };
+  let err;
+  if (id) { const r = await sb.from('financeiro').update(payload).eq('id', id); err = r.error; }
+  else { const r = await sb.from('financeiro').insert(payload); err = r.error; }
+  if (err) { toast('Erro: ' + err.message, 'error'); return; }
+  toast('Lançamento salvo!', 'success');
+  closeModal('modal-financeiro');
+  loadFinanceiro();
+}
+async function marcarPago(id) {
+  const { error } = await sb.from('financeiro').update({ status: 'Pago' }).eq('id', id);
+  if (error) { toast('Erro', 'error'); return; }
+  toast('Marcado como pago!', 'success');
+  loadFinanceiro();
+}
+async function deleteFinanceiro(id) {
+  if (!confirm('Excluir lançamento?')) return;
+  const { error } = await sb.from('financeiro').delete().eq('id', id);
+  if (error) { toast('Erro', 'error'); return; }
+  toast('Excluído!', 'success');
+  loadFinanceiro();
+}
+
+// ══════════════════════════════════════════════════
+//  CONFIGURAÇÕES
+// ══════════════════════════════════════════════════
+let config = {};
+function loadConfig() {
+  const stored = localStorage.getItem('take7_config');
+  if (stored) {
+    config = JSON.parse(stored);
+    document.getElementById('cfg-empresa').value = config.empresa || '';
+    document.getElementById('cfg-whatsapp').value = config.whatsapp || '';
+    document.getElementById('cfg-email').value = config.email || '';
+    document.getElementById('cfg-endereco').value = config.endereco || '';
+    if (config.logo) {
+      document.getElementById('logo-preview-wrap').innerHTML = `<img src="${config.logo}" alt="Logo">`;
+    }
+  }
+}
+function saveConfig() {
+  config.empresa = document.getElementById('cfg-empresa').value;
+  config.whatsapp = document.getElementById('cfg-whatsapp').value;
+  config.email = document.getElementById('cfg-email').value;
+  config.endereco = document.getElementById('cfg-endereco').value;
+  localStorage.setItem('take7_config', JSON.stringify(config));
+  toast('Configurações salvas!', 'success');
+}
+function handleLogo(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    config.logo = e.target.result;
+    localStorage.setItem('take7_config', JSON.stringify(config));
+    document.getElementById('logo-preview-wrap').innerHTML = `<img src="${config.logo}" alt="Logo">`;
+    toast('Logo salva!', 'success');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ══════════════════════════════════════════════════
+//  HELPER: POPULATE CLIENTE SELECT
+// ══════════════════════════════════════════════════
+async function populateClienteSelect(selectId) {
+  if (!sb) return;
+  const { data } = await sb.from('clientes').select('id, nome').order('nome');
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  const current = sel.value;
+  sel.innerHTML = '<option value="">Selecione um cliente...</option>';
+  (data || []).forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.nome;
+    if (c.id == current) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+// ══════════════════════════════════════════════════
+//  PDF GENERATION
+// ══════════════════════════════════════════════════
+function pdfHeader(doc, title, subtitle) {
+  const empresa = config.empresa || 'Take7';
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, 210, 38, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.setTextColor(255, 255, 255);
+  doc.text(empresa, 16, 20);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(148, 163, 184);
+  const info = [config.email, config.whatsapp, config.endereco].filter(Boolean).join('  |  ');
+  if (info) doc.text(info, 16, 29);
+  doc.setFillColor(37, 99, 235);
+  doc.rect(0, 38, 210, 4, 'F');
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(15, 23, 42);
+  doc.text(title, 16, 58);
+  if (subtitle) {
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(100, 116, 139);
+    doc.text(subtitle, 16, 66);
+  }
+  doc.setDrawColor(226, 232, 240);
+  doc.line(16, 72, 194, 72);
+  return 80;
+}
+function pdfField(doc, label, value, x, y) {
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(100, 116, 139);
+  doc.text(label.toUpperCase(), x, y);
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(15, 23, 42);
+  doc.text(String(value || '—'), x, y + 6);
+  return y + 16;
+}
+function pdfFooter(doc) {
+  const pg = doc.internal.getNumberOfPages();
+  doc.setPage(pg);
+  const pageH = doc.internal.pageSize.getHeight();
+  doc.setDrawColor(226, 232, 240);
+  doc.line(16, pageH - 20, 194, pageH - 20);
+  doc.setFontSize(8);
+  doc.setTextColor(148, 163, 184);
+  doc.text('Documento gerado pelo Take7 Manager', 16, pageH - 12);
+  doc.text(new Date().toLocaleDateString('pt-BR'), 194, pageH - 12, { align: 'right' });
+}
+
+async function pdfOrcamento(id) {
+  const o = orcamentosData.find(x => x.id == id);
+  if (!o) return;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let y = pdfHeader(doc, 'ORÇAMENTO', `Nº ${o.numero || id.slice(-4)}`);
+  const cliente = clientesData.find(c => c.id == o.cliente_id);
+  y = pdfField(doc, 'Cliente', cliente?.nome, 16, y);
+  y = pdfField(doc, 'Empresa', cliente?.empresa, 16, y);
+  y = pdfField(doc, 'Serviço', o.servico, 16, y);
+  if (o.descricao) y = pdfField(doc, 'Descrição', o.descricao, 16, y);
+  y = pdfField(doc, 'Data', fmtDate(o.data), 16, y);
+  if (o.validade) y = pdfField(doc, 'Validade', fmtDate(o.validade), 16, y);
+  y = pdfField(doc, 'Status', o.status, 16, y);
+  // Valor highlight
+  doc.setFillColor(239, 246, 255);
+  doc.roundedRect(16, y, 90, 22, 4, 4, 'F');
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(37, 99, 235);
+  doc.text('VALOR TOTAL', 24, y + 9);
+  doc.setFontSize(16);
+  doc.text(fmtMoney(o.valor), 24, y + 18);
+  pdfFooter(doc);
+  doc.save(`orcamento-${o.numero || id.slice(-4)}.pdf`);
+  toast('PDF gerado!', 'success');
+}
+
+async function pdfContrato(id) {
+  const c = contratosData.find(x => x.id == id);
+  if (!c) return;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let y = pdfHeader(doc, 'CONTRATO DE PRESTAÇÃO DE SERVIÇOS', '');
+  const cliente = clientesData.find(cl => cl.id == c.cliente_id);
+  y = pdfField(doc, 'Contratante', cliente?.nome, 16, y);
+  y = pdfField(doc, 'Empresa', cliente?.empresa, 16, y);
+  y = pdfField(doc, 'Serviço Contratado', c.servico, 16, y);
+  y = pdfField(doc, 'Forma de Pagamento', c.pagamento, 16, y);
+  y = pdfField(doc, 'Período', `${fmtDate(c.data_inicio)} a ${fmtDate(c.data_fim)}`, 16, y);
+  if (c.observacoes) {
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(100, 116, 139);
+    doc.text('CLÁUSULAS / OBSERVAÇÕES', 16, y);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(15, 23, 42);
+    const lines = doc.splitTextToSize(c.observacoes, 178);
+    doc.text(lines, 16, y + 7);
+    y += lines.length * 6 + 14;
+  }
+  doc.setFillColor(239, 246, 255);
+  doc.roundedRect(16, y, 90, 22, 4, 4, 'F');
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(37, 99, 235);
+  doc.text('VALOR DO CONTRATO', 24, y + 9);
+  doc.setFontSize(16);
+  doc.text(fmtMoney(c.valor), 24, y + 18);
+  y += 36;
+  // Assinaturas
+  doc.setDrawColor(100, 116, 139);
+  doc.line(16, y + 20, 90, y + 20);
+  doc.line(120, y + 20, 194, y + 20);
+  doc.setFontSize(9);
+  doc.setTextColor(100, 116, 139);
+  doc.text(config.empresa || 'Take7', 53, y + 26, { align: 'center' });
+  doc.text(cliente?.nome || 'Contratante', 157, y + 26, { align: 'center' });
+  pdfFooter(doc);
+  doc.save(`contrato-${(cliente?.nome || 'contrato').replace(/\s/g,'-').toLowerCase()}.pdf`);
+  toast('PDF gerado!', 'success');
+}
+
+async function pdfOrdem(id) {
+  const o = ordensData.find(x => x.id == id);
+  if (!o) return;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let y = pdfHeader(doc, 'ORDEM DE SERVIÇO', `OS #${id.slice(-6).toUpperCase()}`);
+  const cliente = clientesData.find(c => c.id == o.cliente_id);
+  y = pdfField(doc, 'Cliente', cliente?.nome, 16, y);
+  y = pdfField(doc, 'Empresa', cliente?.empresa, 16, y);
+  y = pdfField(doc, 'Serviço', o.servico, 16, y);
+  if (o.descricao) {
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(100, 116, 139);
+    doc.text('DESCRIÇÃO', 16, y);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(15, 23, 42);
+    const lines = doc.splitTextToSize(o.descricao, 178);
+    doc.text(lines, 16, y + 7);
+    y += lines.length * 6 + 14;
+  }
+  y = pdfField(doc, 'Prazo', fmtDate(o.prazo), 16, y);
+  y = pdfField(doc, 'Status', o.status, 16, y);
+  pdfFooter(doc);
+  doc.save(`os-${id.slice(-6)}.pdf`);
+  toast('PDF gerado!', 'success');
+}
+
+async function pdfRecibo(id) {
+  const f = finData.find(x => x.id == id);
+  if (!f) return;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let y = pdfHeader(doc, 'RECIBO DE PAGAMENTO', '');
+  const cliente = clientesData.find(c => c.id == f.cliente_id);
+  y = pdfField(doc, 'Recebemos de', cliente?.nome || '—', 16, y);
+  y = pdfField(doc, 'Referente a', f.descricao, 16, y);
+  y = pdfField(doc, 'Vencimento', fmtDate(f.vencimento), 16, y);
+  y = pdfField(doc, 'Status', f.status, 16, y);
+  doc.setFillColor(209, 250, 229);
+  doc.roundedRect(16, y, 178, 28, 6, 6, 'F');
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(6, 95, 70);
+  doc.text('VALOR', 24, y + 11);
+  doc.setFontSize(22);
+  doc.text(fmtMoney(f.valor), 24, y + 22);
+  y += 42;
+  doc.setDrawColor(100, 116, 139);
+  doc.line(16, y + 20, 100, y + 20);
+  doc.setFontSize(9);
+  doc.setTextColor(100, 116, 139);
+  doc.text(config.empresa || 'Take7', 58, y + 26, { align: 'center' });
+  pdfFooter(doc);
+  doc.save(`recibo-${(f.descricao || 'recibo').replace(/\s/g,'-').toLowerCase().slice(0,20)}.pdf`);
+  toast('Recibo gerado!', 'success');
+}
+
+// ══════════════════════════════════════════════════
+//  SQL HELPER TOAST
+// ══════════════════════════════════════════════════
+// Show SQL creation reminder
+setTimeout(() => {
+  if (!sb) return;
+  const key = 'take7_sql_shown';
+  if (localStorage.getItem(key)) return;
+  localStorage.setItem(key, '1');
+  toast('Crie as tabelas no Supabase se ainda não existirem. Veja o README.', 'info');
+}, 2000);
+</script>
+
+</body>
+</html>
