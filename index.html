@@ -826,7 +826,7 @@
         </div>
         <div class="form-group">
           <label>Data *</label>
-          <input type="date" id="orcamento-data">
+          <input type="date" id="orcamento-data_orcamento">
         </div>
         <div class="form-group">
           <label>Status</label>
@@ -1263,7 +1263,7 @@ function renderOrcamentos() {
       <td>${o.clientes?.nome || '—'}</td>
       <td>${o.servico || '—'}</td>
       <td><strong>${fmtMoney(o.valor)}</strong></td>
-      <td>${fmtDate(o.data)}</td>
+      <td>${fmtDate(o.data_orcamento)}</td>
       <td>${statusBadge(o.status || 'Pendente')}</td>
       <td>
         <div style="display:flex;gap:6px">
@@ -1290,7 +1290,7 @@ function editOrcamento(id) {
   document.getElementById('orcamento-servico').value = o.servico || '';
   document.getElementById('orcamento-descricao').value = o.descricao || '';
   document.getElementById('orcamento-valor').value = o.valor || '';
-  document.getElementById('orcamento-data').value = o.data || '';
+  document.getElementById('orcamento-data_orcamento').value = o.data_orcamento || '';
   document.getElementById('orcamento-status').value = o.status || 'Pendente';
   document.getElementById('orcamento-validade').value = o.validade || '';
   openModal('modal-orcamento', false);
@@ -1300,12 +1300,12 @@ async function saveOrcamento() {
   const cliente_id = document.getElementById('orcamento-cliente').value;
   const servico = document.getElementById('orcamento-servico').value.trim();
   const valor = document.getElementById('orcamento-valor').value;
-  const data_val = document.getElementById('orcamento-data').value;
+  const data_val = document.getElementById('orcamento-data_orcamento').value;
   if (!cliente_id || !servico || !valor || !data_val) { toast('Preencha os campos obrigatórios', 'error'); return; }
   const payload = {
     cliente_id, servico,
     descricao: document.getElementById('orcamento-descricao').value,
-    valor: parseFloat(valor), data: data_val,
+    valor: parseFloat(valor), data_orcamento: data_val,
     status: document.getElementById('orcamento-status').value,
     validade: document.getElementById('orcamento-validade').value || null
   };
@@ -1717,7 +1717,7 @@ async function pdfOrcamento(id) {
   y = pdfField(doc, 'Empresa', cliente?.empresa, 16, y);
   y = pdfField(doc, 'Serviço', o.servico, 16, y);
   if (o.descricao) y = pdfField(doc, 'Descrição', o.descricao, 16, y);
-  y = pdfField(doc, 'Data', fmtDate(o.data), 16, y);
+  y = pdfField(doc, 'Data', fmtDate(o.data_orcamento), 16, y);
   if (o.validade) y = pdfField(doc, 'Validade', fmtDate(o.validade), 16, y);
   y = pdfField(doc, 'Status', o.status, 16, y);
   // Valor highlight
@@ -1852,5 +1852,72 @@ setTimeout(() => {
 }, 2000);
 </script>
 
+<!-- SQL README COMMENT
+Execute no Supabase SQL Editor:
+
+create table if not exists clientes (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  empresa text,
+  telefone text,
+  whatsapp text,
+  email text,
+  instagram text,
+  observacoes text,
+  created_at timestamptz default now()
+);
+
+create table if not exists orcamentos (
+  id uuid primary key default gen_random_uuid(),
+  numero text,
+  cliente_id uuid references clientes(id) on delete set null,
+  servico text,
+  descricao text,
+  valor numeric(12,2),
+  data date,
+  validade date,
+  status text default 'Pendente',
+  created_at timestamptz default now()
+);
+
+create table if not exists contratos (
+  id uuid primary key default gen_random_uuid(),
+  cliente_id uuid references clientes(id) on delete set null,
+  servico text,
+  valor numeric(12,2),
+  pagamento text,
+  data_inicio date,
+  data_fim date,
+  observacoes text,
+  created_at timestamptz default now()
+);
+
+create table if not exists ordens (
+  id uuid primary key default gen_random_uuid(),
+  cliente_id uuid references clientes(id) on delete set null,
+  servico text,
+  descricao text,
+  prazo date,
+  status text default 'Aberta',
+  created_at timestamptz default now()
+);
+
+create table if not exists financeiro (
+  id uuid primary key default gen_random_uuid(),
+  cliente_id uuid references clientes(id) on delete set null,
+  descricao text,
+  valor numeric(12,2),
+  vencimento date,
+  status text default 'Pendente',
+  created_at timestamptz default now()
+);
+
+-- Enable RLS (optional for personal use, disable for simplicity):
+-- alter table clientes disable row level security;
+-- alter table orcamentos disable row level security;
+-- alter table contratos disable row level security;
+-- alter table ordens disable row level security;
+-- alter table financeiro disable row level security;
+-->
 </body>
 </html>
