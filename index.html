@@ -867,18 +867,34 @@
           <select id="contrato-cliente"><option value="">Selecione...</option></select>
         </div>
         <div class="form-group">
-          <label>Serviço *</label>
-          <input type="text" id="contrato-servico" placeholder="Descrição do serviço">
+          <label>Tipo de Serviço *</label>
+          <select id="contrato-tipo" onchange="preencherClausulas()">
+            <option value="">Selecione o serviço...</option>
+            <option value="Fotografia de Eventos">📸 Fotografia de Eventos</option>
+            <option value="Fotografia de Casamento">💍 Fotografia de Casamento</option>
+            <option value="Fotografia Infantil">🎈 Fotografia Infantil</option>
+            <option value="Ensaio Pré-Wedding">🌸 Ensaio Pré-Wedding</option>
+            <option value="Criação de Site">💻 Criação de Site</option>
+            <option value="Gerenciamento de Redes Sociais">📱 Gerenciamento de Redes Sociais</option>
+            <option value="Outro">✏️ Outro (personalizado)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Detalhes do Serviço</label>
+          <input type="text" id="contrato-servico" placeholder="Informações adicionais...">
         </div>
         <div class="form-group">
           <label>Valor (R$) *</label>
           <input type="number" id="contrato-valor" placeholder="0.00" step="0.01">
         </div>
         <div class="form-group">
-          <label>Pagamento</label>
+          <label>Forma de Pagamento</label>
           <select id="contrato-pagamento">
             <option>À vista</option>
+            <option>50% entrada + 50% na entrega</option>
             <option>Mensal</option>
+            <option>2x sem juros</option>
+            <option>3x sem juros</option>
             <option>Parcelado</option>
           </select>
         </div>
@@ -887,12 +903,12 @@
           <input type="date" id="contrato-inicio">
         </div>
         <div class="form-group">
-          <label>Data Final *</label>
+          <label>Data do Evento / Entrega *</label>
           <input type="date" id="contrato-fim">
         </div>
         <div class="form-group span-2">
-          <label>Cláusulas / Observações</label>
-          <textarea id="contrato-obs" placeholder="Cláusulas do contrato..." style="min-height:100px"></textarea>
+          <label>Cláusulas &nbsp;<span style="font-size:10px;color:var(--blue);font-weight:400;text-transform:none;cursor:pointer;letter-spacing:0" onclick="preencherClausulas()">(clique para gerar automaticamente)</span></label>
+          <textarea id="contrato-obs" placeholder="Selecione o tipo de serviço acima para gerar as cláusulas..." style="min-height:180px;font-size:11.5px;line-height:1.7"></textarea>
         </div>
       </div>
       <div class="form-actions">
