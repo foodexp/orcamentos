@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<!-- ╔══════════════════════════════════════════════════════════════╗
+     ║  TAKE7 MANAGER — CONFIGURAÇÃO SUPABASE                      ║
+     ║  Procure no JS por "COLE_SUA" (Ctrl+F) e substitua:         ║
+     ║                                                              ║
+     ║  const SUPABASE_URL = 'COLE_SUA_URL_AQUI';                  ║
+     ║  const SUPABASE_KEY = 'COLE_SUA_ANON_KEY_AQUI';             ║
+     ╚══════════════════════════════════════════════════════════════╝ -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -479,37 +486,7 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ── SUPABASE SETUP ───────────────────────────── */
-  #setup-overlay {
-    position: fixed; inset: 0;
-    background: var(--black);
-    z-index: 9000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .setup-box {
-    background: var(--gray-900);
-    border: 1px solid var(--gray-700);
-    border-radius: 20px;
-    padding: 40px;
-    max-width: 480px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 32px 64px rgba(0,0,0,0.5);
-  }
-  .setup-box .logo { font-size: 28px; font-weight: 800; color: var(--white); margin-bottom: 6px; }
-  .setup-box .logo span { color: var(--blue); }
-  .setup-box p { font-size: 14px; color: var(--gray-400); margin-bottom: 28px; }
-  .setup-box input {
-    background: var(--gray-800);
-    border: 1.5px solid var(--gray-700);
-    color: var(--white);
-    margin-bottom: 12px;
-  }
-  .setup-box input::placeholder { color: var(--gray-600); }
-  .setup-box input:focus { border-color: var(--blue); background: var(--gray-800); }
-  .setup-hint { font-size: 11px; color: var(--gray-600); margin-top: 12px; }
+
 
   /* Scrollbar */
   ::-webkit-scrollbar { width: 5px; }
@@ -518,20 +495,6 @@
 </style>
 </head>
 <body>
-
-<!-- SETUP OVERLAY -->
-<div id="setup-overlay">
-  <div class="setup-box">
-    <div class="logo">Take<span>7</span></div>
-    <p>Conecte ao Supabase para começar</p>
-    <input type="text" id="sb-url" placeholder="Supabase URL (https://xxx.supabase.co)" />
-    <input type="text" id="sb-key" placeholder="Supabase Anon Key" />
-    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px" onclick="initSupabase()">
-      Conectar
-    </button>
-    <p class="setup-hint">Suas credenciais são salvas localmente no navegador.</p>
-  </div>
-</div>
 
 <!-- SIDEBAR -->
 <aside id="sidebar">
@@ -1011,45 +974,54 @@
 
 <script>
 // ══════════════════════════════════════════════════
-//  SUPABASE INIT
+//  ⚙️  CONFIGURAÇÃO DO SUPABASE — edite aqui
+// ══════════════════════════════════════════════════
+const SUPABASE_URL = 'https://wdtybxgqzxuazwbtiipd.supabase.co';        // ex: https://abcxyz.supabase.co
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkdHlieGdxenh1YXp3YnRpaXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMzMwODYsImV4cCI6MjA5NTgwOTA4Nn0._DB-t9zpZhzMu8Mvlyyd1woQ1iNw1eRmg_YDWlBwESc';   // ex: eyJhbGci...
+
+// ══════════════════════════════════════════════════
+//  SUPABASE INIT (automático)
 // ══════════════════════════════════════════════════
 let sb = null;
 
-async function initSupabase() {
-  const url = document.getElementById('sb-url').value.trim();
-  const key = document.getElementById('sb-key').value.trim();
-  if (!url || !key) { toast('Preencha URL e Key do Supabase', 'error'); return; }
+(async function initSupabase() {
+  if (!SUPABASE_URL || SUPABASE_URL.includes('COLE_')) {
+    showConfigAlert();
+    return;
+  }
   try {
-    sb = supabase.createClient(url, key);
-    // test connection
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     await sb.from('clientes').select('id').limit(1);
-    localStorage.setItem('sb_url', url);
-    localStorage.setItem('sb_key', key);
-    document.getElementById('setup-overlay').style.display = 'none';
-    await createTables();
     loadConfig();
     navigate('dashboard');
-    toast('Conectado ao Supabase!', 'success');
   } catch(e) {
-    toast('Erro ao conectar: ' + e.message, 'error');
-  }
-}
-
-async function createTables() {
-  // Tables are assumed to exist in Supabase. If not, create via SQL in Supabase dashboard.
-  // SQL to create tables is shown in toast info
-}
-
-// Auto-connect on load
-(function autoConnect() {
-  const url = localStorage.getItem('sb_url');
-  const key = localStorage.getItem('sb_key');
-  if (url && key) {
-    document.getElementById('sb-url').value = url;
-    document.getElementById('sb-key').value = key;
-    initSupabase();
+    showConfigAlert('Erro ao conectar ao Supabase: ' + e.message);
   }
 })();
+
+function showConfigAlert(msg) {
+  document.body.insertAdjacentHTML('beforeend', `
+    <div id="config-alert" style="position:fixed;inset:0;background:rgba(15,23,42,0.97);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px">
+      <div style="background:#1E293B;border:1px solid #334155;border-radius:16px;padding:40px;max-width:520px;width:100%;text-align:center">
+        <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:6px">Take<span style="color:#2563EB">7</span></div>
+        <div style="font-size:13px;color:#94A3B8;margin-bottom:24px">${msg || 'Configure as credenciais do Supabase no arquivo index.html'}</div>
+        <div style="background:#0F172A;border:1.5px solid #2563EB;border-radius:10px;padding:20px;text-align:left;margin-bottom:20px">
+          <div style="font-size:11px;font-weight:700;color:#2563EB;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">📋 Como configurar</div>
+          <div style="font-size:12px;color:#CBD5E1;line-height:1.8">
+            1. Abra o arquivo <code style="background:#1E293B;padding:2px 6px;border-radius:4px;color:#60A5FA">index.html</code> em um editor de texto<br>
+            2. Localize as linhas no início do JavaScript:<br>
+            <code style="display:block;background:#1E293B;padding:8px 10px;border-radius:6px;margin:8px 0;color:#34D399;font-size:11px">const SUPABASE_URL = 'COLE_SUA_URL_AQUI';<br>const SUPABASE_KEY = 'COLE_SUA_ANON_KEY_AQUI';</code>
+            3. Substitua pelos seus dados do painel Supabase<br>
+            4. Salve o arquivo e recarregue a página
+          </div>
+        </div>
+        <a href="https://supabase.com/dashboard" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#2563EB;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600">
+          Abrir Painel Supabase ↗
+        </a>
+      </div>
+    </div>
+  `);
+}
 
 // ══════════════════════════════════════════════════
 //  NAVIGATION
@@ -1392,6 +1364,7 @@ function editContrato(id) {
   document.getElementById('modal-contrato-title').textContent = 'Editar Contrato';
   document.getElementById('contrato-id').value = c.id;
   document.getElementById('contrato-cliente').value = c.cliente_id || '';
+  document.getElementById('contrato-tipo').value = c.tipo || '';
   document.getElementById('contrato-servico').value = c.servico || '';
   document.getElementById('contrato-valor').value = c.valor || '';
   document.getElementById('contrato-pagamento').value = c.pagamento || 'À vista';
@@ -1403,13 +1376,14 @@ function editContrato(id) {
 async function saveContrato() {
   const id = document.getElementById('contrato-id').value;
   const cliente_id = document.getElementById('contrato-cliente').value;
+  const tipo = document.getElementById('contrato-tipo').value;
   const servico = document.getElementById('contrato-servico').value.trim();
   const valor = document.getElementById('contrato-valor').value;
   const inicio = document.getElementById('contrato-inicio').value;
   const fim = document.getElementById('contrato-fim').value;
-  if (!cliente_id || !servico || !valor || !inicio || !fim) { toast('Preencha os campos obrigatórios', 'error'); return; }
+  if (!cliente_id || !tipo || !valor || !inicio || !fim) { toast('Preencha os campos obrigatórios', 'error'); return; }
   const payload = {
-    cliente_id, servico, valor: parseFloat(valor),
+    cliente_id, tipo, servico, valor: parseFloat(valor),
     pagamento: document.getElementById('contrato-pagamento').value,
     data_inicio: inicio, data_fim: fim,
     observacoes: document.getElementById('contrato-obs').value
