@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<!-- ╔══════════════════════════════════════════════════════════════╗
-     ║  TAKE7 MANAGER — CONFIGURAÇÃO SUPABASE                      ║
-     ║  Procure no JS por "COLE_SUA" (Ctrl+F) e substitua:         ║
-     ║                                                              ║
-     ║  const SUPABASE_URL = 'COLE_SUA_URL_AQUI';                  ║
-     ║  const SUPABASE_KEY = 'COLE_SUA_ANON_KEY_AQUI';             ║
-     ╚══════════════════════════════════════════════════════════════╝ -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -50,7 +43,6 @@
     display: flex;
   }
 
-  /* ── SIDEBAR ─────────────────────────────────── */
   #sidebar {
     width: var(--sidebar-w);
     background: var(--black);
@@ -68,113 +60,53 @@
     padding: 28px 24px 20px;
     border-bottom: 1px solid var(--gray-800);
   }
-  .sidebar-logo h1 {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--white);
-    letter-spacing: -0.5px;
-  }
-  .sidebar-logo span {
-    color: var(--blue);
-  }
-  .sidebar-logo p {
-    font-size: 11px;
-    color: var(--gray-500);
-    margin-top: 2px;
-    font-weight: 400;
-  }
+  .sidebar-logo h1 { font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
+  .sidebar-logo span { color: var(--blue); }
+  .sidebar-logo p { font-size: 11px; color: var(--gray-500); margin-top: 2px; font-weight: 400; }
 
-  .nav-section {
-    padding: 16px 12px;
-    flex: 1;
-  }
+  .nav-section { padding: 16px 12px; flex: 1; }
   .nav-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--gray-600);
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    padding: 0 12px;
-    margin-bottom: 8px;
-    margin-top: 16px;
+    font-size: 10px; font-weight: 600; color: var(--gray-600);
+    text-transform: uppercase; letter-spacing: 1.2px;
+    padding: 0 12px; margin-bottom: 8px; margin-top: 16px;
   }
   .nav-label:first-child { margin-top: 0; }
 
   .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 11px 14px;
-    border-radius: 9px;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--gray-400);
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 2px;
-    user-select: none;
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px; border-radius: 9px; cursor: pointer;
+    transition: all 0.2s; color: var(--gray-400);
+    font-size: 14px; font-weight: 500; margin-bottom: 2px; user-select: none;
   }
   .nav-item:hover { background: var(--gray-800); color: var(--white); }
   .nav-item.active { background: var(--blue); color: var(--white); }
   .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-  /* ── MAIN ─────────────────────────────────────── */
-  #main {
-    margin-left: var(--sidebar-w);
-    flex: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+  #main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
 
   .topbar {
-    background: var(--white);
-    border-bottom: 1px solid var(--gray-200);
-    padding: 16px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 50;
+    background: var(--white); border-bottom: 1px solid var(--gray-200);
+    padding: 16px 32px; display: flex; align-items: center;
+    justify-content: space-between; position: sticky; top: 0; z-index: 50;
   }
   .topbar-title { font-size: 20px; font-weight: 700; color: var(--black); }
   .topbar-sub { font-size: 13px; color: var(--gray-500); margin-top: 1px; }
 
-  .page-content {
-    padding: 28px 32px;
-    flex: 1;
-  }
+  .page-content { padding: 28px 32px; flex: 1; }
 
-  /* ── PAGE SECTIONS ────────────────────────────── */
   .page { display: none; }
   .page.active { display: block; }
 
-  /* ── DASHBOARD STATS ─────────────────────────── */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 28px;
-  }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-bottom: 28px; }
   .stat-card {
-    background: var(--white);
-    border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--gray-200);
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
+    background: var(--white); border-radius: var(--radius); padding: 24px;
+    box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200);
+    position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
   }
   .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
   .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 4px; height: 100%;
-    background: var(--blue);
-    border-radius: 4px 0 0 4px;
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%; background: var(--blue); border-radius: 4px 0 0 4px;
   }
   .stat-card.green::before { background: var(--green); }
   .stat-card.yellow::before { background: var(--yellow); }
@@ -182,61 +114,35 @@
   .stat-label { font-size: 12px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.8px; }
   .stat-value { font-size: 32px; font-weight: 800; color: var(--black); margin-top: 8px; line-height: 1; }
   .stat-icon {
-    position: absolute;
-    top: 20px; right: 20px;
-    width: 40px; height: 40px;
-    background: var(--gray-100);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--blue);
+    position: absolute; top: 20px; right: 20px; width: 40px; height: 40px;
+    background: var(--gray-100); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; color: var(--blue);
   }
   .stat-icon svg { width: 20px; height: 20px; }
 
-  /* ── SECTION HEADER ──────────────────────────── */
   .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 12px;
-    flex-wrap: wrap;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; gap: 12px; flex-wrap: wrap;
   }
   .section-header h2 { font-size: 18px; font-weight: 700; color: var(--black); }
-
   .header-actions { display: flex; gap: 10px; align-items: center; }
 
-  /* ── SEARCH ───────────────────────────────────── */
   .search-box {
-    display: flex;
-    align-items: center;
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: 9px;
-    padding: 0 14px;
-    gap: 8px;
-    height: 40px;
-    min-width: 220px;
+    display: flex; align-items: center; background: var(--white);
+    border: 1px solid var(--gray-200); border-radius: 9px;
+    padding: 0 14px; gap: 8px; height: 40px; min-width: 220px;
   }
   .search-box svg { color: var(--gray-400); width: 16px; height: 16px; flex-shrink: 0; }
   .search-box input {
     border: none; outline: none; background: transparent;
-    font-family: 'Poppins', sans-serif;
-    font-size: 13px; color: var(--black);
-    width: 100%;
+    font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--black); width: 100%;
   }
 
-  /* ── BUTTONS ──────────────────────────────────── */
   .btn {
     display: inline-flex; align-items: center; gap: 7px;
-    padding: 9px 18px;
-    border-radius: 9px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-    white-space: nowrap;
+    padding: 9px 18px; border-radius: 9px; font-family: 'Poppins', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer; border: none;
+    transition: all 0.2s; white-space: nowrap;
   }
   .btn svg { width: 15px; height: 15px; }
   .btn-primary { background: var(--blue); color: var(--white); }
@@ -250,53 +156,32 @@
   .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 7px; }
   .btn-icon { padding: 7px; border-radius: 8px; }
 
-  /* ── TABLE ────────────────────────────────────── */
   .table-wrap {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--gray-200);
-    overflow: hidden;
+    background: var(--white); border-radius: var(--radius);
+    box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); overflow: hidden;
   }
   table { width: 100%; border-collapse: collapse; }
   thead { background: var(--gray-50); }
   th {
-    padding: 13px 16px;
-    text-align: left;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--gray-500);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
+    padding: 13px 16px; text-align: left; font-size: 11px; font-weight: 700;
+    color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.8px;
     border-bottom: 1px solid var(--gray-200);
   }
   td {
-    padding: 13px 16px;
-    font-size: 13px;
-    color: var(--gray-700);
-    border-bottom: 1px solid var(--gray-100);
-    vertical-align: middle;
+    padding: 13px 16px; font-size: 13px; color: var(--gray-700);
+    border-bottom: 1px solid var(--gray-100); vertical-align: middle;
   }
   tbody tr:last-child td { border-bottom: none; }
   tbody tr:hover { background: var(--gray-50); }
 
-  .empty-state {
-    text-align: center;
-    padding: 56px 20px;
-    color: var(--gray-400);
-  }
+  .empty-state { text-align: center; padding: 56px 20px; color: var(--gray-400); }
   .empty-state svg { width: 48px; height: 48px; margin: 0 auto 12px; display: block; opacity: 0.5; }
   .empty-state p { font-size: 14px; font-weight: 500; }
 
-  /* ── BADGES ───────────────────────────────────── */
   .badge {
-    display: inline-flex; align-items: center;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    display: inline-flex; align-items: center; padding: 3px 10px;
+    border-radius: 20px; font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
   }
   .badge-blue { background: #DBEAFE; color: #1D4ED8; }
   .badge-green { background: #D1FAE5; color: #065F46; }
@@ -305,27 +190,16 @@
   .badge-gray { background: var(--gray-100); color: var(--gray-600); }
   .badge-purple { background: #EDE9FE; color: #5B21B6; }
 
-  /* ── MODAL ────────────────────────────────────── */
   .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.55);
-    z-index: 1000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(3px);
+    position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; backdrop-filter: blur(3px);
   }
   .modal-overlay.open { display: flex; }
   .modal {
-    background: var(--white);
-    border-radius: 16px;
-    width: 100%;
-    max-width: 560px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.25);
-    animation: modalIn 0.25s ease;
+    background: var(--white); border-radius: 16px; width: 100%;
+    max-width: 560px; max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.25); animation: modalIn 0.25s ease;
   }
   .modal-lg { max-width: 720px; }
   @keyframes modalIn {
@@ -333,85 +207,50 @@
     to { opacity: 1; transform: none; }
   }
   .modal-header {
-    padding: 24px 28px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 24px 28px 0; display: flex;
+    align-items: center; justify-content: space-between;
   }
   .modal-header h3 { font-size: 18px; font-weight: 700; color: var(--black); }
   .modal-close {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    border: none;
-    background: var(--gray-100);
-    cursor: pointer;
+    width: 32px; height: 32px; border-radius: 8px; border: none;
+    background: var(--gray-100); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    color: var(--gray-500);
-    transition: all 0.15s;
+    color: var(--gray-500); transition: all 0.15s;
   }
   .modal-close:hover { background: var(--gray-200); color: var(--black); }
   .modal-close svg { width: 16px; height: 16px; }
   .modal-body { padding: 20px 28px 28px; }
 
-  /* ── FORM ─────────────────────────────────────── */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-grid.cols-1 { grid-template-columns: 1fr; }
   .form-group { display: flex; flex-direction: column; gap: 6px; }
   .form-group.span-2 { grid-column: span 2; }
   label { font-size: 12px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px; }
   input, select, textarea {
-    background: var(--gray-50);
-    border: 1.5px solid var(--gray-200);
-    border-radius: 9px;
-    padding: 10px 14px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 13px;
-    color: var(--black);
-    transition: border-color 0.15s, box-shadow 0.15s;
-    outline: none;
-    width: 100%;
+    background: var(--gray-50); border: 1.5px solid var(--gray-200);
+    border-radius: 9px; padding: 10px 14px;
+    font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--black);
+    transition: border-color 0.15s, box-shadow 0.15s; outline: none; width: 100%;
   }
   input:focus, select:focus, textarea:focus {
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
-    background: var(--white);
+    border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); background: var(--white);
   }
   textarea { resize: vertical; min-height: 80px; }
 
   .form-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid var(--gray-100);
+    display: flex; gap: 10px; justify-content: flex-end;
+    margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--gray-100);
   }
 
-  /* ── TOAST ────────────────────────────────────── */
   #toast-container {
-    position: fixed;
-    bottom: 28px; right: 28px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    pointer-events: none;
+    position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+    display: flex; flex-direction: column; gap: 10px; pointer-events: none;
   }
   .toast {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 18px;
-    border-radius: 12px;
-    background: var(--black);
-    color: var(--white);
-    font-size: 13px;
-    font-weight: 500;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-    animation: toastIn 0.3s ease;
-    min-width: 260px;
-    max-width: 360px;
-    pointer-events: auto;
+    display: flex; align-items: center; gap: 12px; padding: 14px 18px;
+    border-radius: 12px; background: var(--black); color: var(--white);
+    font-size: 13px; font-weight: 500; box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    animation: toastIn 0.3s ease; min-width: 260px; max-width: 360px; pointer-events: auto;
   }
   .toast.success { border-left: 4px solid var(--green); }
   .toast.error { border-left: 4px solid var(--red); }
@@ -425,70 +264,41 @@
     to { opacity: 1; transform: none; }
   }
 
-  /* ── FINANCIAL SUMMARY ───────────────────────── */
-  .fin-summary {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
+  .fin-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
   .fin-card {
-    background: var(--white);
-    border-radius: var(--radius);
-    padding: 20px 24px;
-    border: 1px solid var(--gray-200);
-    box-shadow: var(--shadow-sm);
+    background: var(--white); border-radius: var(--radius); padding: 20px 24px;
+    border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);
   }
   .fin-card label { font-size: 11px; color: var(--gray-500); }
   .fin-card .amount { font-size: 28px; font-weight: 800; margin-top: 4px; }
   .fin-card.received .amount { color: var(--green); }
   .fin-card.pending .amount { color: var(--yellow); }
 
-  /* ── SETTINGS ─────────────────────────────────── */
   .settings-card {
-    background: var(--white);
-    border-radius: var(--radius);
-    padding: 28px;
-    border: 1px solid var(--gray-200);
-    box-shadow: var(--shadow-sm);
-    max-width: 600px;
+    background: var(--white); border-radius: var(--radius); padding: 28px;
+    border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); max-width: 600px;
   }
   .settings-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--black); }
   .logo-preview {
-    width: 80px; height: 80px;
-    border: 2px dashed var(--gray-300);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    cursor: pointer;
-    background: var(--gray-50);
-    margin-bottom: 12px;
+    width: 80px; height: 80px; border: 2px dashed var(--gray-300);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    overflow: hidden; cursor: pointer; background: var(--gray-50); margin-bottom: 12px;
     transition: border-color 0.15s;
   }
   .logo-preview:hover { border-color: var(--blue); }
   .logo-preview img { width: 100%; height: 100%; object-fit: contain; }
   .logo-preview svg { color: var(--gray-400); width: 28px; height: 28px; }
 
-  /* ── LOADING ──────────────────────────────────── */
   .loading {
     display: flex; align-items: center; justify-content: center;
-    padding: 48px;
-    color: var(--gray-400);
-    gap: 12px;
+    padding: 48px; color: var(--gray-400); gap: 12px;
   }
   .spinner {
-    width: 20px; height: 20px;
-    border: 2px solid var(--gray-200);
-    border-top-color: var(--blue);
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
+    width: 20px; height: 20px; border: 2px solid var(--gray-200);
+    border-top-color: var(--blue); border-radius: 50%; animation: spin 0.6s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── SUPABASE SETUP ───────────────────────────── */
-
-
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 10px; }
@@ -496,7 +306,6 @@
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <aside id="sidebar">
   <div class="sidebar-logo">
     <h1>Take<span>7</span></h1>
@@ -514,7 +323,7 @@
       Clientes
     </div>
     <div class="nav-item" onclick="navigate('orcamentos')">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/><line x1="16" y1="13" x2="8" y2="13" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke-width="2" stroke-linecap="round"/><polyline points="10 9 9 9 8 9" stroke-width="2"/></svg>
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/><line x1="16" y1="13" x2="8" y2="13" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke-width="2" stroke-linecap="round"/></svg>
       Orçamentos
     </div>
     <div class="nav-item" onclick="navigate('contratos')">
@@ -538,7 +347,6 @@
   </nav>
 </aside>
 
-<!-- MAIN CONTENT -->
 <main id="main">
   <div class="topbar">
     <div>
@@ -573,9 +381,7 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>Nome</th><th>Empresa</th><th>Telefone</th><th>E-mail</th><th>WhatsApp</th><th>Ações</th></tr>
-          </thead>
+          <thead><tr><th>Nome</th><th>Empresa</th><th>Telefone</th><th>E-mail</th><th>WhatsApp</th><th>Ações</th></tr></thead>
           <tbody id="tbody-clientes"></tbody>
         </table>
       </div>
@@ -598,9 +404,7 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>#</th><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Data</th><th>Status</th><th>Ações</th></tr>
-          </thead>
+          <thead><tr><th>#</th><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
           <tbody id="tbody-orcamentos"></tbody>
         </table>
       </div>
@@ -623,9 +427,7 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Início</th><th>Fim</th><th>Ações</th></tr>
-          </thead>
+          <thead><tr><th>Cliente</th><th>Serviço</th><th>Valor</th><th>Início</th><th>Fim</th><th>Ações</th></tr></thead>
           <tbody id="tbody-contratos"></tbody>
         </table>
       </div>
@@ -648,9 +450,7 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>Cliente</th><th>Serviço</th><th>Prazo</th><th>Status</th><th>Ações</th></tr>
-          </thead>
+          <thead><tr><th>Cliente</th><th>Serviço</th><th>Prazo</th><th>Status</th><th>Ações</th></tr></thead>
           <tbody id="tbody-ordens"></tbody>
         </table>
       </div>
@@ -659,14 +459,8 @@
     <!-- FINANCEIRO -->
     <div id="page-financeiro" class="page">
       <div class="fin-summary">
-        <div class="fin-card received">
-          <label>Total Recebido</label>
-          <div class="amount" id="fin-recebido">R$ 0,00</div>
-        </div>
-        <div class="fin-card pending">
-          <label>Total Pendente</label>
-          <div class="amount" id="fin-pendente">R$ 0,00</div>
-        </div>
+        <div class="fin-card received"><label>Total Recebido</label><div class="amount" id="fin-recebido">R$ 0,00</div></div>
+        <div class="fin-card pending"><label>Total Pendente</label><div class="amount" id="fin-pendente">R$ 0,00</div></div>
       </div>
       <div class="section-header">
         <h2>Lançamentos</h2>
@@ -683,9 +477,7 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>Cliente</th><th>Descrição</th><th>Valor</th><th>Vencimento</th><th>Status</th><th>Ações</th></tr>
-          </thead>
+          <thead><tr><th>Cliente</th><th>Descrição</th><th>Valor</th><th>Vencimento</th><th>Status</th><th>Ações</th></tr></thead>
           <tbody id="tbody-financeiro"></tbody>
         </table>
       </div>
@@ -700,22 +492,10 @@
         </div>
         <input type="file" id="logo-input" accept="image/*" style="display:none" onchange="handleLogo(this)">
         <div class="form-grid">
-          <div class="form-group">
-            <label>Nome da Empresa</label>
-            <input type="text" id="cfg-empresa" placeholder="Take7 Agência">
-          </div>
-          <div class="form-group">
-            <label>WhatsApp</label>
-            <input type="text" id="cfg-whatsapp" placeholder="(85) 99999-9999">
-          </div>
-          <div class="form-group span-2">
-            <label>E-mail</label>
-            <input type="email" id="cfg-email" placeholder="contato@take7.com.br">
-          </div>
-          <div class="form-group span-2">
-            <label>Endereço</label>
-            <input type="text" id="cfg-endereco" placeholder="Rua Exemplo, 123 - Fortaleza, CE">
-          </div>
+          <div class="form-group"><label>Nome da Empresa</label><input type="text" id="cfg-empresa" placeholder="Take7 Agência"></div>
+          <div class="form-group"><label>WhatsApp</label><input type="text" id="cfg-whatsapp" placeholder="(85) 99999-9999"></div>
+          <div class="form-group span-2"><label>E-mail</label><input type="email" id="cfg-email" placeholder="contato@take7.com.br"></div>
+          <div class="form-group span-2"><label>Endereço</label><input type="text" id="cfg-endereco" placeholder="Rua Exemplo, 123 - Fortaleza, CE"></div>
         </div>
         <div class="form-actions" style="margin-top:20px;padding-top:16px">
           <button class="btn btn-primary" onclick="saveConfig()">Salvar Configurações</button>
@@ -723,22 +503,17 @@
       </div>
     </div>
 
-  </div><!-- /page-content -->
+  </div>
 </main>
 
-<!-- TOAST CONTAINER -->
 <div id="toast-container"></div>
-
-<!-- ══ MODALS ══════════════════════════════════════════ -->
 
 <!-- MODAL CLIENTE -->
 <div class="modal-overlay" id="modal-cliente">
   <div class="modal">
     <div class="modal-header">
       <h3 id="modal-cliente-title">Novo Cliente</h3>
-      <button class="modal-close" onclick="closeModal('modal-cliente')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
+      <button class="modal-close" onclick="closeModal('modal-cliente')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="cliente-id">
@@ -764,35 +539,17 @@
   <div class="modal modal-lg">
     <div class="modal-header">
       <h3 id="modal-orcamento-title">Novo Orçamento</h3>
-      <button class="modal-close" onclick="closeModal('modal-orcamento')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
+      <button class="modal-close" onclick="closeModal('modal-orcamento')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="orcamento-id">
       <div class="form-grid">
-        <div class="form-group">
-          <label>Cliente *</label>
-          <select id="orcamento-cliente"><option value="">Selecione...</option></select>
-        </div>
-        <div class="form-group">
-          <label>Serviço *</label>
-          <input type="text" id="orcamento-servico" placeholder="Ex: Criação de site">
-        </div>
-        <div class="form-group span-2">
-          <label>Descrição</label>
-          <textarea id="orcamento-descricao" placeholder="Descrição detalhada do serviço..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Valor (R$) *</label>
-          <input type="number" id="orcamento-valor" placeholder="0.00" step="0.01">
-        </div>
-        <div class="form-group">
-          <label>Data *</label>
-          <input type="date" id="orcamento-data_orcamento">
-        </div>
-        <div class="form-group">
-          <label>Status</label>
+        <div class="form-group"><label>Cliente *</label><select id="orcamento-cliente"><option value="">Selecione...</option></select></div>
+        <div class="form-group"><label>Serviço *</label><input type="text" id="orcamento-servico" placeholder="Ex: Criação de site"></div>
+        <div class="form-group span-2"><label>Descrição</label><textarea id="orcamento-descricao" placeholder="Descrição detalhada do serviço..."></textarea></div>
+        <div class="form-group"><label>Valor (R$) *</label><input type="number" id="orcamento-valor" placeholder="0.00" step="0.01"></div>
+        <div class="form-group"><label>Data *</label><input type="date" id="orcamento-data"></div>
+        <div class="form-group"><label>Status</label>
           <select id="orcamento-status">
             <option value="Pendente">Pendente</option>
             <option value="Aprovado">Aprovado</option>
@@ -800,10 +557,7 @@
             <option value="Em negociação">Em negociação</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Validade</label>
-          <input type="date" id="orcamento-validade">
-        </div>
+        <div class="form-group"><label>Validade</label><input type="date" id="orcamento-validade"></div>
       </div>
       <div class="form-actions">
         <button class="btn btn-outline" onclick="closeModal('modal-orcamento')">Cancelar</button>
@@ -818,19 +572,13 @@
   <div class="modal modal-lg">
     <div class="modal-header">
       <h3 id="modal-contrato-title">Novo Contrato</h3>
-      <button class="modal-close" onclick="closeModal('modal-contrato')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
+      <button class="modal-close" onclick="closeModal('modal-contrato')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="contrato-id">
       <div class="form-grid">
-        <div class="form-group">
-          <label>Cliente *</label>
-          <select id="contrato-cliente"><option value="">Selecione...</option></select>
-        </div>
-        <div class="form-group">
-          <label>Tipo de Serviço *</label>
+        <div class="form-group"><label>Cliente *</label><select id="contrato-cliente"><option value="">Selecione...</option></select></div>
+        <div class="form-group"><label>Tipo de Serviço *</label>
           <select id="contrato-tipo" onchange="preencherClausulas()">
             <option value="">Selecione o serviço...</option>
             <option value="Fotografia de Eventos">📸 Fotografia de Eventos</option>
@@ -842,16 +590,9 @@
             <option value="Outro">✏️ Outro (personalizado)</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Detalhes do Serviço</label>
-          <input type="text" id="contrato-servico" placeholder="Informações adicionais...">
-        </div>
-        <div class="form-group">
-          <label>Valor (R$) *</label>
-          <input type="number" id="contrato-valor" placeholder="0.00" step="0.01">
-        </div>
-        <div class="form-group">
-          <label>Forma de Pagamento</label>
+        <div class="form-group"><label>Detalhes do Serviço</label><input type="text" id="contrato-servico" placeholder="Informações adicionais..."></div>
+        <div class="form-group"><label>Valor (R$) *</label><input type="number" id="contrato-valor" placeholder="0.00" step="0.01"></div>
+        <div class="form-group"><label>Forma de Pagamento</label>
           <select id="contrato-pagamento">
             <option>À vista</option>
             <option>50% entrada + 50% na entrega</option>
@@ -861,14 +602,8 @@
             <option>Parcelado</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Data Inicial *</label>
-          <input type="date" id="contrato-inicio">
-        </div>
-        <div class="form-group">
-          <label>Data do Evento / Entrega *</label>
-          <input type="date" id="contrato-fim">
-        </div>
+        <div class="form-group"><label>Data Inicial *</label><input type="date" id="contrato-inicio"></div>
+        <div class="form-group"><label>Data do Evento / Entrega *</label><input type="date" id="contrato-fim"></div>
         <div class="form-group span-2">
           <label>Cláusulas &nbsp;<span style="font-size:10px;color:var(--blue);font-weight:400;text-transform:none;cursor:pointer;letter-spacing:0" onclick="preencherClausulas()">(clique para gerar automaticamente)</span></label>
           <textarea id="contrato-obs" placeholder="Selecione o tipo de serviço acima para gerar as cláusulas..." style="min-height:180px;font-size:11.5px;line-height:1.7"></textarea>
@@ -887,27 +622,15 @@
   <div class="modal">
     <div class="modal-header">
       <h3 id="modal-ordem-title">Nova Ordem de Serviço</h3>
-      <button class="modal-close" onclick="closeModal('modal-ordem')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
+      <button class="modal-close" onclick="closeModal('modal-ordem')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="ordem-id">
       <div class="form-grid">
-        <div class="form-group">
-          <label>Cliente *</label>
-          <select id="ordem-cliente"><option value="">Selecione...</option></select>
-        </div>
-        <div class="form-group">
-          <label>Serviço *</label>
-          <input type="text" id="ordem-servico" placeholder="Descrição do serviço">
-        </div>
-        <div class="form-group">
-          <label>Prazo *</label>
-          <input type="date" id="ordem-prazo">
-        </div>
-        <div class="form-group">
-          <label>Status</label>
+        <div class="form-group"><label>Cliente *</label><select id="ordem-cliente"><option value="">Selecione...</option></select></div>
+        <div class="form-group"><label>Serviço *</label><input type="text" id="ordem-servico" placeholder="Descrição do serviço"></div>
+        <div class="form-group"><label>Prazo *</label><input type="date" id="ordem-prazo"></div>
+        <div class="form-group"><label>Status</label>
           <select id="ordem-status">
             <option value="Aberta">Aberta</option>
             <option value="Em andamento">Em andamento</option>
@@ -915,10 +638,7 @@
             <option value="Cancelada">Cancelada</option>
           </select>
         </div>
-        <div class="form-group span-2">
-          <label>Descrição</label>
-          <textarea id="ordem-descricao" placeholder="Detalhes da ordem..."></textarea>
-        </div>
+        <div class="form-group span-2"><label>Descrição</label><textarea id="ordem-descricao" placeholder="Detalhes da ordem..."></textarea></div>
       </div>
       <div class="form-actions">
         <button class="btn btn-outline" onclick="closeModal('modal-ordem')">Cancelar</button>
@@ -933,36 +653,21 @@
   <div class="modal">
     <div class="modal-header">
       <h3 id="modal-financeiro-title">Novo Lançamento</h3>
-      <button class="modal-close" onclick="closeModal('modal-financeiro')">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
+      <button class="modal-close" onclick="closeModal('modal-financeiro')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="fin-id">
       <div class="form-grid">
-        <div class="form-group">
-          <label>Cliente</label>
-          <select id="fin-cliente"><option value="">Selecione...</option></select>
-        </div>
-        <div class="form-group">
-          <label>Status</label>
+        <div class="form-group"><label>Cliente</label><select id="fin-cliente"><option value="">Selecione...</option></select></div>
+        <div class="form-group"><label>Status</label>
           <select id="fin-status">
             <option value="Pendente">Pendente</option>
             <option value="Pago">Pago</option>
           </select>
         </div>
-        <div class="form-group span-2">
-          <label>Descrição *</label>
-          <input type="text" id="fin-descricao" placeholder="Ex: Mensalidade de gestão">
-        </div>
-        <div class="form-group">
-          <label>Valor (R$) *</label>
-          <input type="number" id="fin-valor" placeholder="0.00" step="0.01">
-        </div>
-        <div class="form-group">
-          <label>Vencimento *</label>
-          <input type="date" id="fin-vencimento">
-        </div>
+        <div class="form-group span-2"><label>Descrição *</label><input type="text" id="fin-descricao" placeholder="Ex: Mensalidade de gestão"></div>
+        <div class="form-group"><label>Valor (R$) *</label><input type="number" id="fin-valor" placeholder="0.00" step="0.01"></div>
+        <div class="form-group"><label>Vencimento *</label><input type="date" id="fin-vencimento"></div>
       </div>
       <div class="form-actions">
         <button class="btn btn-outline" onclick="closeModal('modal-financeiro')">Cancelar</button>
@@ -973,25 +678,18 @@
 </div>
 
 <script>
-// ══════════════════════════════════════════════════
-//  ⚙️  CONFIGURAÇÃO DO SUPABASE — edite aqui
-// ══════════════════════════════════════════════════
-const SUPABASE_URL = 'https://wdtybxgqzxuazwbtiipd.supabase.co';        // ex: https://abcxyz.supabase.co
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkdHlieGdxenh1YXp3YnRpaXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMzMwODYsImV4cCI6MjA5NTgwOTA4Nn0._DB-t9zpZhzMu8Mvlyyd1woQ1iNw1eRmg_YDWlBwESc';   // ex: eyJhbGci...
+// ══ CONFIGURAÇÃO ══════════════════════════════════
+const SUPABASE_URL = 'https://wdtybxgqzxuazwbtiipd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkdHlieGdxenh1YXp3YnRpaXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMzMwODYsImV4cCI6MjA5NTgwOTA4Nn0._DB-t9zpZhzMu8Mvlyyd1woQ1iNw1eRmg_YDWlBwESc';
 
-// ══════════════════════════════════════════════════
-//  SUPABASE INIT (automático)
-// ══════════════════════════════════════════════════
 let sb = null;
 
 (async function initSupabase() {
-  if (!SUPABASE_URL || SUPABASE_URL.includes('COLE_')) {
-    showConfigAlert();
-    return;
-  }
   try {
     sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    await sb.from('clientes').select('id').limit(1);
+    // Testa conexão
+    const { error } = await sb.from('clientes').select('id').limit(1);
+    if (error && error.code !== 'PGRST116') throw error;
     loadConfig();
     navigate('dashboard');
   } catch(e) {
@@ -1004,15 +702,13 @@ function showConfigAlert(msg) {
     <div id="config-alert" style="position:fixed;inset:0;background:rgba(15,23,42,0.97);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px">
       <div style="background:#1E293B;border:1px solid #334155;border-radius:16px;padding:40px;max-width:520px;width:100%;text-align:center">
         <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:6px">Take<span style="color:#2563EB">7</span></div>
-        <div style="font-size:13px;color:#94A3B8;margin-bottom:24px">${msg || 'Configure as credenciais do Supabase no arquivo index.html'}</div>
+        <div style="font-size:13px;color:#94A3B8;margin-bottom:24px">${msg}</div>
         <div style="background:#0F172A;border:1.5px solid #2563EB;border-radius:10px;padding:20px;text-align:left;margin-bottom:20px">
-          <div style="font-size:11px;font-weight:700;color:#2563EB;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">📋 Como configurar</div>
+          <div style="font-size:11px;font-weight:700;color:#2563EB;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Verifique</div>
           <div style="font-size:12px;color:#CBD5E1;line-height:1.8">
-            1. Abra o arquivo <code style="background:#1E293B;padding:2px 6px;border-radius:4px;color:#60A5FA">index.html</code> em um editor de texto<br>
-            2. Localize as linhas no início do JavaScript:<br>
-            <code style="display:block;background:#1E293B;padding:8px 10px;border-radius:6px;margin:8px 0;color:#34D399;font-size:11px">const SUPABASE_URL = 'COLE_SUA_URL_AQUI';<br>const SUPABASE_KEY = 'COLE_SUA_ANON_KEY_AQUI';</code>
-            3. Substitua pelos seus dados do painel Supabase<br>
-            4. Salve o arquivo e recarregue a página
+            1. As tabelas foram criadas no Supabase SQL Editor?<br>
+            2. O RLS (Row Level Security) foi desativado nas tabelas?<br>
+            3. A ANON KEY e URL estão corretas no arquivo?
           </div>
         </div>
         <a href="https://supabase.com/dashboard" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#2563EB;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600">
@@ -1023,11 +719,9 @@ function showConfigAlert(msg) {
   `);
 }
 
-// ══════════════════════════════════════════════════
-//  NAVIGATION
-// ══════════════════════════════════════════════════
-const pages = { dashboard: 'Dashboard', clientes: 'Clientes', orcamentos: 'Orçamentos', contratos: 'Contratos', ordens: 'Ordens de Serviço', financeiro: 'Financeiro', configuracoes: 'Configurações' };
-const subs = { dashboard: 'Visão geral do sistema', clientes: 'Gerencie seus clientes', orcamentos: 'Gerencie seus orçamentos', contratos: 'Gerencie seus contratos', ordens: 'Gerencie ordens de serviço', financeiro: 'Controle financeiro', configuracoes: 'Configurações da empresa' };
+// ══ NAVIGATION ════════════════════════════════════
+const pages = { dashboard:'Dashboard', clientes:'Clientes', orcamentos:'Orçamentos', contratos:'Contratos', ordens:'Ordens de Serviço', financeiro:'Financeiro', configuracoes:'Configurações' };
+const subs = { dashboard:'Visão geral do sistema', clientes:'Gerencie seus clientes', orcamentos:'Gerencie seus orçamentos', contratos:'Gerencie seus contratos', ordens:'Gerencie ordens de serviço', financeiro:'Controle financeiro', configuracoes:'Configurações da empresa' };
 
 function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1037,24 +731,20 @@ function navigate(page) {
   document.getElementById('topbar-title').textContent = pages[page];
   document.getElementById('topbar-sub').textContent = subs[page];
   if (page === 'dashboard') loadDashboard();
-  else if (page === 'clientes') { loadClientes(); }
-  else if (page === 'orcamentos') { loadOrcamentos(); }
-  else if (page === 'contratos') { loadContratos(); }
-  else if (page === 'ordens') { loadOrdens(); }
-  else if (page === 'financeiro') { loadFinanceiro(); }
-  else if (page === 'configuracoes') { loadConfig(); }
+  else if (page === 'clientes') loadClientes();
+  else if (page === 'orcamentos') loadOrcamentos();
+  else if (page === 'contratos') loadContratos();
+  else if (page === 'ordens') loadOrdens();
+  else if (page === 'financeiro') loadFinanceiro();
+  else if (page === 'configuracoes') loadConfig();
 }
 
-// ══════════════════════════════════════════════════
-//  MODAL
-// ══════════════════════════════════════════════════
+// ══ MODAL ═════════════════════════════════════════
 function openModal(id, clearForm = true) {
   if (clearForm) clearModalForm(id);
   document.getElementById(id).classList.add('open');
 }
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 function clearModalForm(id) {
   document.querySelectorAll(`#${id} input:not([type=hidden]), #${id} textarea, #${id} select`).forEach(el => {
     if (el.tagName === 'SELECT') el.selectedIndex = 0;
@@ -1063,15 +753,11 @@ function clearModalForm(id) {
   const hiddenId = document.querySelector(`#${id} input[type=hidden]`);
   if (hiddenId) hiddenId.value = '';
 }
-
-// Close on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
 });
 
-// ══════════════════════════════════════════════════
-//  TOAST
-// ══════════════════════════════════════════════════
+// ══ TOAST ══════════════════════════════════════════
 function toast(msg, type = 'success') {
   const icons = {
     success: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -1085,29 +771,19 @@ function toast(msg, type = 'success') {
   setTimeout(() => el.remove(), 3500);
 }
 
-// ══════════════════════════════════════════════════
-//  FORMAT
-// ══════════════════════════════════════════════════
-function fmtMoney(v) {
-  return 'R$ ' + parseFloat(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-}
+// ══ FORMAT ═════════════════════════════════════════
+function fmtMoney(v) { return 'R$ ' + parseFloat(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 }); }
 function fmtDate(d) {
   if (!d) return '—';
-  const parts = d.split('-');
+  const parts = d.split('T')[0].split('-');
   return parts[2] + '/' + parts[1] + '/' + parts[0];
 }
 function statusBadge(s) {
-  const map = {
-    'Aprovado': 'badge-green', 'Pago': 'badge-green', 'Concluída': 'badge-green',
-    'Pendente': 'badge-yellow', 'Aberta': 'badge-yellow', 'Em andamento': 'badge-blue',
-    'Em negociação': 'badge-blue', 'Recusado': 'badge-red', 'Cancelada': 'badge-red'
-  };
+  const map = { 'Aprovado':'badge-green','Pago':'badge-green','Concluída':'badge-green','Pendente':'badge-yellow','Aberta':'badge-yellow','Em andamento':'badge-blue','Em negociação':'badge-blue','Recusado':'badge-red','Cancelada':'badge-red' };
   return `<span class="badge ${map[s] || 'badge-gray'}">${s}</span>`;
 }
 
-// ══════════════════════════════════════════════════
-//  DASHBOARD
-// ══════════════════════════════════════════════════
+// ══ DASHBOARD ══════════════════════════════════════
 async function loadDashboard() {
   if (!sb) return;
   const el = document.getElementById('dash-stats');
@@ -1123,42 +799,34 @@ async function loadDashboard() {
     const totalReceber = (fin.data || []).filter(f => f.status === 'Pendente').reduce((a, b) => a + parseFloat(b.valor || 0), 0);
     el.innerHTML = `
       <div class="stat-card">
-        <div class="stat-label">Clientes</div>
-        <div class="stat-value">${c.count || 0}</div>
+        <div class="stat-label">Clientes</div><div class="stat-value">${c.count || 0}</div>
         <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4" stroke-width="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke-width="2"/></svg></div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Orçamentos</div>
-        <div class="stat-value">${o.count || 0}</div>
+        <div class="stat-label">Orçamentos</div><div class="stat-value">${o.count || 0}</div>
         <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg></div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Contratos</div>
-        <div class="stat-value">${ct.count || 0}</div>
+        <div class="stat-label">Contratos</div><div class="stat-value">${ct.count || 0}</div>
         <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke-width="2"/><path d="M15 7h2a5 5 0 0 1 0 10h-2" stroke-width="2"/><line x1="8" y1="12" x2="16" y2="12" stroke-width="2"/></svg></div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Ordens de Serviço</div>
-        <div class="stat-value">${os.count || 0}</div>
+        <div class="stat-label">Ordens de Serviço</div><div class="stat-value">${os.count || 0}</div>
         <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke-width="2"/></svg></div>
       </div>
       <div class="stat-card green">
-        <div class="stat-label">A Receber</div>
-        <div class="stat-value" style="font-size:22px">${fmtMoney(totalReceber)}</div>
+        <div class="stat-label">A Receber</div><div class="stat-value" style="font-size:22px">${fmtMoney(totalReceber)}</div>
         <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23" stroke-width="2"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-width="2"/></svg></div>
-      </div>
-    `;
-  } catch(e) { el.innerHTML = '<div class="empty-state"><p>Erro ao carregar dados</p></div>'; }
+      </div>`;
+  } catch(e) { el.innerHTML = '<div class="empty-state"><p>Erro ao carregar dados: ' + e.message + '</p></div>'; }
 }
 
-// ══════════════════════════════════════════════════
-//  CLIENTES
-// ══════════════════════════════════════════════════
+// ══ CLIENTES ═══════════════════════════════════════
 let clientesData = [];
 async function loadClientes() {
   if (!sb) return;
   const { data, error } = await sb.from('clientes').select('*').order('nome');
-  if (error) { toast('Erro ao carregar clientes', 'error'); return; }
+  if (error) { toast('Erro ao carregar clientes: ' + error.message, 'error'); return; }
   clientesData = data || [];
   renderClientes();
 }
@@ -1166,7 +834,7 @@ function renderClientes() {
   const q = (document.getElementById('search-clientes')?.value || '').toLowerCase();
   const filtered = clientesData.filter(c => !q || c.nome?.toLowerCase().includes(q) || c.empresa?.toLowerCase().includes(q) || c.email?.toLowerCase().includes(q));
   const tbody = document.getElementById('tbody-clientes');
-  if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4" stroke-width="2"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke-width="2"/></svg><p>Nenhum cliente encontrado</p></div></td></tr>`; return; }
+  if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>Nenhum cliente encontrado</p></div></td></tr>`; return; }
   tbody.innerHTML = filtered.map(c => `
     <tr>
       <td><strong>${c.nome}</strong></td>
@@ -1174,22 +842,14 @@ function renderClientes() {
       <td>${c.telefone || '—'}</td>
       <td>${c.email || '—'}</td>
       <td>${c.whatsapp || '—'}</td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-outline btn-sm btn-icon" onclick="editCliente('${c.id}')" title="Editar">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
-          </button>
-          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteCliente('${c.id}')" title="Excluir">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/><path d="M10 11v6M14 11v6" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+      <td><div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm btn-icon" onclick="editCliente('${c.id}')" title="Editar"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteCliente('${c.id}')" title="Excluir"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg></button>
+      </div></td>
+    </tr>`).join('');
 }
 function editCliente(id) {
-  const c = clientesData.find(x => x.id == id);
-  if (!c) return;
+  const c = clientesData.find(x => x.id == id); if (!c) return;
   document.getElementById('modal-cliente-title').textContent = 'Editar Cliente';
   document.getElementById('cliente-id').value = c.id;
   document.getElementById('cliente-nome').value = c.nome || '';
@@ -1205,38 +865,31 @@ async function saveCliente() {
   const id = document.getElementById('cliente-id').value;
   const nome = document.getElementById('cliente-nome').value.trim();
   if (!nome) { toast('Nome é obrigatório', 'error'); return; }
-  const data = {
-    nome, empresa: document.getElementById('cliente-empresa').value,
-    telefone: document.getElementById('cliente-telefone').value,
-    whatsapp: document.getElementById('cliente-whatsapp').value,
-    email: document.getElementById('cliente-email').value,
-    instagram: document.getElementById('cliente-instagram').value,
-    observacoes: document.getElementById('cliente-obs').value
-  };
+  const data = { nome, empresa: document.getElementById('cliente-empresa').value, telefone: document.getElementById('cliente-telefone').value, whatsapp: document.getElementById('cliente-whatsapp').value, email: document.getElementById('cliente-email').value, instagram: document.getElementById('cliente-instagram').value, observacoes: document.getElementById('cliente-obs').value };
   let err;
   if (id) { const r = await sb.from('clientes').update(data).eq('id', id); err = r.error; }
   else { const r = await sb.from('clientes').insert(data); err = r.error; }
   if (err) { toast('Erro ao salvar: ' + err.message, 'error'); return; }
   toast(id ? 'Cliente atualizado!' : 'Cliente cadastrado!', 'success');
-  closeModal('modal-cliente');
-  loadClientes();
+  closeModal('modal-cliente'); loadClientes();
 }
 async function deleteCliente(id) {
   if (!confirm('Excluir este cliente?')) return;
   const { error } = await sb.from('clientes').delete().eq('id', id);
-  if (error) { toast('Erro ao excluir', 'error'); return; }
-  toast('Cliente excluído!', 'success');
-  loadClientes();
+  if (error) { toast('Erro ao excluir: ' + error.message, 'error'); return; }
+  toast('Cliente excluído!', 'success'); loadClientes();
 }
 
-// ══════════════════════════════════════════════════
-//  ORÇAMENTOS
-// ══════════════════════════════════════════════════
+// ══ ORÇAMENTOS ═════════════════════════════════════
+// CORREÇÃO: coluna é "data" no banco (não data_orcamento)
 let orcamentosData = [];
 async function loadOrcamentos() {
   if (!sb) return;
+  // Garante que clientesData está carregado para os PDFs
+  if (!clientesData.length) await loadClientes();
   populateClienteSelect('orcamento-cliente');
-  const { data } = await sb.from('orcamentos').select('*, clientes(nome)').order('created_at', { ascending: false });
+  const { data, error } = await sb.from('orcamentos').select('*, clientes(nome)').order('created_at', { ascending: false });
+  if (error) { toast('Erro ao carregar orçamentos: ' + error.message, 'error'); return; }
   orcamentosData = data || [];
   renderOrcamentos();
 }
@@ -1247,40 +900,31 @@ function renderOrcamentos() {
   if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><p>Nenhum orçamento encontrado</p></div></td></tr>`; return; }
   tbody.innerHTML = filtered.map(o => `
     <tr>
-      <td><span class="badge badge-gray">#${o.numero || o.id?.slice(-4)}</span></td>
+      <td><span class="badge badge-gray">#${o.numero || String(o.id).slice(-4).toUpperCase()}</span></td>
       <td>${o.clientes?.nome || '—'}</td>
       <td>${o.servico || '—'}</td>
       <td><strong>${fmtMoney(o.valor)}</strong></td>
-      <td>${fmtDate(o.data_orcamento)}</td>
+      <td>${fmtDate(o.data)}</td>
       <td>${statusBadge(o.status || 'Pendente')}</td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-outline btn-sm btn-icon" onclick="editOrcamento('${o.id}')" title="Editar">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
-          </button>
-          <button class="btn btn-success btn-sm btn-icon" onclick="pdfOrcamento('${o.id}')" title="PDF">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg>
-          </button>
-          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteOrcamento('${o.id}')" title="Excluir">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+      <td><div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm btn-icon" onclick="editOrcamento('${o.id}')" title="Editar"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg></button>
+        <button class="btn btn-success btn-sm btn-icon" onclick="pdfOrcamento('${o.id}')" title="PDF"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteOrcamento('${o.id}')" title="Excluir"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg></button>
+      </div></td>
+    </tr>`).join('');
 }
 function editOrcamento(id) {
-  const o = orcamentosData.find(x => x.id == id);
-  if (!o) return;
+  const o = orcamentosData.find(x => x.id == id); if (!o) return;
   document.getElementById('modal-orcamento-title').textContent = 'Editar Orçamento';
   document.getElementById('orcamento-id').value = o.id;
   document.getElementById('orcamento-cliente').value = o.cliente_id || '';
   document.getElementById('orcamento-servico').value = o.servico || '';
   document.getElementById('orcamento-descricao').value = o.descricao || '';
   document.getElementById('orcamento-valor').value = o.valor || '';
-  document.getElementById('orcamento-data_orcamento').value = o.data_orcamento || '';
+  // CORREÇÃO: campo "data" (não data_orcamento)
+  document.getElementById('orcamento-data').value = o.data ? o.data.split('T')[0] : '';
   document.getElementById('orcamento-status').value = o.status || 'Pendente';
-  document.getElementById('orcamento-validade').value = o.validade || '';
+  document.getElementById('orcamento-validade').value = o.validade ? o.validade.split('T')[0] : '';
   openModal('modal-orcamento', false);
 }
 async function saveOrcamento() {
@@ -1288,12 +932,15 @@ async function saveOrcamento() {
   const cliente_id = document.getElementById('orcamento-cliente').value;
   const servico = document.getElementById('orcamento-servico').value.trim();
   const valor = document.getElementById('orcamento-valor').value;
-  const data_val = document.getElementById('orcamento-data_orcamento').value;
+  // CORREÇÃO: lê de "orcamento-data"
+  const data_val = document.getElementById('orcamento-data').value;
   if (!cliente_id || !servico || !valor || !data_val) { toast('Preencha os campos obrigatórios', 'error'); return; }
   const payload = {
     cliente_id, servico,
     descricao: document.getElementById('orcamento-descricao').value,
-    valor: parseFloat(valor), data_orcamento: data_val,
+    valor: parseFloat(valor),
+    // CORREÇÃO: salva como "data" (nome da coluna no banco)
+    data: data_val,
     status: document.getElementById('orcamento-status').value,
     validade: document.getElementById('orcamento-validade').value || null
   };
@@ -1301,32 +948,28 @@ async function saveOrcamento() {
   if (id) {
     const r = await sb.from('orcamentos').update(payload).eq('id', id); err = r.error;
   } else {
-    // auto numero
     const { count } = await sb.from('orcamentos').select('id', { count: 'exact', head: true });
     payload.numero = String((count || 0) + 1).padStart(4, '0');
     const r = await sb.from('orcamentos').insert(payload); err = r.error;
   }
   if (err) { toast('Erro: ' + err.message, 'error'); return; }
-  toast('Orçamento salvo!', 'success');
-  closeModal('modal-orcamento');
-  loadOrcamentos();
+  toast('Orçamento salvo!', 'success'); closeModal('modal-orcamento'); loadOrcamentos();
 }
 async function deleteOrcamento(id) {
   if (!confirm('Excluir orçamento?')) return;
   const { error } = await sb.from('orcamentos').delete().eq('id', id);
-  if (error) { toast('Erro ao excluir', 'error'); return; }
-  toast('Excluído!', 'success');
-  loadOrcamentos();
+  if (error) { toast('Erro ao excluir: ' + error.message, 'error'); return; }
+  toast('Excluído!', 'success'); loadOrcamentos();
 }
 
-// ══════════════════════════════════════════════════
-//  CONTRATOS
-// ══════════════════════════════════════════════════
+// ══ CONTRATOS ══════════════════════════════════════
 let contratosData = [];
 async function loadContratos() {
   if (!sb) return;
+  if (!clientesData.length) await loadClientes();
   populateClienteSelect('contrato-cliente');
-  const { data } = await sb.from('contratos').select('*, clientes(nome)').order('created_at', { ascending: false });
+  const { data, error } = await sb.from('contratos').select('*, clientes(nome)').order('created_at', { ascending: false });
+  if (error) { toast('Erro ao carregar contratos: ' + error.message, 'error'); return; }
   contratosData = data || [];
   renderContratos();
 }
@@ -1338,29 +981,19 @@ function renderContratos() {
   tbody.innerHTML = filtered.map(c => `
     <tr>
       <td><strong>${c.clientes?.nome || '—'}</strong></td>
-      <td>${c.servico || '—'}</td>
+      <td>${c.tipo || c.servico || '—'}</td>
       <td>${fmtMoney(c.valor)}</td>
       <td>${fmtDate(c.data_inicio)}</td>
       <td>${fmtDate(c.data_fim)}</td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-outline btn-sm btn-icon" onclick="editContrato('${c.id}')" title="Editar">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
-          </button>
-          <button class="btn btn-success btn-sm btn-icon" onclick="pdfContrato('${c.id}')" title="PDF">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg>
-          </button>
-          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteContrato('${c.id}')" title="Excluir">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+      <td><div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm btn-icon" onclick="editContrato('${c.id}')" title="Editar"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg></button>
+        <button class="btn btn-success btn-sm btn-icon" onclick="pdfContrato('${c.id}')" title="PDF"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteContrato('${c.id}')" title="Excluir"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg></button>
+      </div></td>
+    </tr>`).join('');
 }
 function editContrato(id) {
-  const c = contratosData.find(x => x.id == id);
-  if (!c) return;
+  const c = contratosData.find(x => x.id == id); if (!c) return;
   document.getElementById('modal-contrato-title').textContent = 'Editar Contrato';
   document.getElementById('contrato-id').value = c.id;
   document.getElementById('contrato-cliente').value = c.cliente_id || '';
@@ -1368,8 +1001,8 @@ function editContrato(id) {
   document.getElementById('contrato-servico').value = c.servico || '';
   document.getElementById('contrato-valor').value = c.valor || '';
   document.getElementById('contrato-pagamento').value = c.pagamento || 'À vista';
-  document.getElementById('contrato-inicio').value = c.data_inicio || '';
-  document.getElementById('contrato-fim').value = c.data_fim || '';
+  document.getElementById('contrato-inicio').value = c.data_inicio ? c.data_inicio.split('T')[0] : '';
+  document.getElementById('contrato-fim').value = c.data_fim ? c.data_fim.split('T')[0] : '';
   document.getElementById('contrato-obs').value = c.observacoes || '';
   openModal('modal-contrato', false);
 }
@@ -1377,41 +1010,32 @@ async function saveContrato() {
   const id = document.getElementById('contrato-id').value;
   const cliente_id = document.getElementById('contrato-cliente').value;
   const tipo = document.getElementById('contrato-tipo').value;
-  const servico = document.getElementById('contrato-servico').value.trim();
   const valor = document.getElementById('contrato-valor').value;
   const inicio = document.getElementById('contrato-inicio').value;
   const fim = document.getElementById('contrato-fim').value;
   if (!cliente_id || !tipo || !valor || !inicio || !fim) { toast('Preencha os campos obrigatórios', 'error'); return; }
-  const payload = {
-    cliente_id, tipo, servico, valor: parseFloat(valor),
-    pagamento: document.getElementById('contrato-pagamento').value,
-    data_inicio: inicio, data_fim: fim,
-    observacoes: document.getElementById('contrato-obs').value
-  };
+  const payload = { cliente_id, tipo, servico: document.getElementById('contrato-servico').value, valor: parseFloat(valor), pagamento: document.getElementById('contrato-pagamento').value, data_inicio: inicio, data_fim: fim, observacoes: document.getElementById('contrato-obs').value };
   let err;
   if (id) { const r = await sb.from('contratos').update(payload).eq('id', id); err = r.error; }
   else { const r = await sb.from('contratos').insert(payload); err = r.error; }
   if (err) { toast('Erro: ' + err.message, 'error'); return; }
-  toast('Contrato salvo!', 'success');
-  closeModal('modal-contrato');
-  loadContratos();
+  toast('Contrato salvo!', 'success'); closeModal('modal-contrato'); loadContratos();
 }
 async function deleteContrato(id) {
   if (!confirm('Excluir contrato?')) return;
   const { error } = await sb.from('contratos').delete().eq('id', id);
-  if (error) { toast('Erro', 'error'); return; }
-  toast('Excluído!', 'success');
-  loadContratos();
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('Excluído!', 'success'); loadContratos();
 }
 
-// ══════════════════════════════════════════════════
-//  ORDENS
-// ══════════════════════════════════════════════════
+// ══ ORDENS ═════════════════════════════════════════
 let ordensData = [];
 async function loadOrdens() {
   if (!sb) return;
+  if (!clientesData.length) await loadClientes();
   populateClienteSelect('ordem-cliente');
-  const { data } = await sb.from('ordens').select('*, clientes(nome)').order('created_at', { ascending: false });
+  const { data, error } = await sb.from('ordens').select('*, clientes(nome)').order('created_at', { ascending: false });
+  if (error) { toast('Erro ao carregar OS: ' + error.message, 'error'); return; }
   ordensData = data || [];
   renderOrdens();
 }
@@ -1426,33 +1050,21 @@ function renderOrdens() {
       <td>${o.servico || '—'}</td>
       <td>${fmtDate(o.prazo)}</td>
       <td>${statusBadge(o.status || 'Aberta')}</td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-outline btn-sm btn-icon" onclick="editOrdem('${o.id}')" title="Editar">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
-          </button>
-          ${o.status !== 'Concluída' ? `<button class="btn btn-success btn-sm btn-icon" onclick="concluirOrdem('${o.id}')" title="Concluir">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round"/></svg>
-          </button>` : ''}
-          <button class="btn btn-success btn-sm btn-icon" onclick="pdfOrdem('${o.id}')" title="PDF">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg>
-          </button>
-          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteOrdem('${o.id}')" title="Excluir">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+      <td><div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm btn-icon" onclick="editOrdem('${o.id}')" title="Editar"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg></button>
+        ${o.status !== 'Concluída' ? `<button class="btn btn-success btn-sm btn-icon" onclick="concluirOrdem('${o.id}')" title="Concluir"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round"/></svg></button>` : ''}
+        <button class="btn btn-success btn-sm btn-icon" onclick="pdfOrdem('${o.id}')" title="PDF"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteOrdem('${o.id}')" title="Excluir"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg></button>
+      </div></td>
+    </tr>`).join('');
 }
 function editOrdem(id) {
-  const o = ordensData.find(x => x.id == id);
-  if (!o) return;
+  const o = ordensData.find(x => x.id == id); if (!o) return;
   document.getElementById('modal-ordem-title').textContent = 'Editar OS';
   document.getElementById('ordem-id').value = o.id;
   document.getElementById('ordem-cliente').value = o.cliente_id || '';
   document.getElementById('ordem-servico').value = o.servico || '';
-  document.getElementById('ordem-prazo').value = o.prazo || '';
+  document.getElementById('ordem-prazo').value = o.prazo ? o.prazo.split('T')[0] : '';
   document.getElementById('ordem-status').value = o.status || 'Aberta';
   document.getElementById('ordem-descricao').value = o.descricao || '';
   openModal('modal-ordem', false);
@@ -1463,41 +1075,33 @@ async function saveOrdem() {
   const servico = document.getElementById('ordem-servico').value.trim();
   const prazo = document.getElementById('ordem-prazo').value;
   if (!cliente_id || !servico || !prazo) { toast('Preencha os campos obrigatórios', 'error'); return; }
-  const payload = {
-    cliente_id, servico, prazo,
-    status: document.getElementById('ordem-status').value,
-    descricao: document.getElementById('ordem-descricao').value
-  };
+  const payload = { cliente_id, servico, prazo, status: document.getElementById('ordem-status').value, descricao: document.getElementById('ordem-descricao').value };
   let err;
   if (id) { const r = await sb.from('ordens').update(payload).eq('id', id); err = r.error; }
   else { const r = await sb.from('ordens').insert(payload); err = r.error; }
   if (err) { toast('Erro: ' + err.message, 'error'); return; }
-  toast('OS salva!', 'success');
-  closeModal('modal-ordem');
-  loadOrdens();
+  toast('OS salva!', 'success'); closeModal('modal-ordem'); loadOrdens();
 }
 async function concluirOrdem(id) {
   const { error } = await sb.from('ordens').update({ status: 'Concluída' }).eq('id', id);
-  if (error) { toast('Erro', 'error'); return; }
-  toast('OS concluída!', 'success');
-  loadOrdens();
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('OS concluída!', 'success'); loadOrdens();
 }
 async function deleteOrdem(id) {
   if (!confirm('Excluir OS?')) return;
   const { error } = await sb.from('ordens').delete().eq('id', id);
-  if (error) { toast('Erro', 'error'); return; }
-  toast('Excluído!', 'success');
-  loadOrdens();
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('Excluído!', 'success'); loadOrdens();
 }
 
-// ══════════════════════════════════════════════════
-//  FINANCEIRO
-// ══════════════════════════════════════════════════
+// ══ FINANCEIRO ═════════════════════════════════════
 let finData = [];
 async function loadFinanceiro() {
   if (!sb) return;
+  if (!clientesData.length) await loadClientes();
   populateClienteSelect('fin-cliente');
-  const { data } = await sb.from('financeiro').select('*, clientes(nome)').order('vencimento');
+  const { data, error } = await sb.from('financeiro').select('*, clientes(nome)').order('vencimento', { ascending: true });
+  if (error) { toast('Erro ao carregar financeiro: ' + error.message, 'error'); return; }
   finData = data || [];
   updateFinSummary();
   renderFinanceiro();
@@ -1520,34 +1124,22 @@ function renderFinanceiro() {
       <td><strong>${fmtMoney(f.valor)}</strong></td>
       <td>${fmtDate(f.vencimento)}</td>
       <td>${statusBadge(f.status || 'Pendente')}</td>
-      <td>
-        <div style="display:flex;gap:6px">
-          ${f.status === 'Pendente' ? `<button class="btn btn-success btn-sm btn-icon" onclick="marcarPago('${f.id}')" title="Marcar como Pago">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round"/></svg>
-          </button>` : ''}
-          <button class="btn btn-outline btn-sm btn-icon" onclick="editFinanceiro('${f.id}')" title="Editar">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg>
-          </button>
-          <button class="btn btn-success btn-sm btn-icon" onclick="pdfRecibo('${f.id}')" title="Recibo PDF">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg>
-          </button>
-          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteFinanceiro('${f.id}')" title="Excluir">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+      <td><div style="display:flex;gap:6px">
+        ${f.status === 'Pendente' ? `<button class="btn btn-success btn-sm btn-icon" onclick="marcarPago('${f.id}')" title="Marcar como Pago"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round"/></svg></button>` : ''}
+        <button class="btn btn-outline btn-sm btn-icon" onclick="editFinanceiro('${f.id}')" title="Editar"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/></svg></button>
+        <button class="btn btn-success btn-sm btn-icon" onclick="pdfRecibo('${f.id}')" title="Recibo PDF"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke-width="2"/></svg></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteFinanceiro('${f.id}')" title="Excluir"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" stroke-width="2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke-width="2"/></svg></button>
+      </div></td>
+    </tr>`).join('');
 }
 function editFinanceiro(id) {
-  const f = finData.find(x => x.id == id);
-  if (!f) return;
+  const f = finData.find(x => x.id == id); if (!f) return;
   document.getElementById('modal-financeiro-title').textContent = 'Editar Lançamento';
   document.getElementById('fin-id').value = f.id;
   document.getElementById('fin-cliente').value = f.cliente_id || '';
   document.getElementById('fin-descricao').value = f.descricao || '';
   document.getElementById('fin-valor').value = f.valor || '';
-  document.getElementById('fin-vencimento').value = f.vencimento || '';
+  document.getElementById('fin-vencimento').value = f.vencimento ? f.vencimento.split('T')[0] : '';
   document.getElementById('fin-status').value = f.status || 'Pendente';
   openModal('modal-financeiro', false);
 }
@@ -1557,48 +1149,36 @@ async function saveFinanceiro() {
   const valor = document.getElementById('fin-valor').value;
   const vencimento = document.getElementById('fin-vencimento').value;
   if (!descricao || !valor || !vencimento) { toast('Preencha os campos obrigatórios', 'error'); return; }
-  const payload = {
-    cliente_id: document.getElementById('fin-cliente').value || null,
-    descricao, valor: parseFloat(valor), vencimento,
-    status: document.getElementById('fin-status').value
-  };
+  const payload = { cliente_id: document.getElementById('fin-cliente').value || null, descricao, valor: parseFloat(valor), vencimento, status: document.getElementById('fin-status').value };
   let err;
   if (id) { const r = await sb.from('financeiro').update(payload).eq('id', id); err = r.error; }
   else { const r = await sb.from('financeiro').insert(payload); err = r.error; }
   if (err) { toast('Erro: ' + err.message, 'error'); return; }
-  toast('Lançamento salvo!', 'success');
-  closeModal('modal-financeiro');
-  loadFinanceiro();
+  toast('Lançamento salvo!', 'success'); closeModal('modal-financeiro'); loadFinanceiro();
 }
 async function marcarPago(id) {
   const { error } = await sb.from('financeiro').update({ status: 'Pago' }).eq('id', id);
-  if (error) { toast('Erro', 'error'); return; }
-  toast('Marcado como pago!', 'success');
-  loadFinanceiro();
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('Marcado como pago!', 'success'); loadFinanceiro();
 }
 async function deleteFinanceiro(id) {
   if (!confirm('Excluir lançamento?')) return;
   const { error } = await sb.from('financeiro').delete().eq('id', id);
-  if (error) { toast('Erro', 'error'); return; }
-  toast('Excluído!', 'success');
-  loadFinanceiro();
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('Excluído!', 'success'); loadFinanceiro();
 }
 
-// ══════════════════════════════════════════════════
-//  CONFIGURAÇÕES
-// ══════════════════════════════════════════════════
+// ══ CONFIGURAÇÕES ══════════════════════════════════
 let config = {};
 function loadConfig() {
   const stored = localStorage.getItem('take7_config');
   if (stored) {
-    config = JSON.parse(stored);
+    try { config = JSON.parse(stored); } catch(e) { config = {}; }
     document.getElementById('cfg-empresa').value = config.empresa || '';
     document.getElementById('cfg-whatsapp').value = config.whatsapp || '';
     document.getElementById('cfg-email').value = config.email || '';
     document.getElementById('cfg-endereco').value = config.endereco || '';
-    if (config.logo) {
-      document.getElementById('logo-preview-wrap').innerHTML = `<img src="${config.logo}" alt="Logo">`;
-    }
+    if (config.logo) document.getElementById('logo-preview-wrap').innerHTML = `<img src="${config.logo}" alt="Logo">`;
   }
 }
 function saveConfig() {
@@ -1610,8 +1190,7 @@ function saveConfig() {
   toast('Configurações salvas!', 'success');
 }
 function handleLogo(input) {
-  const file = input.files[0];
-  if (!file) return;
+  const file = input.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
     config.logo = e.target.result;
@@ -1622,28 +1201,26 @@ function handleLogo(input) {
   reader.readAsDataURL(file);
 }
 
-// ══════════════════════════════════════════════════
-//  HELPER: POPULATE CLIENTE SELECT
-// ══════════════════════════════════════════════════
+// ══ HELPER: POPULATE CLIENTE SELECT ═══════════════
 async function populateClienteSelect(selectId) {
-  if (!sb) return;
-  const { data } = await sb.from('clientes').select('id, nome').order('nome');
-  const sel = document.getElementById(selectId);
-  if (!sel) return;
+  const sel = document.getElementById(selectId); if (!sel) return;
   const current = sel.value;
+  // Usa clientesData em cache se disponível, senão busca
+  let clientes = clientesData;
+  if (!clientes.length && sb) {
+    const { data } = await sb.from('clientes').select('id, nome').order('nome');
+    clientes = data || [];
+  }
   sel.innerHTML = '<option value="">Selecione um cliente...</option>';
-  (data || []).forEach(c => {
+  clientes.forEach(c => {
     const opt = document.createElement('option');
-    opt.value = c.id;
-    opt.textContent = c.nome;
+    opt.value = c.id; opt.textContent = c.nome;
     if (c.id == current) opt.selected = true;
     sel.appendChild(opt);
   });
 }
 
-// ══════════════════════════════════════════════════
-//  CLAUSULAS AUTOMATICAS POR SERVIÇO
-// ══════════════════════════════════════════════════
+// ══ CLÁUSULAS AUTOMÁTICAS ══════════════════════════
 const CLAUSULAS = {
   'Fotografia de Eventos': `CLÁUSULA 1 — DO OBJETO
 A CONTRATADA prestará serviços de fotografia profissional para o evento descrito neste contrato, com cobertura completa durante o período acordado, entregando imagens tratadas digitalmente em alta resolução.
@@ -1664,470 +1241,328 @@ CLÁUSULA 6 — DOS DIREITOS AUTORAIS
 A CONTRATADA mantém os direitos autorais sobre as imagens produzidas, podendo utilizá-las em seu portfólio, redes sociais e materiais de divulgação, salvo restrição expressa do CONTRATANTE formalizada neste instrumento.
 
 CLÁUSULA 7 — DAS CONDIÇÕES ADVERSAS
-A CONTRATADA não se responsabiliza por limitações técnicas decorrentes de condições climáticas adversas, iluminação inadequada do local ou impedimentos impostos por terceiros (organização do evento, seguranças, etc.).`,
+A CONTRATADA não se responsabiliza por limitações técnicas decorrentes de condições climáticas adversas, iluminação inadequada do local ou impedimentos impostos por terceiros.`,
 
   'Fotografia de Casamento': `CLÁUSULA 1 — DO OBJETO
 A CONTRATADA prestará serviços de fotografia profissional para o casamento civil e/ou religioso do CONTRATANTE, conforme data, horário e local definidos neste contrato, com cobertura completa desde os preparativos até a festa.
 
 CLÁUSULA 2 — DA COBERTURA COMPLETA
-A cobertura incluirá: preparativos da noiva e/ou noivo, cerimônia completa, sessão de fotos dos noivos, familiares e convidados, e recepção/festa. O fotógrafo e sua equipe terão acesso irrestrito a todos os ambientes do evento.
+A cobertura incluirá: preparativos da noiva e/ou noivo, cerimônia completa, sessão de fotos dos noivos, familiares e convidados, e recepção/festa.
 
 CLÁUSULA 3 — DA ENTREGA
-As imagens finais serão entregues em até 60 (sessenta) dias corridos após a data do casamento, em galeria digital de alta resolução com no mínimo 400 fotografias tratadas. Um álbum digital com prévia será enviado em até 15 dias.
+As imagens finais serão entregues em até 60 (sessenta) dias corridos após a data do casamento, em galeria digital de alta resolução com no mínimo 400 fotografias tratadas.
 
 CLÁUSULA 4 — DO PAGAMENTO E SINAL
 Para reserva da data, é obrigatório o pagamento de sinal de 50% do valor total. O saldo restante deverá ser quitado até a véspera do evento. O sinal não é reembolsável em caso de desistência.
 
 CLÁUSULA 5 — DA RESERVA DE DATA
-A data fica reservada exclusivamente para o CONTRATANTE somente após o pagamento do sinal e assinatura deste contrato. Sem esses requisitos, a data permanece disponível para outros clientes.
+A data fica reservada exclusivamente para o CONTRATANTE somente após o pagamento do sinal e assinatura deste contrato.
 
 CLÁUSULA 6 — DO CANCELAMENTO
-Em caso de cancelamento pelo CONTRATANTE com até 90 dias de antecedência, será reembolsado 50% do sinal. Cancelamentos com menos de 90 dias não geram reembolso. O adiamento da data poderá ser feito uma única vez sem custo adicional, sujeito à disponibilidade da agenda.
+Em caso de cancelamento pelo CONTRATANTE com até 90 dias de antecedência, será reembolsado 50% do sinal. Cancelamentos com menos de 90 dias não geram reembolso.
 
 CLÁUSULA 7 — DOS DIREITOS AUTORAIS E USO DAS IMAGENS
-A CONTRATADA detém os direitos autorais das fotografias, podendo utilizá-las em portfólio, premiações e divulgação profissional. O CONTRATANTE recebe licença de uso pessoal irrestrito das imagens. Proibida a revenda ou cessão a terceiros sem autorização.
-
-CLÁUSULA 8 — DAS RESPONSABILIDADES
-A CONTRATADA não se responsabiliza por momentos não fotografados devido a restrições impostas pela cerimônia religiosa, falta de cooperação de convidados ou condições adversas de luminosidade. Será mantida equipe de backup para garantir a cobertura completa.`,
+A CONTRATADA detém os direitos autorais das fotografias, podendo utilizá-las em portfólio, premiações e divulgação profissional. O CONTRATANTE recebe licença de uso pessoal irrestrito das imagens.`,
 
   'Fotografia Infantil': `CLÁUSULA 1 — DO OBJETO
 A CONTRATADA realizará ensaio fotográfico infantil conforme tema, data, horário e local acordados, com entrega de imagens tratadas profissionalmente em alta resolução.
 
 CLÁUSULA 2 — DO ENSAIO
-O ensaio terá duração máxima de 2 horas, podendo ser prorrogado mediante acordo entre as partes. O ambiente será preparado de forma segura e aconchegante para a criança. A equipe é treinada para trabalhar com crianças de todas as idades.
+O ensaio terá duração máxima de 2 horas. O ambiente será preparado de forma segura e aconchegante para a criança.
 
 CLÁUSULA 3 — DA ENTREGA
-As imagens finais editadas serão entregues em até 21 (vinte e um) dias corridos após a realização do ensaio, contendo no mínimo 30 fotografias tratadas em resolução para impressão e web, disponibilizadas em galeria digital.
+As imagens finais editadas serão entregues em até 21 (vinte e um) dias corridos após a realização do ensaio, contendo no mínimo 30 fotografias tratadas.
 
 CLÁUSULA 4 — DO REAGENDAMENTO
-Caso a criança esteja doente ou em condição emocional inadequada no dia do ensaio, o CONTRATANTE poderá reagendar sem custos adicionais, com aviso de no mínimo 24 horas de antecedência. Será permitido um reagendamento gratuito.
+Caso a criança esteja doente no dia do ensaio, o CONTRATANTE poderá reagendar sem custos adicionais, com aviso de no mínimo 24 horas de antecedência. Será permitido um reagendamento gratuito.
 
 CLÁUSULA 5 — DO PAGAMENTO
 O pagamento deverá ser realizado conforme a forma acordada. Em caso de cancelamento definitivo após a reserva da data, o valor pago a título de sinal não será reembolsado.
 
-CLÁUSULA 6 — DA RESPONSABILIDADE
-A responsabilidade pela segurança e bem-estar da criança durante o ensaio é dos pais ou responsáveis presentes. A CONTRATADA zelará por um ambiente tranquilo e seguro.
-
-CLÁUSULA 7 — DOS DIREITOS DE IMAGEM
-Os pais ou responsáveis autorizam expressamente o uso das imagens do menor pela CONTRATADA para fins de portfólio e divulgação profissional, podendo revogar esta autorização por escrito a qualquer momento.`,
+CLÁUSULA 6 — DOS DIREITOS DE IMAGEM
+Os pais ou responsáveis autorizam expressamente o uso das imagens do menor pela CONTRATADA para fins de portfólio e divulgação profissional.`,
 
   'Ensaio Pré-Wedding': `CLÁUSULA 1 — DO OBJETO
-A CONTRATADA realizará ensaio fotográfico pré-wedding (pre-wedding) do casal CONTRATANTE, conforme roteiro, locações, data e horários definidos neste instrumento, entregando imagens que retratem a identidade e história do casal.
+A CONTRATADA realizará ensaio fotográfico pré-wedding do casal CONTRATANTE, conforme roteiro, locações, data e horários definidos neste instrumento.
 
 CLÁUSULA 2 — DO PLANEJAMENTO
-As locações, figurinos e conceito do ensaio serão definidos em reunião prévia entre as partes, com no mínimo 15 dias de antecedência. Alterações no roteiro após esse prazo poderão gerar custos adicionais de deslocamento.
+As locações, figurinos e conceito do ensaio serão definidos em reunião prévia com no mínimo 15 dias de antecedência.
 
 CLÁUSULA 3 — DA DURAÇÃO E ENTREGA
 O ensaio terá duração de até 3 horas em até 2 locações. As imagens finais editadas, em número mínimo de 60 fotografias em alta resolução, serão entregues em até 30 dias após a realização do ensaio.
 
 CLÁUSULA 4 — DO PAGAMENTO
-O pagamento integral deverá ser realizado até a data do ensaio, conforme forma acordada. Em caso de cancelamento com menos de 7 dias de antecedência, o valor não será reembolsado.
+O pagamento integral deverá ser realizado até a data do ensaio. Em caso de cancelamento com menos de 7 dias de antecedência, o valor não será reembolsado.
 
 CLÁUSULA 5 — DAS CONDIÇÕES CLIMÁTICAS
-Em caso de chuva ou condição climática que inviabilize o ensaio externo, as partes deverão reagendar sem custos adicionais. A decisão de realizar ou não o ensaio em condições adversas será tomada em comum acordo no dia.
+Em caso de chuva que inviabilize o ensaio externo, as partes deverão reagendar sem custos adicionais.
 
 CLÁUSULA 6 — DOS DIREITOS AUTORAIS
-A CONTRATADA mantém os direitos autorais sobre as imagens, podendo utilizá-las em portfólio e divulgação. O CONTRATANTE recebe licença pessoal de uso ilimitado, vedada a revenda comercial das imagens sem autorização expressa.`,
+A CONTRATADA mantém os direitos autorais sobre as imagens, podendo utilizá-las em portfólio e divulgação.`,
 
   'Criação de Site': `CLÁUSULA 1 — DO OBJETO
-A CONTRATADA desenvolverá website profissional para o CONTRATANTE, conforme escopo, layout e funcionalidades detalhados no briefing anexo a este contrato, que passa a integrar este instrumento para todos os fins.
+A CONTRATADA desenvolverá website profissional para o CONTRATANTE, conforme escopo, layout e funcionalidades detalhados no briefing anexo a este contrato.
 
 CLÁUSULA 2 — DO ESCOPO E FUNCIONALIDADES
-O projeto inclui: criação de layout personalizado, desenvolvimento responsivo (adaptado para mobile), integração de formulário de contato, configuração de SEO básico, e treinamento de uso do painel administrativo. Funcionalidades não listadas no briefing serão orçadas separadamente.
+O projeto inclui: criação de layout personalizado, desenvolvimento responsivo, integração de formulário de contato, configuração de SEO básico e treinamento de uso do painel administrativo.
 
 CLÁUSULA 3 — DO PRAZO DE ENTREGA
-O prazo de entrega é de até 30 (trinta) dias corridos após o recebimento de todos os materiais necessários (textos, imagens, logotipo e credenciais de hospedagem). Atrasos no fornecimento de materiais pelo CONTRATANTE prorrogam automaticamente o prazo de entrega.
+O prazo de entrega é de até 30 (trinta) dias corridos após o recebimento de todos os materiais necessários (textos, imagens, logotipo e credenciais de hospedagem).
 
 CLÁUSULA 4 — DAS REVISÕES
-Estão incluídas até 3 (três) rodadas de revisão de layout e conteúdo. Revisões adicionais serão cobradas à parte, conforme tabela vigente da CONTRATADA.
+Estão incluídas até 3 (três) rodadas de revisão de layout e conteúdo. Revisões adicionais serão cobradas à parte.
 
 CLÁUSULA 5 — DO PAGAMENTO
-O pagamento será realizado em duas parcelas: 50% na assinatura do contrato e 50% na entrega final do projeto. Manutenções e atualizações futuras não estão inclusas neste contrato e serão cobradas separadamente.
+O pagamento será realizado em duas parcelas: 50% na assinatura do contrato e 50% na entrega final do projeto.
 
 CLÁUSULA 6 — DA HOSPEDAGEM E DOMÍNIO
-Os custos de hospedagem e registro de domínio são de responsabilidade do CONTRATANTE, salvo disposição expressa em contrário. A CONTRATADA poderá auxiliar na contratação desses serviços mediante remuneração adicional.
+Os custos de hospedagem e registro de domínio são de responsabilidade do CONTRATANTE, salvo disposição expressa em contrário.
 
-CLÁUSULA 7 — DA PROPRIEDADE INTELECTUAL
-Após a quitação integral do contrato, o CONTRATANTE passa a ser proprietário do código-fonte e dos arquivos do site. A CONTRATADA reserva-se o direito de exibir o projeto em seu portfólio com link para o site.
-
-CLÁUSULA 8 — DA GARANTIA
-A CONTRATADA oferece garantia técnica de 90 dias contra falhas de programação após a entrega final. Erros causados por atualizações de plataformas terceiras, alterações feitas pelo CONTRATANTE ou ataques externos não são cobertos pela garantia.`,
+CLÁUSULA 7 — DA GARANTIA
+A CONTRATADA oferece garantia técnica de 90 dias contra falhas de programação após a entrega final.`,
 
   'Gerenciamento de Redes Sociais': `CLÁUSULA 1 — DO OBJETO
-A CONTRATADA prestará serviços de gerenciamento e gestão de redes sociais do CONTRATANTE, incluindo criação de conteúdo, publicação, monitoramento e relatórios de desempenho, conforme pacote contratado.
+A CONTRATADA prestará serviços de gerenciamento e gestão de redes sociais do CONTRATANTE, incluindo criação de conteúdo, publicação, monitoramento e relatórios de desempenho.
 
 CLÁUSULA 2 — DOS SERVIÇOS INCLUÍDOS
-O pacote contratado inclui: criação de artes e legendas para publicações, agendamento e publicação de posts, resposta a comentários e mensagens diretas em dias úteis, relatório mensal de desempenho e reunião de alinhamento mensal.
+O pacote contratado inclui: criação de artes e legendas para publicações, agendamento e publicação de posts, resposta a comentários em dias úteis e relatório mensal de desempenho.
 
 CLÁUSULA 3 — DA APROVAÇÃO DE CONTEÚDO
-Todo conteúdo será submetido ao CONTRATANTE para aprovação com até 3 dias de antecedência da publicação. A ausência de resposta em até 24 horas será interpretada como aprovação tácita. O CONTRATANTE deverá fornecer informações sobre promoções, novidades e eventos com pelo menos 7 dias de antecedência.
+Todo conteúdo será submetido ao CONTRATANTE para aprovação com até 3 dias de antecedência. A ausência de resposta em até 24 horas será interpretada como aprovação tácita.
 
 CLÁUSULA 4 — DO PRAZO E RENOVAÇÃO
-O contrato tem vigência mínima de 3 (três) meses, renovando-se automaticamente por igual período, salvo comunicação de rescisão por qualquer das partes com 30 dias de antecedência.
+O contrato tem vigência mínima de 3 (três) meses, renovando-se automaticamente por igual período, salvo comunicação de rescisão com 30 dias de antecedência.
 
 CLÁUSULA 5 — DO PAGAMENTO
-O pagamento será realizado mensalmente, sempre no dia acordado. O atraso superior a 10 dias implica suspensão dos serviços e multa de 2% sobre o valor mensal por dia de atraso.
+O pagamento será realizado mensalmente. O atraso superior a 10 dias implica suspensão dos serviços e multa de 2% sobre o valor mensal por dia de atraso.
 
-CLÁUSULA 6 — DAS CREDENCIAIS DE ACESSO
-O CONTRATANTE fornecerá à CONTRATADA acesso administrativo às plataformas. Tais credenciais serão tratadas com sigilo e utilizadas exclusivamente para a execução dos serviços deste contrato.
-
-CLÁUSULA 7 — DOS RESULTADOS
-A CONTRATADA não garante resultados específicos de crescimento, alcance ou conversão, pois tais métricas dependem de fatores externos e do próprio algoritmo das plataformas. A CONTRATADA empregará as melhores práticas do mercado para maximizar os resultados.
-
-CLÁUSULA 8 — DA RESCISÃO ANTECIPADA
-A rescisão antecipada pelo CONTRATANTE antes do prazo mínimo implicará no pagamento de multa equivalente a 1 (uma) mensalidade. A rescisão pela CONTRATADA por descumprimento do CONTRATANTE não gera ônus à CONTRATADA.`,
+CLÁUSULA 6 — DOS RESULTADOS
+A CONTRATADA não garante resultados específicos de crescimento, alcance ou conversão, pois tais métricas dependem de fatores externos e do próprio algoritmo das plataformas.`,
 
   'Outro': `CLÁUSULA 1 — DO OBJETO
-A CONTRATADA prestará os serviços descritos neste contrato, conforme acordado entre as partes, observando as condições estabelecidas neste instrumento.
+A CONTRATADA prestará os serviços descritos neste contrato, conforme acordado entre as partes.
 
 CLÁUSULA 2 — DO PRAZO
 Os serviços serão prestados no período definido neste contrato, podendo ser prorrogado mediante acordo escrito entre as partes.
 
 CLÁUSULA 3 — DO PAGAMENTO
-O pagamento deverá ser realizado conforme a forma e prazo acordados. O atraso no pagamento sujeitará o CONTRATANTE a multa de 2% e juros de 1% ao mês sobre o valor em aberto.
+O pagamento deverá ser realizado conforme a forma e prazo acordados. O atraso no pagamento sujeitará o CONTRATANTE a multa de 2% e juros de 1% ao mês.
 
 CLÁUSULA 4 — DAS OBRIGAÇÕES
-A CONTRATADA obriga-se a executar os serviços com qualidade, profissionalismo e dentro do prazo acordado. O CONTRATANTE obriga-se a fornecer as informações e recursos necessários para a execução dos serviços.
+A CONTRATADA obriga-se a executar os serviços com qualidade e dentro do prazo acordado.
 
 CLÁUSULA 5 — DA RESCISÃO
-O presente contrato poderá ser rescindido por qualquer das partes mediante aviso prévio de 30 dias, ou imediatamente em caso de descumprimento de qualquer cláusula pela outra parte.
+O presente contrato poderá ser rescindido por qualquer das partes mediante aviso prévio de 30 dias.
 
 CLÁUSULA 6 — DO FORO
-As partes elegem o foro da Comarca de Fortaleza — CE para dirimir quaisquer dúvidas ou conflitos oriundos deste contrato, renunciando a qualquer outro, por mais privilegiado que seja.`
+As partes elegem o foro da Comarca de Fortaleza — CE para dirimir quaisquer litígios oriundos deste contrato.`
 };
 
 function preencherClausulas() {
   const tipo = document.getElementById('contrato-tipo')?.value;
   if (!tipo || !CLAUSULAS[tipo]) return;
   const obs = document.getElementById('contrato-obs');
-  if (obs && (!obs.value || confirm('Substituir as cláusulas atuais pelas cláusulas padrão para "' + tipo + '"?'))) {
+  if (obs && (!obs.value || confirm('Substituir pelas cláusulas padrão de "' + tipo + '"?'))) {
     obs.value = CLAUSULAS[tipo];
   }
 }
 
-// ══════════════════════════════════════════════════
-//  PDF HELPERS — LAYOUT PROFISSIONAL
-// ══════════════════════════════════════════════════
+// ══ PDF HELPERS ═════════════════════════════════════
 function pdfNewPage(doc) {
   doc.addPage();
   const pageW = doc.internal.pageSize.getWidth();
-  doc.setFillColor(15, 23, 42);
-  doc.rect(0, 0, pageW, 10, 'F');
-  doc.setFillColor(37, 99, 235);
-  doc.rect(0, 10, pageW, 2, 'F');
+  doc.setFillColor(15, 23, 42); doc.rect(0, 0, pageW, 10, 'F');
+  doc.setFillColor(37, 99, 235); doc.rect(0, 10, pageW, 2, 'F');
   return 22;
 }
-
 function pdfCheckPage(doc, y, needed) {
-  const pageH = doc.internal.pageSize.getHeight();
-  if (y + needed > pageH - 28) {
-    return pdfNewPage(doc);
-  }
+  if (y + needed > doc.internal.pageSize.getHeight() - 28) return pdfNewPage(doc);
   return y;
 }
-
 function pdfHeader(doc, tipo, numero) {
   const pageW = doc.internal.pageSize.getWidth();
   const empresa = config.empresa || 'Take7';
-
-  // Faixa superior escura
-  doc.setFillColor(15, 23, 42);
-  doc.rect(0, 0, pageW, 48, 'F');
-
-  // Linha azul
-  doc.setFillColor(37, 99, 235);
-  doc.rect(0, 48, pageW, 3, 'F');
-
-  // Logo / nome empresa
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(22);
-  doc.setTextColor(255, 255, 255);
+  doc.setFillColor(15, 23, 42); doc.rect(0, 0, pageW, 48, 'F');
+  doc.setFillColor(37, 99, 235); doc.rect(0, 48, pageW, 3, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(22); doc.setTextColor(255, 255, 255);
   doc.text(empresa, 16, 22);
-
-  // Número do documento (canto direito)
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(148, 163, 184);
+  doc.setFontSize(9); doc.setFont('helvetica', 'normal'); doc.setTextColor(148, 163, 184);
   doc.text(numero || '', pageW - 16, 14, { align: 'right' });
-
-  // Info de contato
   const infos = [config.whatsapp, config.email, config.endereco].filter(Boolean);
   doc.setFontSize(8.5);
-  doc.text(infos.join('   ·   '), 16, 34);
-
-  // Data de emissão
+  if (infos.length) doc.text(infos.join('   ·   '), 16, 34);
   doc.text('Emissão: ' + new Date().toLocaleDateString('pt-BR'), pageW - 16, 34, { align: 'right' });
-
-  // Título do documento
-  doc.setFillColor(248, 250, 252);
-  doc.rect(0, 51, pageW, 22, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
-  doc.setTextColor(15, 23, 42);
+  doc.setFillColor(248, 250, 252); doc.rect(0, 51, pageW, 22, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(15, 23, 42);
   doc.text(tipo, 16, 66);
-
   return 82;
 }
-
 function pdfSectionTitle(doc, title, y) {
   const pageW = doc.internal.pageSize.getWidth();
-  doc.setFillColor(37, 99, 235);
-  doc.rect(16, y, 3, 5, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9);
-  doc.setTextColor(37, 99, 235);
+  doc.setFillColor(37, 99, 235); doc.rect(16, y, 3, 5, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(37, 99, 235);
   doc.text(title.toUpperCase(), 22, y + 4);
-  doc.setDrawColor(226, 232, 240);
-  doc.line(16, y + 7, pageW - 16, y + 7);
+  doc.setDrawColor(226, 232, 240); doc.line(16, y + 7, pageW - 16, y + 7);
   return y + 13;
 }
-
 function pdfInfoBox(doc, fields, y) {
-  // fields = [{label, value}, ...]
   const pageW = doc.internal.pageSize.getWidth();
   const boxH = Math.ceil(fields.length / 2) * 16 + 10;
-  doc.setFillColor(248, 250, 252);
-  doc.roundedRect(16, y, pageW - 32, boxH, 3, 3, 'F');
-  doc.setDrawColor(226, 232, 240);
-  doc.roundedRect(16, y, pageW - 32, boxH, 3, 3, 'S');
-
+  doc.setFillColor(248, 250, 252); doc.roundedRect(16, y, pageW - 32, boxH, 3, 3, 'F');
+  doc.setDrawColor(226, 232, 240); doc.roundedRect(16, y, pageW - 32, boxH, 3, 3, 'S');
   let cx = 24, cy = y + 9;
   const colW = (pageW - 32) / 2;
   fields.forEach((f, i) => {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(100, 116, 139);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(100, 116, 139);
     doc.text((f.label || '').toUpperCase(), cx, cy);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.setTextColor(15, 23, 42);
-    const val = String(f.value || '—');
-    doc.text(val, cx, cy + 5);
-    if ((i + 1) % 2 === 0) { cx = 24; cy += 16; }
-    else { cx = 24 + colW; }
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(15, 23, 42);
+    doc.text(String(f.value || '—'), cx, cy + 5);
+    if ((i + 1) % 2 === 0) { cx = 24; cy += 16; } else { cx = 24 + colW; }
   });
   return y + boxH + 6;
 }
-
 function pdfValorBox(doc, valor, label, y) {
   const pageW = doc.internal.pageSize.getWidth();
-  doc.setFillColor(37, 99, 235);
-  doc.roundedRect(16, y, pageW - 32, 24, 4, 4, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
-  doc.setTextColor(147, 197, 253);
+  doc.setFillColor(37, 99, 235); doc.roundedRect(16, y, pageW - 32, 24, 4, 4, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(147, 197, 253);
   doc.text((label || 'VALOR TOTAL').toUpperCase(), 26, y + 9);
-  doc.setFontSize(18);
-  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(18); doc.setTextColor(255, 255, 255);
   doc.text(fmtMoney(valor), 26, y + 20);
   return y + 32;
 }
-
 function pdfTextBlock(doc, title, text, y) {
   const pageW = doc.internal.pageSize.getWidth();
   const lines = doc.splitTextToSize(text, pageW - 36);
   const needed = lines.length * 5 + 20;
   y = pdfCheckPage(doc, y, needed);
   y = pdfSectionTitle(doc, title, y);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(51, 65, 85);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(51, 65, 85);
   doc.text(lines, 16, y, { lineHeightFactor: 1.5 });
   return y + lines.length * 5.5 + 6;
 }
-
+// CORREÇÃO: split robusto que aceita \n\n e \r\n\r\n
 function pdfClausulas(doc, texto, y) {
   const pageW = doc.internal.pageSize.getWidth();
   if (!texto) return y;
-  const clausulas = texto.split('
-
-').filter(c => c.trim());
+  // Normaliza quebras de linha (Windows e Unix)
+  const normalizado = texto.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const clausulas = normalizado.split(/\n\n+/).filter(c => c.trim());
   for (const cl of clausulas) {
-    const lines = doc.splitTextToSize(cl, pageW - 32);
+    const lines = doc.splitTextToSize(cl.trim(), pageW - 32);
     const needed = lines.length * 5 + 12;
     y = pdfCheckPage(doc, y, needed);
-    // Destaca título da cláusula (primeira linha)
     const firstLine = lines[0];
     const rest = lines.slice(1);
-    if (firstLine.match(/^CLÁUSULA/i)) {
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.setTextColor(15, 23, 42);
-      doc.text(firstLine, 16, y);
-      y += 5.5;
+    if (/^CLÁUSULA/i.test(firstLine)) {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(15, 23, 42);
+      doc.text(firstLine, 16, y); y += 5.5;
       if (rest.length) {
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        doc.setTextColor(71, 85, 105);
-        doc.text(rest, 16, y, { lineHeightFactor: 1.5 });
-        y += rest.length * 5.5;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(71, 85, 105);
+        doc.text(rest, 16, y, { lineHeightFactor: 1.5 }); y += rest.length * 5.5;
       }
     } else {
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(9);
-      doc.setTextColor(71, 85, 105);
-      doc.text(lines, 16, y, { lineHeightFactor: 1.5 });
-      y += lines.length * 5.5;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(71, 85, 105);
+      doc.text(lines, 16, y, { lineHeightFactor: 1.5 }); y += lines.length * 5.5;
     }
     y += 5;
   }
   return y;
 }
-
 function pdfFooter(doc) {
   const totalPages = doc.internal.getNumberOfPages();
   for (let i = 1; i <= totalPages; i++) {
     doc.setPage(i);
     const pageW = doc.internal.pageSize.getWidth();
     const pageH = doc.internal.pageSize.getHeight();
-    doc.setFillColor(15, 23, 42);
-    doc.rect(0, pageH - 14, pageW, 14, 'F');
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.5);
-    doc.setTextColor(148, 163, 184);
+    doc.setFillColor(15, 23, 42); doc.rect(0, pageH - 14, pageW, 14, 'F');
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(148, 163, 184);
     doc.text(config.empresa || 'Take7', 16, pageH - 5);
     doc.text(`Página ${i} de ${totalPages}`, pageW / 2, pageH - 5, { align: 'center' });
     doc.text(new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }), pageW - 16, pageH - 5, { align: 'right' });
   }
 }
-
 function pdfAssinaturas(doc, nomeContratante, y) {
   const pageW = doc.internal.pageSize.getWidth();
-  y = pdfCheckPage(doc, y, 50);
-  y += 8;
-  doc.setDrawColor(100, 116, 139);
-  doc.setLineWidth(0.4);
-
-  // Local / data
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(100, 116, 139);
+  y = pdfCheckPage(doc, y, 50); y += 8;
+  doc.setDrawColor(100, 116, 139); doc.setLineWidth(0.4);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(100, 116, 139);
   const cidade = (config.endereco || 'Fortaleza — CE').split(',')[0] || 'Fortaleza';
-  doc.text(`${cidade}, ${new Date().toLocaleDateString('pt-BR', {day:'2-digit', month:'long', year:'numeric'})}`, 16, y);
-  y += 14;
-
+  doc.text(`${cidade}, ${new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric'})}`, 16, y); y += 14;
   const lineW = (pageW - 48) / 2;
-  // Contratante
   doc.line(16, y, 16 + lineW, y);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(15, 23, 42);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(15, 23, 42);
   doc.text(nomeContratante || 'CONTRATANTE', 16 + lineW / 2, y + 5, { align: 'center' });
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
-  doc.setTextColor(100, 116, 139);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(100, 116, 139);
   doc.text('Contratante', 16 + lineW / 2, y + 9, { align: 'center' });
-
-  // Contratada
   const x2 = pageW - 16 - lineW;
   doc.line(x2, y, pageW - 16, y);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8.5);
-  doc.setTextColor(15, 23, 42);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(15, 23, 42);
   doc.text(config.empresa || 'Take7', x2 + lineW / 2, y + 5, { align: 'center' });
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
-  doc.setTextColor(100, 116, 139);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(100, 116, 139);
   doc.text('Contratada', x2 + lineW / 2, y + 9, { align: 'center' });
-
   return y + 16;
 }
 
-// ══════════════════════════════════════════════════
-//  PDF: ORÇAMENTO PROFISSIONAL
-// ══════════════════════════════════════════════════
+// ══ PDF ORÇAMENTO ═══════════════════════════════════
 async function pdfOrcamento(id) {
-  const o = orcamentosData.find(x => x.id == id);
-  if (!o) return;
+  const o = orcamentosData.find(x => x.id == id); if (!o) return;
+  if (!clientesData.length) await loadClientes();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const cliente = clientesData.find(c => c.id == o.cliente_id);
-  const numOrc = o.numero ? `Orçamento Nº ${o.numero}` : `Orçamento #${id.slice(-6).toUpperCase()}`;
-
+  const numOrc = o.numero ? `Orçamento Nº ${o.numero}` : `Orçamento #${String(id).slice(-6).toUpperCase()}`;
   let y = pdfHeader(doc, 'PROPOSTA COMERCIAL', numOrc);
-
-  // Dados do cliente
   y = pdfSectionTitle(doc, 'Dados do Cliente', y);
   y = pdfInfoBox(doc, [
     { label: 'Nome / Razão Social', value: cliente?.nome },
     { label: 'Empresa', value: cliente?.empresa || '—' },
     { label: 'Telefone / WhatsApp', value: cliente?.whatsapp || cliente?.telefone || '—' },
     { label: 'E-mail', value: cliente?.email || '—' },
-  ], y);
-  y += 4;
-
-  // Dados do serviço
+  ], y); y += 4;
   y = pdfSectionTitle(doc, 'Serviço Proposto', y);
   y = pdfInfoBox(doc, [
     { label: 'Serviço', value: o.servico },
     { label: 'Status', value: o.status },
-    { label: 'Data da Proposta', value: fmtDate(o.data_orcamento) },
+    // CORREÇÃO: campo "data"
+    { label: 'Data da Proposta', value: fmtDate(o.data) },
     { label: 'Validade da Proposta', value: o.validade ? fmtDate(o.validade) : '30 dias' },
-  ], y);
-  y += 4;
-
-  // Descrição
-  if (o.descricao) {
-    y = pdfTextBlock(doc, 'Descrição Detalhada', o.descricao, y);
-    y += 4;
-  }
-
-  // Valor em destaque
+  ], y); y += 4;
+  if (o.descricao) { y = pdfTextBlock(doc, 'Descrição Detalhada', o.descricao, y); y += 4; }
   y = pdfCheckPage(doc, y, 35);
-  y = pdfValorBox(doc, o.valor, 'Valor Total da Proposta', y);
-  y += 4;
-
-  // Observações / condições
+  y = pdfValorBox(doc, o.valor, 'Valor Total da Proposta', y); y += 4;
   y = pdfCheckPage(doc, y, 40);
   y = pdfSectionTitle(doc, 'Condições Gerais', y);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
-  doc.setTextColor(71, 85, 105);
-  const conds = [
-    '• Esta proposta é válida por 30 dias a partir da data de emissão, salvo indicação em contrário.',
-    '• O início dos serviços está condicionado à assinatura do contrato e ao pagamento do sinal acordado.',
-    '• Serviços adicionais não previstos nesta proposta serão orçados separadamente.',
-    '• Qualquer alteração no escopo poderá implicar em revisão de prazo e valor.',
-  ];
-  conds.forEach(c => {
-    y = pdfCheckPage(doc, y, 7);
-    doc.text(c, 16, y);
-    y += 5.5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(71, 85, 105);
+  ['• Esta proposta é válida por 30 dias a partir da data de emissão, salvo indicação em contrário.',
+   '• O início dos serviços está condicionado à assinatura do contrato e ao pagamento do sinal acordado.',
+   '• Serviços adicionais não previstos nesta proposta serão orçados separadamente.',
+   '• Qualquer alteração no escopo poderá implicar em revisão de prazo e valor.'].forEach(c => {
+    y = pdfCheckPage(doc, y, 7); doc.text(c, 16, y); y += 5.5;
   });
-
   pdfFooter(doc);
-  doc.save(`orcamento-${o.numero || id.slice(-6)}.pdf`);
+  doc.save(`orcamento-${o.numero || String(id).slice(-6)}.pdf`);
   toast('Orçamento PDF gerado!', 'success');
 }
 
-// ══════════════════════════════════════════════════
-//  PDF: CONTRATO PROFISSIONAL
-// ══════════════════════════════════════════════════
+// ══ PDF CONTRATO ════════════════════════════════════
 async function pdfContrato(id) {
-  const c = contratosData.find(x => x.id == id);
-  if (!c) return;
+  const c = contratosData.find(x => x.id == id); if (!c) return;
+  if (!clientesData.length) await loadClientes();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const cliente = clientesData.find(cl => cl.id == c.cliente_id);
-  const numContrato = `Contrato #${id.slice(-8).toUpperCase()}`;
-
+  const numContrato = `Contrato #${String(id).slice(-8).toUpperCase()}`;
   let y = pdfHeader(doc, 'CONTRATO DE PRESTAÇÃO DE SERVIÇOS', numContrato);
-
-  // Qualificação das partes
   y = pdfSectionTitle(doc, 'Qualificação das Partes', y);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(51, 65, 85);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(51, 65, 85);
   const pageW = doc.internal.pageSize.getWidth();
   const contratada = config.empresa || 'Take7';
-  const parteText = `CONTRATANTE: ${cliente?.nome || ''}${cliente?.empresa ? ' — ' + cliente.empresa : ''}${cliente?.email ? ', ' + cliente.email : ''}${cliente?.whatsapp ? ', ' + cliente.whatsapp : ''}.`;
-  const parteText2 = `CONTRATADA: ${contratada}${config.email ? ', ' + config.email : ''}${config.whatsapp ? ', ' + config.whatsapp : ''}${config.endereco ? ', ' + config.endereco : ''}.`;
-  const lines1 = doc.splitTextToSize(parteText, pageW - 32);
-  const lines2 = doc.splitTextToSize(parteText2, pageW - 32);
+  const p1 = `CONTRATANTE: ${cliente?.nome || ''}${cliente?.empresa ? ' — ' + cliente.empresa : ''}${cliente?.email ? ', ' + cliente.email : ''}${cliente?.whatsapp ? ', ' + cliente.whatsapp : ''}.`;
+  const p2 = `CONTRATADA: ${contratada}${config.email ? ', ' + config.email : ''}${config.whatsapp ? ', ' + config.whatsapp : ''}${config.endereco ? ', ' + config.endereco : ''}.`;
+  const lines1 = doc.splitTextToSize(p1, pageW - 32);
+  const lines2 = doc.splitTextToSize(p2, pageW - 32);
   doc.text(lines1, 16, y); y += lines1.length * 5 + 3;
   doc.text(lines2, 16, y); y += lines2.length * 5 + 6;
-
-  // Dados do contrato
   y = pdfSectionTitle(doc, 'Objeto e Condições', y);
   y = pdfInfoBox(doc, [
     { label: 'Tipo de Serviço', value: c.tipo || c.servico },
@@ -2136,275 +1571,166 @@ async function pdfContrato(id) {
     { label: 'Valor Total', value: fmtMoney(c.valor) },
     { label: 'Data de Início', value: fmtDate(c.data_inicio) },
     { label: 'Data de Término / Evento', value: fmtDate(c.data_fim) },
-  ], y);
-  y += 6;
-
-  // Cláusulas
+  ], y); y += 6;
   if (c.observacoes) {
     y = pdfCheckPage(doc, y, 20);
     y = pdfSectionTitle(doc, 'Cláusulas Contratuais', y);
-    y = pdfClausulas(doc, c.observacoes, y);
-    y += 4;
+    y = pdfClausulas(doc, c.observacoes, y); y += 4;
   }
-
-  // Valor destacado
   y = pdfCheckPage(doc, y, 35);
-  y = pdfValorBox(doc, c.valor, 'Valor Total do Contrato', y);
-  y += 6;
-
-  // Foro
+  y = pdfValorBox(doc, c.valor, 'Valor Total do Contrato', y); y += 6;
   y = pdfCheckPage(doc, y, 20);
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(8.5);
-  doc.setTextColor(100, 116, 139);
-  const foroText = 'As partes elegem o foro da Comarca de Fortaleza — CE para dirimir quaisquer litígios decorrentes deste instrumento, renunciando a qualquer outro, por mais privilegiado que seja.';
-  const foroLines = doc.splitTextToSize(foroText, pageW - 32);
-  doc.text(foroLines, 16, y);
-  y += foroLines.length * 5 + 6;
-
-  // Assinaturas
+  doc.setFont('helvetica', 'italic'); doc.setFontSize(8.5); doc.setTextColor(100, 116, 139);
+  const foroLines = doc.splitTextToSize('As partes elegem o foro da Comarca de Fortaleza — CE para dirimir quaisquer litígios decorrentes deste instrumento.', pageW - 32);
+  doc.text(foroLines, 16, y); y += foroLines.length * 5 + 6;
   y = pdfAssinaturas(doc, cliente?.nome, y);
-
   pdfFooter(doc);
   doc.save(`contrato-${(cliente?.nome || 'contrato').replace(/\s+/g, '-').toLowerCase()}.pdf`);
   toast('Contrato PDF gerado!', 'success');
 }
 
-// ══════════════════════════════════════════════════
-//  PDF: ORDEM DE SERVIÇO PROFISSIONAL
-// ══════════════════════════════════════════════════
+// ══ PDF ORDEM DE SERVIÇO ════════════════════════════
 async function pdfOrdem(id) {
-  const o = ordensData.find(x => x.id == id);
-  if (!o) return;
+  const o = ordensData.find(x => x.id == id); if (!o) return;
+  if (!clientesData.length) await loadClientes();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const cliente = clientesData.find(c => c.id == o.cliente_id);
-  const numOS = `OS #${id.slice(-8).toUpperCase()}`;
-
+  const numOS = `OS #${String(id).slice(-8).toUpperCase()}`;
   let y = pdfHeader(doc, 'ORDEM DE SERVIÇO', numOS);
   const pageW = doc.internal.pageSize.getWidth();
-
-  // Status badge visual
-  const statusColors = {
-    'Aberta': [254,243,199], 'Em andamento': [219,234,254],
-    'Concluída': [209,250,229], 'Cancelada': [254,226,226]
-  };
+  const statusColors = { 'Aberta':[254,243,199], 'Em andamento':[219,234,254], 'Concluída':[209,250,229], 'Cancelada':[254,226,226] };
   const sc = statusColors[o.status] || [241,245,249];
-  doc.setFillColor(...sc);
-  doc.roundedRect(pageW - 70, 56, 54, 12, 3, 3, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
-  doc.setTextColor(15, 23, 42);
+  doc.setFillColor(...sc); doc.roundedRect(pageW - 70, 56, 54, 12, 3, 3, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(15, 23, 42);
   doc.text((o.status || 'Aberta').toUpperCase(), pageW - 43, 64, { align: 'center' });
-
-  // Dados do cliente
   y = pdfSectionTitle(doc, 'Dados do Cliente', y);
   y = pdfInfoBox(doc, [
     { label: 'Cliente', value: cliente?.nome },
     { label: 'Empresa', value: cliente?.empresa || '—' },
     { label: 'WhatsApp', value: cliente?.whatsapp || '—' },
     { label: 'E-mail', value: cliente?.email || '—' },
-  ], y);
-  y += 4;
-
-  // Dados da OS
+  ], y); y += 4;
   y = pdfSectionTitle(doc, 'Detalhes da Ordem de Serviço', y);
   y = pdfInfoBox(doc, [
     { label: 'Serviço', value: o.servico },
     { label: 'Status', value: o.status || 'Aberta' },
     { label: 'Prazo de Entrega', value: fmtDate(o.prazo) },
     { label: 'Data de Abertura', value: new Date().toLocaleDateString('pt-BR') },
-  ], y);
-  y += 4;
-
-  // Descrição
-  if (o.descricao) {
-    y = pdfTextBlock(doc, 'Descrição dos Serviços', o.descricao, y);
-    y += 4;
-  }
-
-  // Termos
+  ], y); y += 4;
+  if (o.descricao) { y = pdfTextBlock(doc, 'Descrição dos Serviços', o.descricao, y); y += 4; }
   y = pdfCheckPage(doc, y, 60);
   y = pdfSectionTitle(doc, 'Termos e Condições', y);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
-  doc.setTextColor(71, 85, 105);
-  const termos = [
-    '• Os serviços serão executados conforme descrito nesta ordem, dentro do prazo estipulado.',
-    '• Alterações no escopo deverão ser formalizadas em nova OS ou aditivo, podendo alterar prazo e valor.',
-    '• O CONTRATANTE deverá fornecer acesso e materiais necessários dentro do prazo acordado.',
-    '• A aprovação final é de responsabilidade do CONTRATANTE, que deverá dar retorno em até 48 horas.',
-    '• Esta OS está vinculada ao contrato vigente entre as partes, sendo regida pelos mesmos termos.',
-  ];
-  termos.forEach(t => {
-    y = pdfCheckPage(doc, y, 7);
-    doc.text(t, 16, y);
-    y += 5.5;
-  });
-  y += 4;
-
-  // Aceite / aprovação
-  y = pdfCheckPage(doc, y, 40);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(71, 85, 105);
+  ['• Os serviços serão executados conforme descrito nesta ordem, dentro do prazo estipulado.',
+   '• Alterações no escopo deverão ser formalizadas em nova OS ou aditivo.',
+   '• O CONTRATANTE deverá fornecer acesso e materiais necessários dentro do prazo acordado.',
+   '• A aprovação final é de responsabilidade do CONTRATANTE, com retorno em até 48 horas.'].forEach(t => {
+    y = pdfCheckPage(doc, y, 7); doc.text(t, 16, y); y += 5.5;
+  }); y += 4;
+  y = pdfCheckPage(doc, y, 40); y += 6;
   const lw = (pageW - 48) / 2;
-  y += 6;
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
-  doc.setTextColor(100, 116, 139);
-  doc.text('Aprovado pelo cliente:', 16, y);
-  y += 12;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(100, 116, 139);
+  doc.text('Aprovado pelo cliente:', 16, y); y += 12;
   doc.setDrawColor(100, 116, 139);
   doc.line(16, y, 16 + lw, y);
   doc.text(cliente?.nome || 'Cliente', 16 + lw / 2, y + 5, { align: 'center' });
   doc.line(pageW - 16 - lw, y, pageW - 16, y);
   doc.text('Data de Aprovação: ___/___/______', pageW - 16 - lw + 5, y + 5);
-
   pdfFooter(doc);
-  doc.save(`os-${id.slice(-8)}.pdf`);
+  doc.save(`os-${String(id).slice(-8)}.pdf`);
   toast('OS PDF gerada!', 'success');
 }
 
-// ══════════════════════════════════════════════════
-//  PDF: RECIBO / NF AUXILIAR
-// ══════════════════════════════════════════════════
+// ══ PDF RECIBO ══════════════════════════════════════
 async function pdfRecibo(id) {
-  const f = finData.find(x => x.id == id);
-  if (!f) return;
+  const f = finData.find(x => x.id == id); if (!f) return;
+  if (!clientesData.length) await loadClientes();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const cliente = clientesData.find(c => c.id == f.cliente_id);
-  const numRecibo = `REC-${id.slice(-8).toUpperCase()}`;
-
+  const numRecibo = `REC-${String(id).slice(-8).toUpperCase()}`;
   let y = pdfHeader(doc, 'RECIBO / NOTA AUXILIAR DE SERVIÇO', numRecibo);
   const pageW = doc.internal.pageSize.getWidth();
-
-  // Status pago
   if (f.status === 'Pago') {
-    doc.setFillColor(209, 250, 229);
-    doc.roundedRect(pageW - 58, 56, 42, 12, 3, 3, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(6, 95, 70);
+    doc.setFillColor(209, 250, 229); doc.roundedRect(pageW - 58, 56, 42, 12, 3, 3, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(6, 95, 70);
     doc.text('✓ PAGO', pageW - 37, 64, { align: 'center' });
   } else {
-    doc.setFillColor(254, 243, 199);
-    doc.roundedRect(pageW - 68, 56, 52, 12, 3, 3, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(146, 64, 14);
+    doc.setFillColor(254, 243, 199); doc.roundedRect(pageW - 68, 56, 52, 12, 3, 3, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(146, 64, 14);
     doc.text('PENDENTE', pageW - 42, 64, { align: 'center' });
   }
-
-  // Emitente
   y = pdfSectionTitle(doc, 'Dados do Prestador de Serviços', y);
   y = pdfInfoBox(doc, [
     { label: 'Razão Social / Nome', value: config.empresa || 'Take7' },
     { label: 'E-mail', value: config.email || '—' },
     { label: 'WhatsApp / Telefone', value: config.whatsapp || '—' },
     { label: 'Endereço', value: config.endereco || '—' },
-  ], y);
-  y += 4;
-
-  // Tomador
+  ], y); y += 4;
   y = pdfSectionTitle(doc, 'Dados do Tomador (Cliente)', y);
   y = pdfInfoBox(doc, [
     { label: 'Nome / Razão Social', value: cliente?.nome || '—' },
     { label: 'Empresa', value: cliente?.empresa || '—' },
     { label: 'E-mail', value: cliente?.email || '—' },
     { label: 'WhatsApp', value: cliente?.whatsapp || '—' },
-  ], y);
-  y += 4;
-
-  // Dados do serviço
+  ], y); y += 4;
   y = pdfSectionTitle(doc, 'Discriminação do Serviço', y);
   y = pdfInfoBox(doc, [
     { label: 'Descrição do Serviço', value: f.descricao },
     { label: 'Data de Vencimento', value: fmtDate(f.vencimento) },
     { label: 'Status do Pagamento', value: f.status },
     { label: 'Data de Emissão', value: new Date().toLocaleDateString('pt-BR') },
-  ], y);
-  y += 6;
-
-  // Valor em grande destaque
-  y = pdfValorBox(doc, f.valor, 'Valor Total dos Serviços', y);
-  y += 6;
-
-  // Valor por extenso (simplificado)
+  ], y); y += 6;
+  y = pdfValorBox(doc, f.valor, 'Valor Total dos Serviços', y); y += 6;
   y = pdfCheckPage(doc, y, 20);
-  doc.setFillColor(248, 250, 252);
-  doc.roundedRect(16, y, pageW - 32, 14, 3, 3, 'F');
-  doc.setDrawColor(226, 232, 240);
-  doc.roundedRect(16, y, pageW - 32, 14, 3, 3, 'S');
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
-  doc.setTextColor(100, 116, 139);
+  doc.setFillColor(248, 250, 252); doc.roundedRect(16, y, pageW - 32, 14, 3, 3, 'F');
+  doc.setDrawColor(226, 232, 240); doc.roundedRect(16, y, pageW - 32, 14, 3, 3, 'S');
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(100, 116, 139);
   doc.text('VALOR POR EXTENSO:', 22, y + 6);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(15, 23, 42);
+  doc.setFont('helvetica', 'bold'); doc.setTextColor(15, 23, 42);
   doc.text(valorPorExtenso(parseFloat(f.valor || 0)), 22, y + 11);
   y += 20;
-
-  // Declaração
   y = pdfCheckPage(doc, y, 30);
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(8.5);
-  doc.setTextColor(100, 116, 139);
+  doc.setFont('helvetica', 'italic'); doc.setFontSize(8.5); doc.setTextColor(100, 116, 139);
   const decl = `Declaro ter recebido do(a) ${cliente?.nome || 'CONTRATANTE'} a importância de ${fmtMoney(f.valor)} referente aos serviços de ${f.descricao}, dando plena quitação do valor acima especificado.`;
   const declLines = doc.splitTextToSize(decl, pageW - 32);
-  doc.text(declLines, 16, y);
-  y += declLines.length * 5 + 10;
-
-  // Aviso NF
+  doc.text(declLines, 16, y); y += declLines.length * 5 + 10;
   y = pdfCheckPage(doc, y, 20);
-  doc.setFillColor(239, 246, 255);
-  doc.roundedRect(16, y, pageW - 32, 16, 3, 3, 'F');
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
-  doc.setTextColor(37, 99, 235);
+  doc.setFillColor(239, 246, 255); doc.roundedRect(16, y, pageW - 32, 16, 3, 3, 'F');
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(37, 99, 235);
   doc.text('⚠  Este documento é um recibo auxiliar e não substitui Nota Fiscal Eletrônica (NF-e / NFS-e).', 22, y + 6);
   doc.text('Para emissão de NF-e oficial, acesse o portal da prefeitura ou utilize software fiscal homologado.', 22, y + 12);
   y += 22;
-
-  // Assinatura
-  y = pdfCheckPage(doc, y, 30);
-  y += 4;
+  y = pdfCheckPage(doc, y, 30); y += 4;
   doc.setDrawColor(100, 116, 139);
   const lw2 = (pageW - 48) / 2;
   doc.line(16, y, 16 + lw2, y);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
-  doc.setTextColor(100, 116, 139);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(100, 116, 139);
   doc.text(config.empresa || 'Take7', 16 + lw2 / 2, y + 5, { align: 'center' });
   doc.text('Prestador de Serviços', 16 + lw2 / 2, y + 9, { align: 'center' });
-
   pdfFooter(doc);
-  doc.save(`recibo-${id.slice(-8)}.pdf`);
-  toast('Recibo/NF Auxiliar gerado!', 'success');
+  doc.save(`recibo-${String(id).slice(-8)}.pdf`);
+  toast('Recibo gerado!', 'success');
 }
 
-// ══════════════════════════════════════════════════
-//  HELPER: VALOR POR EXTENSO
-// ══════════════════════════════════════════════════
+// ══ VALOR POR EXTENSO ═══════════════════════════════
 function valorPorExtenso(valor) {
   const unidades = ['','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
   const dezenas = ['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
   const centenas = ['','cem','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
   function grupo(n) {
-    if (n === 0) return '';
-    if (n === 100) return 'cem';
-    let r = '';
-    const c = Math.floor(n / 100); const d = Math.floor((n % 100) / 10); const u = n % 10;
-    if (c) r += centenas[c];
-    if (c && (d || u)) r += ' e ';
+    if (n === 0) return ''; if (n === 100) return 'cem';
+    let r = ''; const c = Math.floor(n/100), d = Math.floor((n%100)/10), u = n%10;
+    if (c) r += centenas[c]; if (c && (d||u)) r += ' e ';
     if (d >= 2) { r += dezenas[d]; if (u) r += ' e ' + unidades[u]; }
-    else if (d === 1) r += unidades[10 + u];
+    else if (d === 1) r += unidades[10+u];
     else if (u) r += unidades[u];
     return r;
   }
   if (!valor || isNaN(valor)) return 'valor inválido';
-  const inteiro = Math.floor(valor);
-  const cents = Math.round((valor - inteiro) * 100);
-  let ext = '';
-  const mil = Math.floor(inteiro / 1000); const resto = inteiro % 1000;
+  const inteiro = Math.floor(valor); const cents = Math.round((valor - inteiro) * 100);
+  let ext = ''; const mil = Math.floor(inteiro/1000), resto = inteiro%1000;
   if (mil) ext += (mil === 1 ? 'mil' : grupo(mil) + ' mil');
   if (mil && resto) ext += ' e ';
   if (resto) ext += grupo(resto);
@@ -2413,22 +1739,11 @@ function valorPorExtenso(valor) {
   if (cents) ext += ' e ' + grupo(cents) + (cents === 1 ? ' centavo' : ' centavos');
   return ext.charAt(0).toUpperCase() + ext.slice(1);
 }
-
-// ══════════════════════════════════════════════════
-//  SQL HELPER TOAST
-// ══════════════════════════════════════════════════
-// Show SQL creation reminder
-setTimeout(() => {
-  if (!sb) return;
-  const key = 'take7_sql_shown';
-  if (localStorage.getItem(key)) return;
-  localStorage.setItem(key, '1');
-  toast('Crie as tabelas no Supabase se ainda não existirem. Veja o README.', 'info');
-}, 2000);
 </script>
 
-<!-- SQL README COMMENT
-Execute no Supabase SQL Editor:
+<!--
+=== SQL PARA CRIAR AS TABELAS NO SUPABASE ===
+Execute no SQL Editor do Supabase:
 
 create table if not exists clientes (
   id uuid primary key default gen_random_uuid(),
@@ -2467,8 +1782,6 @@ create table if not exists contratos (
   observacoes text,
   created_at timestamptz default now()
 );
--- Se a tabela ja existir, adicione a coluna tipo:
--- alter table contratos add column if not exists tipo text;
 
 create table if not exists ordens (
   id uuid primary key default gen_random_uuid(),
@@ -2490,12 +1803,12 @@ create table if not exists financeiro (
   created_at timestamptz default now()
 );
 
--- Enable RLS (optional for personal use, disable for simplicity):
--- alter table clientes disable row level security;
--- alter table orcamentos disable row level security;
--- alter table contratos disable row level security;
--- alter table ordens disable row level security;
--- alter table financeiro disable row level security;
+-- IMPORTANTE: Desativar RLS para uso pessoal/interno
+alter table clientes disable row level security;
+alter table orcamentos disable row level security;
+alter table contratos disable row level security;
+alter table ordens disable row level security;
+alter table financeiro disable row level security;
 -->
 </body>
 </html>
