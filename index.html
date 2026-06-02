@@ -492,10 +492,10 @@
         </div>
         <input type="file" id="logo-input" accept="image/*" style="display:none" onchange="handleLogo(this)">
         <div class="form-grid">
-          <div class="form-group"><label>Nome da Empresa</label><input type="text" id="cfg-empresa" placeholder="Take7 Agência"></div>
+          <div class="form-group"><label>Nome da Empresa</label><input type="text" id="cfg-empresa" placeholder="Visual Take7 Produções"></div>
           <div class="form-group"><label>WhatsApp</label><input type="text" id="cfg-whatsapp" placeholder="(85) 99999-9999"></div>
           <div class="form-group span-2"><label>E-mail</label><input type="email" id="cfg-email" placeholder="contato@take7.com.br"></div>
-          <div class="form-group span-2"><label>Endereço</label><input type="text" id="cfg-endereco" placeholder="Rua Exemplo, 123 - Fortaleza, CE"></div>
+          <div class="form-group span-2"><label>Cidade / Endereço (usado no contrato)</label><input type="text" id="cfg-endereco" placeholder="Ananindeua, Pará"></div>
         </div>
         <div class="form-actions" style="margin-top:20px;padding-top:16px">
           <button class="btn btn-primary" onclick="saveConfig()">Salvar Configurações</button>
@@ -687,7 +687,6 @@ let sb = null;
 (async function initSupabase() {
   try {
     sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    // Testa conexão
     const { error } = await sb.from('clientes').select('id').limit(1);
     if (error && error.code !== 'PGRST116') throw error;
     loadConfig();
@@ -881,11 +880,9 @@ async function deleteCliente(id) {
 }
 
 // ══ ORÇAMENTOS ═════════════════════════════════════
-// CORREÇÃO: coluna é "data" no banco (não data_orcamento)
 let orcamentosData = [];
 async function loadOrcamentos() {
   if (!sb) return;
-  // Garante que clientesData está carregado para os PDFs
   if (!clientesData.length) await loadClientes();
   populateClienteSelect('orcamento-cliente');
   const { data, error } = await sb.from('orcamentos').select('*, clientes(nome)').order('created_at', { ascending: false });
@@ -921,7 +918,6 @@ function editOrcamento(id) {
   document.getElementById('orcamento-servico').value = o.servico || '';
   document.getElementById('orcamento-descricao').value = o.descricao || '';
   document.getElementById('orcamento-valor').value = o.valor || '';
-  // CORREÇÃO: campo "data" (não data_orcamento)
   document.getElementById('orcamento-data').value = o.data ? o.data.split('T')[0] : '';
   document.getElementById('orcamento-status').value = o.status || 'Pendente';
   document.getElementById('orcamento-validade').value = o.validade ? o.validade.split('T')[0] : '';
@@ -932,14 +928,12 @@ async function saveOrcamento() {
   const cliente_id = document.getElementById('orcamento-cliente').value;
   const servico = document.getElementById('orcamento-servico').value.trim();
   const valor = document.getElementById('orcamento-valor').value;
-  // CORREÇÃO: lê de "orcamento-data"
   const data_val = document.getElementById('orcamento-data').value;
   if (!cliente_id || !servico || !valor || !data_val) { toast('Preencha os campos obrigatórios', 'error'); return; }
   const payload = {
     cliente_id, servico,
     descricao: document.getElementById('orcamento-descricao').value,
     valor: parseFloat(valor),
-    // CORREÇÃO: salva como "data" (nome da coluna no banco)
     data: data_val,
     status: document.getElementById('orcamento-status').value,
     validade: document.getElementById('orcamento-validade').value || null
@@ -1205,7 +1199,6 @@ function handleLogo(input) {
 async function populateClienteSelect(selectId) {
   const sel = document.getElementById(selectId); if (!sel) return;
   const current = sel.value;
-  // Usa clientesData em cache se disponível, senão busca
   let clientes = clientesData;
   if (!clientes.length && sb) {
     const { data } = await sb.from('clientes').select('id, nome').order('nome');
@@ -1222,140 +1215,152 @@ async function populateClienteSelect(selectId) {
 
 // ══ CLÁUSULAS AUTOMÁTICAS ══════════════════════════
 const CLAUSULAS = {
-  'Fotografia de Eventos': `CLÁUSULA 1 — DO OBJETO
-A CONTRATADA prestará serviços de fotografia profissional para o evento descrito neste contrato, com cobertura completa durante o período acordado, entregando imagens tratadas digitalmente em alta resolução.
+  'Fotografia de Eventos': `CLÁUSULA 1ª – DO OBJETO
+O presente contrato tem por objeto a prestação de serviços de cobertura fotográfica e audiovisual do evento descrito neste contrato, com cobertura completa durante o período acordado, entregando imagens tratadas digitalmente em alta resolução.
 
-CLÁUSULA 2 — DA COBERTURA
-A cobertura fotográfica incluirá todos os momentos principais do evento, conforme briefing acordado previamente entre as partes. A CONTRATADA utilizará equipamento profissional e realizará backup das imagens no mesmo dia.
+CLÁUSULA 2ª – DA COBERTURA
+A cobertura fotográfica incluirá todos os momentos principais do evento. A CONTRATADA utilizará equipamento profissional e realizará backup das imagens no mesmo dia.
 
-CLÁUSULA 3 — DA ENTREGA
-As imagens finais editadas serão entregues em até 30 (trinta) dias corridos após a data do evento, através de galeria digital online ou pen drive, conforme acordado. O número mínimo de fotos entregues será de 100 imagens por hora de cobertura.
+CLÁUSULA 3ª – DA ENTREGA
+As imagens finais editadas serão entregues em até 30 (trinta) dias corridos após a data do evento, através de galeria digital online. O número mínimo de fotos entregues será de 100 imagens por hora de cobertura.
 
-CLÁUSULA 4 — DO PAGAMENTO
+CLÁUSULA 4ª – DO PAGAMENTO
 O valor total deverá ser quitado conforme a forma de pagamento acordada. Em caso de cancelamento com antecedência inferior a 7 dias, o valor do sinal (50%) não será reembolsado.
 
-CLÁUSULA 5 — DO CANCELAMENTO E REAGENDAMENTO
+CLÁUSULA 5ª – DO CANCELAMENTO E REAGENDAMENTO
 O reagendamento deverá ser solicitado com no mínimo 15 dias de antecedência, sem custos adicionais. Cancelamentos com menos de 48 horas implicam em cobrança integral do serviço.
 
-CLÁUSULA 6 — DOS DIREITOS AUTORAIS
-A CONTRATADA mantém os direitos autorais sobre as imagens produzidas, podendo utilizá-las em seu portfólio, redes sociais e materiais de divulgação, salvo restrição expressa do CONTRATANTE formalizada neste instrumento.
+CLÁUSULA 6ª – DOS DIREITOS AUTORAIS
+A CONTRATADA mantém os direitos autorais sobre as imagens produzidas, podendo utilizá-las em seu portfólio e materiais de divulgação, salvo restrição expressa do CONTRATANTE.
 
-CLÁUSULA 7 — DAS CONDIÇÕES ADVERSAS
+CLÁUSULA 7ª – DAS CONDIÇÕES ADVERSAS
 A CONTRATADA não se responsabiliza por limitações técnicas decorrentes de condições climáticas adversas, iluminação inadequada do local ou impedimentos impostos por terceiros.`,
 
-  'Fotografia de Casamento': `CLÁUSULA 1 — DO OBJETO
-A CONTRATADA prestará serviços de fotografia profissional para o casamento civil e/ou religioso do CONTRATANTE, conforme data, horário e local definidos neste contrato, com cobertura completa desde os preparativos até a festa.
+  'Fotografia de Casamento': `CLÁUSULA 1ª – DO OBJETO
+O presente contrato tem por objeto a prestação de serviços de fotografia profissional para o casamento civil e/ou religioso do CONTRATANTE, com cobertura completa desde os preparativos até a festa.
 
-CLÁUSULA 2 — DA COBERTURA COMPLETA
+CLÁUSULA 2ª – DA COBERTURA COMPLETA
 A cobertura incluirá: preparativos da noiva e/ou noivo, cerimônia completa, sessão de fotos dos noivos, familiares e convidados, e recepção/festa.
 
-CLÁUSULA 3 — DA ENTREGA
+CLÁUSULA 3ª – DA ENTREGA
 As imagens finais serão entregues em até 60 (sessenta) dias corridos após a data do casamento, em galeria digital de alta resolução com no mínimo 400 fotografias tratadas.
 
-CLÁUSULA 4 — DO PAGAMENTO E SINAL
+CLÁUSULA 4ª – DO PAGAMENTO E SINAL
 Para reserva da data, é obrigatório o pagamento de sinal de 50% do valor total. O saldo restante deverá ser quitado até a véspera do evento. O sinal não é reembolsável em caso de desistência.
 
-CLÁUSULA 5 — DA RESERVA DE DATA
+CLÁUSULA 5ª – DA RESERVA DE DATA
 A data fica reservada exclusivamente para o CONTRATANTE somente após o pagamento do sinal e assinatura deste contrato.
 
-CLÁUSULA 6 — DO CANCELAMENTO
+CLÁUSULA 6ª – DO CANCELAMENTO
 Em caso de cancelamento pelo CONTRATANTE com até 90 dias de antecedência, será reembolsado 50% do sinal. Cancelamentos com menos de 90 dias não geram reembolso.
 
-CLÁUSULA 7 — DOS DIREITOS AUTORAIS E USO DAS IMAGENS
-A CONTRATADA detém os direitos autorais das fotografias, podendo utilizá-las em portfólio, premiações e divulgação profissional. O CONTRATANTE recebe licença de uso pessoal irrestrito das imagens.`,
+CLÁUSULA 7ª – DOS DIREITOS AUTORAIS E USO DAS IMAGENS
+A CONTRATADA detém os direitos autorais das fotografias, podendo utilizá-las em portfólio e divulgação profissional. O CONTRATANTE recebe licença de uso pessoal irrestrito das imagens.`,
 
-  'Fotografia Infantil': `CLÁUSULA 1 — DO OBJETO
+  'Fotografia Infantil': `CLÁUSULA 1ª – DO OBJETO
 A CONTRATADA realizará ensaio fotográfico infantil conforme tema, data, horário e local acordados, com entrega de imagens tratadas profissionalmente em alta resolução.
 
-CLÁUSULA 2 — DO ENSAIO
-O ensaio terá duração máxima de 2 horas. O ambiente será preparado de forma segura e aconchegante para a criança.
+CLÁUSULA 2ª – DO PACOTE CONTRATADO
+O evento objeto deste contrato será realizado na data e local acordados entre as partes, com cobertura máxima de 04 (quatro) horas, incluindo captação de fotografias, filmagens e takes individuais.
 
-CLÁUSULA 3 — DA ENTREGA
-As imagens finais editadas serão entregues em até 21 (vinte e um) dias corridos após a realização do ensaio, contendo no mínimo 30 fotografias tratadas.
+CLÁUSULA 3ª – DA ENTREGA
+As imagens finais editadas serão entregues em até 15 (quinze) dias úteis após a realização do ensaio, em formato digital de alta resolução.
 
-CLÁUSULA 4 — DO REAGENDAMENTO
-Caso a criança esteja doente no dia do ensaio, o CONTRATANTE poderá reagendar sem custos adicionais, com aviso de no mínimo 24 horas de antecedência. Será permitido um reagendamento gratuito.
+CLÁUSULA 4ª – DO REAGENDAMENTO
+Caso a criança esteja doente no dia do ensaio, o CONTRATANTE poderá reagendar sem custos adicionais, com aviso de no mínimo 24 horas de antecedência.
 
-CLÁUSULA 5 — DO PAGAMENTO
+CLÁUSULA 5ª – DO PAGAMENTO
 O pagamento deverá ser realizado conforme a forma acordada. Em caso de cancelamento definitivo após a reserva da data, o valor pago a título de sinal não será reembolsado.
 
-CLÁUSULA 6 — DOS DIREITOS DE IMAGEM
-Os pais ou responsáveis autorizam expressamente o uso das imagens do menor pela CONTRATADA para fins de portfólio e divulgação profissional.`,
+CLÁUSULA 6ª – DOS DIREITOS DE USO DE IMAGEM
+A CONTRATANTE autoriza, de forma gratuita, definitiva e irrevogável, o uso das imagens produzidas pela CONTRATADA para fins de portfólio, divulgação institucional e publicitária, em mídias digitais ou impressas.
 
-  'Ensaio Pré-Wedding': `CLÁUSULA 1 — DO OBJETO
+CLÁUSULA 7ª – DO CANCELAMENTO
+Em caso de cancelamento por iniciativa da CONTRATANTE, não haverá devolução dos valores pagos. Caso o cancelamento ocorra por iniciativa da CONTRATADA, esta se compromete a realizar a devolução integral dos valores pagos.`,
+
+  'Ensaio Pré-Wedding': `CLÁUSULA 1ª – DO OBJETO
 A CONTRATADA realizará ensaio fotográfico pré-wedding do casal CONTRATANTE, conforme roteiro, locações, data e horários definidos neste instrumento.
 
-CLÁUSULA 2 — DO PLANEJAMENTO
+CLÁUSULA 2ª – DO PLANEJAMENTO
 As locações, figurinos e conceito do ensaio serão definidos em reunião prévia com no mínimo 15 dias de antecedência.
 
-CLÁUSULA 3 — DA DURAÇÃO E ENTREGA
+CLÁUSULA 3ª – DA DURAÇÃO E ENTREGA
 O ensaio terá duração de até 3 horas em até 2 locações. As imagens finais editadas, em número mínimo de 60 fotografias em alta resolução, serão entregues em até 30 dias após a realização do ensaio.
 
-CLÁUSULA 4 — DO PAGAMENTO
+CLÁUSULA 4ª – DO PAGAMENTO
 O pagamento integral deverá ser realizado até a data do ensaio. Em caso de cancelamento com menos de 7 dias de antecedência, o valor não será reembolsado.
 
-CLÁUSULA 5 — DAS CONDIÇÕES CLIMÁTICAS
+CLÁUSULA 5ª – DAS CONDIÇÕES CLIMÁTICAS
 Em caso de chuva que inviabilize o ensaio externo, as partes deverão reagendar sem custos adicionais.
 
-CLÁUSULA 6 — DOS DIREITOS AUTORAIS
-A CONTRATADA mantém os direitos autorais sobre as imagens, podendo utilizá-las em portfólio e divulgação.`,
+CLÁUSULA 6ª – DOS DIREITOS AUTORAIS
+A CONTRATADA mantém os direitos autorais sobre as imagens, podendo utilizá-las em portfólio e divulgação.
 
-  'Criação de Site': `CLÁUSULA 1 — DO OBJETO
+CLÁUSULA 7ª – DO CANCELAMENTO
+Em caso de cancelamento por iniciativa da CONTRATANTE, não haverá devolução dos valores pagos. Caso o cancelamento ocorra por iniciativa da CONTRATADA, esta se compromete à devolução integral dos valores pagos.`,
+
+  'Criação de Site': `CLÁUSULA 1ª – DO OBJETO
 A CONTRATADA desenvolverá website profissional para o CONTRATANTE, conforme escopo, layout e funcionalidades detalhados no briefing anexo a este contrato.
 
-CLÁUSULA 2 — DO ESCOPO E FUNCIONALIDADES
+CLÁUSULA 2ª – DO ESCOPO E FUNCIONALIDADES
 O projeto inclui: criação de layout personalizado, desenvolvimento responsivo, integração de formulário de contato, configuração de SEO básico e treinamento de uso do painel administrativo.
 
-CLÁUSULA 3 — DO PRAZO DE ENTREGA
-O prazo de entrega é de até 30 (trinta) dias corridos após o recebimento de todos os materiais necessários (textos, imagens, logotipo e credenciais de hospedagem).
+CLÁUSULA 3ª – DO PRAZO DE ENTREGA
+O prazo de entrega é de até 30 (trinta) dias corridos após o recebimento de todos os materiais necessários.
 
-CLÁUSULA 4 — DAS REVISÕES
+CLÁUSULA 4ª – DAS REVISÕES
 Estão incluídas até 3 (três) rodadas de revisão de layout e conteúdo. Revisões adicionais serão cobradas à parte.
 
-CLÁUSULA 5 — DO PAGAMENTO
+CLÁUSULA 5ª – DO PAGAMENTO
 O pagamento será realizado em duas parcelas: 50% na assinatura do contrato e 50% na entrega final do projeto.
 
-CLÁUSULA 6 — DA HOSPEDAGEM E DOMÍNIO
+CLÁUSULA 6ª – DA HOSPEDAGEM E DOMÍNIO
 Os custos de hospedagem e registro de domínio são de responsabilidade do CONTRATANTE, salvo disposição expressa em contrário.
 
-CLÁUSULA 7 — DA GARANTIA
+CLÁUSULA 7ª – DA GARANTIA
 A CONTRATADA oferece garantia técnica de 90 dias contra falhas de programação após a entrega final.`,
 
-  'Gerenciamento de Redes Sociais': `CLÁUSULA 1 — DO OBJETO
+  'Gerenciamento de Redes Sociais': `CLÁUSULA 1ª – DO OBJETO
 A CONTRATADA prestará serviços de gerenciamento e gestão de redes sociais do CONTRATANTE, incluindo criação de conteúdo, publicação, monitoramento e relatórios de desempenho.
 
-CLÁUSULA 2 — DOS SERVIÇOS INCLUÍDOS
+CLÁUSULA 2ª – DOS SERVIÇOS INCLUÍDOS
 O pacote contratado inclui: criação de artes e legendas para publicações, agendamento e publicação de posts, resposta a comentários em dias úteis e relatório mensal de desempenho.
 
-CLÁUSULA 3 — DA APROVAÇÃO DE CONTEÚDO
+CLÁUSULA 3ª – DA APROVAÇÃO DE CONTEÚDO
 Todo conteúdo será submetido ao CONTRATANTE para aprovação com até 3 dias de antecedência. A ausência de resposta em até 24 horas será interpretada como aprovação tácita.
 
-CLÁUSULA 4 — DO PRAZO E RENOVAÇÃO
+CLÁUSULA 4ª – DO PRAZO E RENOVAÇÃO
 O contrato tem vigência mínima de 3 (três) meses, renovando-se automaticamente por igual período, salvo comunicação de rescisão com 30 dias de antecedência.
 
-CLÁUSULA 5 — DO PAGAMENTO
+CLÁUSULA 5ª – DO PAGAMENTO
 O pagamento será realizado mensalmente. O atraso superior a 10 dias implica suspensão dos serviços e multa de 2% sobre o valor mensal por dia de atraso.
 
-CLÁUSULA 6 — DOS RESULTADOS
-A CONTRATADA não garante resultados específicos de crescimento, alcance ou conversão, pois tais métricas dependem de fatores externos e do próprio algoritmo das plataformas.`,
+CLÁUSULA 6ª – DOS RESULTADOS
+A CONTRATADA não garante resultados específicos de crescimento, alcance ou conversão, pois tais métricas dependem de fatores externos e do próprio algoritmo das plataformas.
 
-  'Outro': `CLÁUSULA 1 — DO OBJETO
+CLÁUSULA 7ª – DO CANCELAMENTO
+Em caso de cancelamento por iniciativa da CONTRATANTE, não haverá devolução dos valores pagos referentes ao mês em curso.`,
+
+  'Outro': `CLÁUSULA 1ª – DO OBJETO
 A CONTRATADA prestará os serviços descritos neste contrato, conforme acordado entre as partes.
 
-CLÁUSULA 2 — DO PRAZO
+CLÁUSULA 2ª – DO PRAZO
 Os serviços serão prestados no período definido neste contrato, podendo ser prorrogado mediante acordo escrito entre as partes.
 
-CLÁUSULA 3 — DO PAGAMENTO
+CLÁUSULA 3ª – DO PAGAMENTO
 O pagamento deverá ser realizado conforme a forma e prazo acordados. O atraso no pagamento sujeitará o CONTRATANTE a multa de 2% e juros de 1% ao mês.
 
-CLÁUSULA 4 — DAS OBRIGAÇÕES
+CLÁUSULA 4ª – DAS OBRIGAÇÕES
 A CONTRATADA obriga-se a executar os serviços com qualidade e dentro do prazo acordado.
 
-CLÁUSULA 5 — DA RESCISÃO
+CLÁUSULA 5ª – DA RESCISÃO
 O presente contrato poderá ser rescindido por qualquer das partes mediante aviso prévio de 30 dias.
 
-CLÁUSULA 6 — DO FORO
-As partes elegem o foro da Comarca de Fortaleza — CE para dirimir quaisquer litígios oriundos deste contrato.`
+CLÁUSULA 6ª – DOS DIREITOS AUTORAIS
+Os materiais produzidos pela CONTRATADA poderão ser utilizados em seu portfólio e materiais de divulgação, salvo restrição expressa do CONTRATANTE.
+
+CLÁUSULA 7ª – DO CANCELAMENTO
+Em caso de cancelamento por iniciativa da CONTRATANTE, não haverá devolução dos valores pagos. Caso o cancelamento ocorra por iniciativa da CONTRATADA, esta se compromete à devolução integral dos valores pagos.`
 };
 
 function preencherClausulas() {
@@ -1367,7 +1372,35 @@ function preencherClausulas() {
   }
 }
 
-// ══ PDF HELPERS ═════════════════════════════════════
+// ══ FORMAT HELPERS ═══════════════════════════════════
+function valorPorExtenso(valor) {
+  const unidades = ['','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
+  const dezenas = ['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
+  const centenas = ['','cem','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+  function grupo(n) {
+    if (n === 0) return ''; if (n === 100) return 'cem';
+    let r = ''; const c = Math.floor(n/100), d = Math.floor((n%100)/10), u = n%10;
+    if (c) r += centenas[c]; if (c && (d||u)) r += ' e ';
+    if (d >= 2) { r += dezenas[d]; if (u) r += ' e ' + unidades[u]; }
+    else if (d === 1) r += unidades[10+u];
+    else if (u) r += unidades[u];
+    return r;
+  }
+  if (!valor || isNaN(valor)) return 'valor inválido';
+  const inteiro = Math.floor(valor); const cents = Math.round((valor - inteiro) * 100);
+  let ext = ''; const mil = Math.floor(inteiro/1000), resto = inteiro%1000;
+  if (mil) ext += (mil === 1 ? 'mil' : grupo(mil) + ' mil');
+  if (mil && resto) ext += ' e ';
+  if (resto) ext += grupo(resto);
+  if (!ext) ext = 'zero';
+  ext += inteiro === 1 ? ' real' : ' reais';
+  if (cents) ext += ' e ' + grupo(cents) + (cents === 1 ? ' centavo' : ' centavos');
+  return ext.charAt(0).toUpperCase() + ext.slice(1);
+}
+
+// ══ PDF HELPERS (orcamento/ordem/recibo) ═══════════════════════════════
+function fmtMoney2(v) { return 'R$ ' + parseFloat(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 }); }
+
 function pdfNewPage(doc) {
   doc.addPage();
   const pageW = doc.internal.pageSize.getWidth();
@@ -1440,34 +1473,6 @@ function pdfTextBlock(doc, title, text, y) {
   doc.text(lines, 16, y, { lineHeightFactor: 1.5 });
   return y + lines.length * 5.5 + 6;
 }
-// CORREÇÃO: split robusto que aceita \n\n e \r\n\r\n
-function pdfClausulas(doc, texto, y) {
-  const pageW = doc.internal.pageSize.getWidth();
-  if (!texto) return y;
-  // Normaliza quebras de linha (Windows e Unix)
-  const normalizado = texto.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-  const clausulas = normalizado.split(/\n\n+/).filter(c => c.trim());
-  for (const cl of clausulas) {
-    const lines = doc.splitTextToSize(cl.trim(), pageW - 32);
-    const needed = lines.length * 5 + 12;
-    y = pdfCheckPage(doc, y, needed);
-    const firstLine = lines[0];
-    const rest = lines.slice(1);
-    if (/^CLÁUSULA/i.test(firstLine)) {
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(15, 23, 42);
-      doc.text(firstLine, 16, y); y += 5.5;
-      if (rest.length) {
-        doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(71, 85, 105);
-        doc.text(rest, 16, y, { lineHeightFactor: 1.5 }); y += rest.length * 5.5;
-      }
-    } else {
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(71, 85, 105);
-      doc.text(lines, 16, y, { lineHeightFactor: 1.5 }); y += lines.length * 5.5;
-    }
-    y += 5;
-  }
-  return y;
-}
 function pdfFooter(doc) {
   const totalPages = doc.internal.getNumberOfPages();
   for (let i = 1; i <= totalPages; i++) {
@@ -1523,7 +1528,6 @@ async function pdfOrcamento(id) {
   y = pdfInfoBox(doc, [
     { label: 'Serviço', value: o.servico },
     { label: 'Status', value: o.status },
-    // CORREÇÃO: campo "data"
     { label: 'Data da Proposta', value: fmtDate(o.data) },
     { label: 'Validade da Proposta', value: o.validade ? fmtDate(o.validade) : '30 dias' },
   ], y); y += 4;
@@ -1533,7 +1537,7 @@ async function pdfOrcamento(id) {
   y = pdfCheckPage(doc, y, 40);
   y = pdfSectionTitle(doc, 'Condições Gerais', y);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(71, 85, 105);
-  ['• Esta proposta é válida por 30 dias a partir da data de emissão, salvo indicação em contrário.',
+  ['• Esta proposta é válida por 30 dias a partir da data de emissão.',
    '• O início dos serviços está condicionado à assinatura do contrato e ao pagamento do sinal acordado.',
    '• Serviços adicionais não previstos nesta proposta serão orçados separadamente.',
    '• Qualquer alteração no escopo poderá implicar em revisão de prazo e valor.'].forEach(c => {
@@ -1544,47 +1548,196 @@ async function pdfOrcamento(id) {
   toast('Orçamento PDF gerado!', 'success');
 }
 
-// ══ PDF CONTRATO ════════════════════════════════════
+// ══ PDF CONTRATO — ESTILO VISUAL TAKE7 (modelo Mônica) ══════════════════
 async function pdfContrato(id) {
   const c = contratosData.find(x => x.id == id); if (!c) return;
   if (!clientesData.length) await loadClientes();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const PW = doc.internal.pageSize.getWidth();
+  const PH = doc.internal.pageSize.getHeight();
   const cliente = clientesData.find(cl => cl.id == c.cliente_id);
-  const numContrato = `Contrato #${String(id).slice(-8).toUpperCase()}`;
-  let y = pdfHeader(doc, 'CONTRATO DE PRESTAÇÃO DE SERVIÇOS', numContrato);
-  y = pdfSectionTitle(doc, 'Qualificação das Partes', y);
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(51, 65, 85);
-  const pageW = doc.internal.pageSize.getWidth();
-  const contratada = config.empresa || 'Take7';
-  const p1 = `CONTRATANTE: ${cliente?.nome || ''}${cliente?.empresa ? ' — ' + cliente.empresa : ''}${cliente?.email ? ', ' + cliente.email : ''}${cliente?.whatsapp ? ', ' + cliente.whatsapp : ''}.`;
-  const p2 = `CONTRATADA: ${contratada}${config.email ? ', ' + config.email : ''}${config.whatsapp ? ', ' + config.whatsapp : ''}${config.endereco ? ', ' + config.endereco : ''}.`;
-  const lines1 = doc.splitTextToSize(p1, pageW - 32);
-  const lines2 = doc.splitTextToSize(p2, pageW - 32);
-  doc.text(lines1, 16, y); y += lines1.length * 5 + 3;
-  doc.text(lines2, 16, y); y += lines2.length * 5 + 6;
-  y = pdfSectionTitle(doc, 'Objeto e Condições', y);
-  y = pdfInfoBox(doc, [
-    { label: 'Tipo de Serviço', value: c.tipo || c.servico },
-    { label: 'Detalhes', value: c.servico || '—' },
-    { label: 'Forma de Pagamento', value: c.pagamento },
-    { label: 'Valor Total', value: fmtMoney(c.valor) },
-    { label: 'Data de Início', value: fmtDate(c.data_inicio) },
-    { label: 'Data de Término / Evento', value: fmtDate(c.data_fim) },
-  ], y); y += 6;
-  if (c.observacoes) {
-    y = pdfCheckPage(doc, y, 20);
-    y = pdfSectionTitle(doc, 'Cláusulas Contratuais', y);
-    y = pdfClausulas(doc, c.observacoes, y); y += 4;
+  const empresa = config.empresa || 'Visual Take7 Produções';
+
+  // ── Decorações visuais roxo/laranja (idênticas ao modelo da Mônica) ──
+  function desenharDecoracoes() {
+    // Canto superior esquerdo
+    doc.setFillColor(230, 126, 34);   // laranja
+    doc.triangle(0, 0, 45, 0, 0, 20, 'F');
+    doc.setFillColor(90, 40, 130);    // roxo escuro
+    doc.triangle(0, 0, 34, 0, 0, 32, 'F');
+    doc.setFillColor(140, 80, 180);   // roxo claro
+    doc.triangle(0, 0, 20, 0, 0, 44, 'F');
+    // Canto inferior direito (espelho)
+    doc.setFillColor(230, 126, 34);
+    doc.triangle(PW, PH, PW - 45, PH, PW, PH - 20, 'F');
+    doc.setFillColor(90, 40, 130);
+    doc.triangle(PW, PH, PW - 34, PH, PW, PH - 32, 'F');
+    doc.setFillColor(140, 80, 180);
+    doc.triangle(PW, PH, PW - 20, PH, PW, PH - 44, 'F');
   }
-  y = pdfCheckPage(doc, y, 35);
-  y = pdfValorBox(doc, c.valor, 'Valor Total do Contrato', y); y += 6;
-  y = pdfCheckPage(doc, y, 20);
-  doc.setFont('helvetica', 'italic'); doc.setFontSize(8.5); doc.setTextColor(100, 116, 139);
-  const foroLines = doc.splitTextToSize('As partes elegem o foro da Comarca de Fortaleza — CE para dirimir quaisquer litígios decorrentes deste instrumento.', pageW - 32);
-  doc.text(foroLines, 16, y); y += foroLines.length * 5 + 6;
-  y = pdfAssinaturas(doc, cliente?.nome, y);
-  pdfFooter(doc);
+
+  // ── Marca d'água central ─────────────────────────────────────────────
+  function desenharMarcaDagua() {
+    doc.saveGraphicsState();
+    doc.setGState(doc.GState({ opacity: 0.06 }));
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22); doc.setTextColor(90, 40, 130);
+    doc.text('VISUAL TAKE7', PW / 2, PH / 2 - 7, { align: 'center' });
+    doc.setFontSize(15);
+    doc.text('PRODUÇÕES', PW / 2, PH / 2 + 6, { align: 'center' });
+    doc.restoreGraphicsState();
+  }
+
+  // ── Nova página ──────────────────────────────────────────────────────
+  let paginaAtual = 1;
+  function novaPagina() {
+    if (paginaAtual > 1) doc.addPage();
+    paginaAtual++;
+    desenharDecoracoes();
+    desenharMarcaDagua();
+  }
+  function checkPage(y, needed) {
+    if (y + needed > PH - 30) { novaPagina(); return 30; }
+    return y;
+  }
+
+  // ── Inicializa página 1 ──────────────────────────────────────────────
+  novaPagina();
+  paginaAtual = 2; // próxima addPage será paginaAtual > 1
+
+  // Logo Take7 centralizado
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(30); doc.setTextColor(90, 40, 130);
+  doc.text('take', PW / 2 - 10, 30, { align: 'right' });
+  doc.setFontSize(30); doc.setTextColor(230, 126, 34);
+  doc.text('7', PW / 2 - 8, 30);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8); doc.setTextColor(90, 40, 130);
+  doc.text('PRODUÇÕES', PW / 2, 36, { align: 'center' });
+
+  // Linha separadora após logo
+  doc.setDrawColor(200, 180, 220); doc.setLineWidth(0.6);
+  doc.line(16, 41, PW - 16, 41);
+
+  // Título do contrato
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+  doc.setTextColor(30, 30, 30);
+  doc.text('CONTRATO DE PRESTAÇÃO DE SERVIÇOS', PW / 2, 52, { align: 'center' });
+
+  // Qualificação: CONTRATADA / CONTRATANTE em negrito
+  let y = 62;
+  const partes = [
+    `CONTRATADA: ${empresa}, empresa de serviços audiovisuais.`,
+    `CONTRATANTE: ${(cliente?.nome || '').toUpperCase()}.`
+  ];
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); doc.setTextColor(30, 30, 30);
+  partes.forEach(p => {
+    const lines = doc.splitTextToSize(p, PW - 32);
+    doc.text(lines, 16, y);
+    y += lines.length * 5.8;
+  });
+  y += 3;
+
+  // ── Renderiza cláusulas ─────────────────────────────────────────────
+  function linhaSep(yy) {
+    doc.setDrawColor(200, 180, 220); doc.setLineWidth(0.4);
+    doc.line(16, yy, PW - 16, yy);
+    return yy + 5;
+  }
+
+  function renderClausula(titulo, corpo, yy) {
+    const todasLinhas = doc.splitTextToSize(corpo.trim(), PW - 32);
+    const needed = 8 + todasLinhas.length * 5.5 + 8;
+    yy = checkPage(yy, needed);
+    yy = linhaSep(yy);
+    // Título da cláusula
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); doc.setTextColor(30, 30, 30);
+    doc.text(titulo, 16, yy); yy += 7;
+    // Corpo
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(40, 40, 40);
+    // Renderiza linha a linha com quebra de página
+    let buffer = [];
+    for (const ln of todasLinhas) {
+      buffer.push(ln);
+      if (buffer.length >= 5) {
+        yy = checkPage(yy, buffer.length * 5.5);
+        doc.text(buffer, 16, yy, { lineHeightFactor: 1.65 });
+        yy += buffer.length * 5.5;
+        buffer = [];
+      }
+    }
+    if (buffer.length) {
+      yy = checkPage(yy, buffer.length * 5.5);
+      doc.text(buffer, 16, yy, { lineHeightFactor: 1.65 });
+      yy += buffer.length * 5.5;
+    }
+    return yy + 2;
+  }
+
+  // Processa o campo observacoes (cláusulas personalizadas) ou gera padrão
+  if (c.observacoes && c.observacoes.trim()) {
+    const norm = c.observacoes.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const blocos = norm.split(/\n\n+/).filter(b => b.trim());
+    for (const bloco of blocos) {
+      const match = bloco.trim().match(/^(CLÁUSULA\s+\d+[ªaA°]?\s*[–\-]\s*[^\n]+)\n?([\s\S]*)/i);
+      if (match) {
+        y = renderClausula(match[1].trim(), match[2]?.trim() || '', y);
+      } else {
+        y = renderClausula('', bloco.trim(), y);
+      }
+    }
+  } else {
+    // Cláusulas padrão baseadas no tipo
+    const tipo = c.tipo || 'fotografia';
+    y = renderClausula('CLÁUSULA 1ª – DO OBJETO',
+      `O presente contrato tem por objeto a prestação de serviços de ${tipo.toLowerCase()}${c.servico ? ' — ' + c.servico : ''}, conforme as condições estabelecidas neste instrumento.`, y);
+    y = renderClausula('CLÁUSULA 2ª – DO VALOR E FORMA DE PAGAMENTO',
+      `Pelos serviços contratados, a CONTRATANTE pagará à CONTRATADA o valor total de ${fmtMoney(c.valor)}, conforme condições previamente acordadas entre as partes. Forma de pagamento: ${c.pagamento || 'À vista'}.`, y);
+    y = renderClausula('CLÁUSULA 3ª – DA DATA E LOCAL DO SERVIÇO',
+      `O serviço objeto deste contrato será realizado na seguinte data: ${fmtDate(c.data_fim)}. Data de início do contrato: ${fmtDate(c.data_inicio)}.`, y);
+    y = renderClausula('CLÁUSULA 4ª – DA ENTREGA DO MATERIAL',
+      `O material produzido será entregue exclusivamente em formato digital, dentro do prazo estipulado em contrato, salvo eventuais ajustes previamente acordados entre as partes.`, y);
+    y = renderClausula('CLÁUSULA 5ª – DOS DIREITOS DE USO DE IMAGEM',
+      `A CONTRATANTE autoriza, de forma gratuita, definitiva e irrevogável, o uso das imagens e vídeos produzidos pela CONTRATADA para fins de portfólio, divulgação institucional e publicitária, em mídias digitais ou impressas, respeitando a integridade e a finalidade profissional do material.`, y);
+    y = renderClausula('CLÁUSULA 6ª – DO CANCELAMENTO',
+      `Em caso de cancelamento por iniciativa da CONTRATANTE, não haverá devolução dos valores pagos, a título de compensação pelos custos e reserva de agenda.\nCaso o cancelamento ocorra por iniciativa da CONTRATADA, esta se compromete a realizar a devolução integral dos valores pagos, no prazo acordado entre as partes.`, y);
+  }
+
+  // ── Assinaturas ──────────────────────────────────────────────────────
+  y = checkPage(y, 70);
+  y = linhaSep(y + 4);
+  y += 4;
+
+  const lineW = 70;
+  const signLine = (label, nome, yy) => {
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(30, 30, 30);
+    doc.text(`${label}: _______________________________`, 16, yy); yy += 5;
+    doc.setFontSize(9); doc.setTextColor(50, 50, 50);
+    doc.text(nome, 16, yy);
+    return yy + 11;
+  };
+
+  y = signLine('CONTRATANTE', cliente?.nome || '', y);
+  y = signLine('CONTRATADA', empresa, y);
+
+  // Data e cidade (canto direito como no modelo)
+  y += 4;
+  const cidade = (config.endereco || 'Ananindeua, Pará').split('-')[0].trim();
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(30, 30, 30);
+  doc.text('Data: _____ / _____ / _______', PW - 80, y);
+  y += 8;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(60, 60, 60);
+  doc.text(cidade, PW - 80, y);
+
+  // ── Número de páginas ────────────────────────────────────────────────
+  const totalPgs = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= totalPgs; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(180, 160, 210);
+    doc.text(`Página ${i} de ${totalPgs}`, PW / 2, PH - 6, { align: 'center' });
+  }
+
   doc.save(`contrato-${(cliente?.nome || 'contrato').replace(/\s+/g, '-').toLowerCase()}.pdf`);
   toast('Contrato PDF gerado!', 'success');
 }
@@ -1712,32 +1865,6 @@ async function pdfRecibo(id) {
   pdfFooter(doc);
   doc.save(`recibo-${String(id).slice(-8)}.pdf`);
   toast('Recibo gerado!', 'success');
-}
-
-// ══ VALOR POR EXTENSO ═══════════════════════════════
-function valorPorExtenso(valor) {
-  const unidades = ['','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
-  const dezenas = ['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
-  const centenas = ['','cem','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
-  function grupo(n) {
-    if (n === 0) return ''; if (n === 100) return 'cem';
-    let r = ''; const c = Math.floor(n/100), d = Math.floor((n%100)/10), u = n%10;
-    if (c) r += centenas[c]; if (c && (d||u)) r += ' e ';
-    if (d >= 2) { r += dezenas[d]; if (u) r += ' e ' + unidades[u]; }
-    else if (d === 1) r += unidades[10+u];
-    else if (u) r += unidades[u];
-    return r;
-  }
-  if (!valor || isNaN(valor)) return 'valor inválido';
-  const inteiro = Math.floor(valor); const cents = Math.round((valor - inteiro) * 100);
-  let ext = ''; const mil = Math.floor(inteiro/1000), resto = inteiro%1000;
-  if (mil) ext += (mil === 1 ? 'mil' : grupo(mil) + ' mil');
-  if (mil && resto) ext += ' e ';
-  if (resto) ext += grupo(resto);
-  if (!ext) ext = 'zero';
-  ext += inteiro === 1 ? ' real' : ' reais';
-  if (cents) ext += ' e ' + grupo(cents) + (cents === 1 ? ' centavo' : ' centavos');
-  return ext.charAt(0).toUpperCase() + ext.slice(1);
 }
 </script>
 
